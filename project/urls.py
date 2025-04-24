@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from app import views as app_views
+from movies import views as movies_views
 
+app_name = "movies"
 urlpatterns = [
-    path("", app_views.index, name="index"), # Root
-    path("app/", include("app.urls")),
+    path("", movies_views.index, name="index"), # Root
+    path("movies/", include("movies.urls")),
     # path("admin/", admin.site.urls),
 ]
