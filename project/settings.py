@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-
 from environs import Env
+from django.contrib.messages import constants as message_constants
 
 
 env = Env()
@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "movie_loggers.apps.MovieLoggersConfig",
     "movies.apps.MoviesConfig",
     'django.contrib.sessions',
     'django.contrib.staticfiles',
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
+        'DIRS': [BASE_DIR / "project" / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +70,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # 'django.contrib.auth.context_processors.auth',
             ],
+            'libraries': {
+                "extras": "project.templatetags.extras",
+            },
         },
     },
 ]
@@ -131,5 +135,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 2 weeks in seconds
-SESSION_COOKIE_AGE = 1209600
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 10 # 10 years in seconds
+
+MESSAGE_TAGS = {
+    message_constants.ERROR: "error bg-red-100 border border-red-400 text-red-700 ",
+    message_constants.SUCCESS: "success bg-green-100 border border-green-400 text-green-700",
+}

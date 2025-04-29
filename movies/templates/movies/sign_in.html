@@ -1,12 +1,18 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
   <div class="grid grid-cols-12">
-    <form class="col-span-12 grid grid-cols-12">
-      <div class="col-span-6 grid grid-cols-12 mb-5 border border-white text-white bg-black">
-        <div class="col-span-6 flex justify-center text-lg p-2.5">Simkl</div>
+    <form
+      method="POST"
+      action="{% url "movies:authorize_application" %}"
+      class="col-span-6 grid grid-cols-12"
+    >
+      {% csrf_token %}
+
+      <div class="col-span-12 grid grid-cols-12 mb-8 border border-white text-white bg-black">
+        <div class="col-span-6 flex justify-center text-lg p-2.5 font-extrabold">Simkl</div>
         <div class="col-span-6">
-          <input type="submit" value="Sign in" class="border-l-1 border-white text-white text-lg  bg-black hover:bg-white hover:text-black hover:font-semibold cursor-pointer w-full h-full"/>
+          <input type="submit" name="simkl" value="Sign in" class="border-l-1 border-white text-white text-lg  bg-black hover:bg-white hover:text-black hover:font-semibold cursor-pointer w-full h-full"/>
         </div>
       </div>
     </form>

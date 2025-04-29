@@ -4,6 +4,10 @@ from . import views
 
 app_name = "movies"
 urlpatterns = [
-    # path("find-movies", views.index, name="index"),
-    path("sign-in", views.sign_in, name="sign_in"),
+    path("auth", views.auth, name="auth"),
+    path("authorize-application",
+        views.authorize_application,
+        name="authorize_application"
+    ),
+    path("<int:movie_id>/add-to-watchlist", views.add_to_watchlist, name="add_to_watchlist"),
 ]
