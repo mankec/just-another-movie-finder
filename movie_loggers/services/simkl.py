@@ -1,0 +1,98 @@
+from urllib.parse import urljoin
+
+from environs import Env
+from django.contrib.sessions.models import Session
+
+from movies.utils import build_url
+from movie_loggers.services.base import MovieLoggerProtocol
+from movie_loggers.services.helpers import send_request, tvdb_id
+
+env = Env()
+
+
+class Simkl(MovieLoggerProtocol):
+    def __init__(self, session: Session):
+        self.session = session
+        self.name = session["movie_logger_name"]
+        self.api_url = "https://api.simkl.com"
+        self.client_id = env.str("SIMKL_CLIENT_ID")
+        self.client_secret = env.str("SIMKL_CLIENT_SECRET")
+        self.redirect_uri = "http://localhost:8000/movies/auth"
+
+    def authorize_application_url(self):
+        url = "https://simkl.com/oauth/authorize"
+        query = {
+            "response_type": "code",
+            "client_id": self.client_id,
+            "redirect_uri": self.redirect_uri,
+            "movie_logger_name": self.name
+        }
+        return build_url(url, query)
+
+    def exchange_code_and_save_token(self, code):
+        url = urljoin(self.api_url, "oauth/token")
+        payload = {
+            "code": code,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "redirect_uri": self.redirect_uri,
+            "grant_type": "authorization_code",
+        }
+        try:
+            response = send_request(
+                method="POST",
+                url=url,
+                payload=payload,
+            )
+        except Exception:
+            raise Exception("Something went wrong while trying to sign you in.")
+        self.session["token"] = response["access_token"]
+        return "Successfully signed to Simkl!"
+
+    def add_to_watchlist(self, movie):
+        movie_data = self._fetch_movie(movie)
+
+        if not movie_data: return
+
+        movie_data["to"] = "plantowatch"
+        movie_data["ids"]["tvdb"] = movie["id"]
+
+        url = urljoin(self.api_url, "sync/add-to-list")
+        headers = {
+            'Authorization': f"Bearer {self.session["token"]}",
+            'simkl-api-key': self.client_id
+        }
+        payload = {
+            "movies": [movie_data],
+        }
+        response = send_request(
+            method="POST",
+            url=url,
+            headers=headers,
+            payload=payload,
+        )
+
+    def _fetch_movie(self, movie: dict) -> dict:
+        url = urljoin(self.api_url, "search/id")
+        payload = {
+            "tvdb": tvdb_id(movie["id"], movie["title"]),
+            "title": movie["title"],
+            "year": movie["year"],
+            "client_id": self.client_id,
+        }
+        data: list = send_request(
+            method="GET",
+            url=url,
+            payload=payload,
+        )
+
+        if not data: return
+
+        if len(data) > 1:
+            # TODO:
+            # This should never happen but if it does we must catch it and then fix it.
+            # Set up email service that will notify us in case this happens.
+            raise RuntimeError(
+                "Only one movie must be retrieved: Simkl API, search/id"
+            )
+        return data.pop()

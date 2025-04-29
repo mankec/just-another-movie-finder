@@ -1,7 +1,62 @@
-from django.shortcuts import render
+import json
+
+from environs import Env
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+from movie_loggers.services.creator import MovieLoggerCreator
+
+
+env = Env()
 
 def index(request):
-    return render(request, "movies/index.html")
+    context = {
+        "token": request.session.get("token", ""),
+        "movie_logger_name": request.session.get("movie_logger_name", ""),
+    }
+    return render(request, "movies/index.html", context)
+
+
+def add_to_watchlist(request, movie_id):
+    request.session["movie_logger_name"] = "simkl"
+    MovieLoggerCreator(request.session).add_to_watchlist(movie_id)
+    return redirect("index")
+
+
+def authorize_application(request):
+    keys = list(request.POST.keys())
+    submits = list(filter(lambda x: request.POST[x] == "Sign in", keys))
+
+    if len(submits) > 1:
+        raise RuntimeError(
+            f"Tried to sign in to multiple services at once: {submits.join(", ")}."
+        )
+    request.session["token"] = ""
+    request.session["movie_logger_name"] = submits.pop(0)
+    url = MovieLoggerCreator(request.session).authorize_application_url()
+    return redirect(url)
+
+
+def auth(request):
+    request.session["token"] = ""
+    code = request.GET["code"]
+
+    if code:
+        try:
+            message = MovieLoggerCreator(request.session).exchange_code_and_save_token(code)
+        except Exception as error:
+            messages.error(request, error)
+            return redirect("sign_in")
+    messages.success(request, message)
+    return redirect("index")
+
 
 def sign_in(request):
     return render(request, "movies/sign_in.html")
+
+
+def sign_out(request):
+    request.session["token"] = ""
+    request.session["movie_logger_name"] = ""
+    messages.success(request, "Signed out.")
+    return redirect("index")
