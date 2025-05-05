@@ -25,3 +25,5 @@ Create `.envrc` and add real values.
 Run `pipenv install` to install `psycopg`.
 
 `python manage.py runserver`
+`npx vite`
+`npm run watch:css`
