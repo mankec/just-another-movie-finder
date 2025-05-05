@@ -1,9 +1,13 @@
 {
   "dependencies": {
     "@tailwindcss/cli": "^4.1.4",
+    "alpinejs": "^3.14.9",
     "tailwindcss": "^4.1.4"
   },
   "scripts": {
     "watch:css": "npx @tailwindcss/cli -i ./static/src/styles.css -o ./static/dist/styles.css --watch"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
   }
 }

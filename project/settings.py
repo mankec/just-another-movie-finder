@@ -71,7 +71,8 @@ TEMPLATES = [
                 # 'django.contrib.auth.context_processors.auth',
             ],
             'libraries': {
-                "extras": "project.templatetags.extras",
+                "icon_tags": "project.templatetags.icon_tags",
+                "vite_tags": "project.templatetags.vite_tags",
             },
         },
     },
