@@ -1,11 +1,8 @@
-import json
-
 from environs import Env
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from movie_loggers.services.creator import MovieLoggerCreator
-
 
 env = Env()
 
