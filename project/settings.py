@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "movie_metadata.apps.MovieMetadataConfig",
     "movie_loggers.apps.MovieLoggersConfig",
     "movies.apps.MoviesConfig",
     'django.contrib.sessions',

@@ -3,9 +3,9 @@ from urllib.parse import urljoin
 from environs import Env
 from django.contrib.sessions.models import Session
 
-from movies.utils import build_url
+from project.utils import build_url, send_request
 from movie_loggers.services.base import MovieLoggerProtocol
-from movie_loggers.services.helpers import send_request, tvdb_id
+from movie_loggers.services.helpers import tvdb_id
 
 env = Env()
 
