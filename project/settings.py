@@ -16,6 +16,8 @@ from pathlib import Path
 from environs import Env
 from django.contrib.messages import constants as message_constants
 
+import os
+
 
 env = Env()
 
@@ -143,3 +145,6 @@ MESSAGE_TAGS = {
     message_constants.ERROR: "error bg-red-100 border border-red-400 text-red-700 ",
     message_constants.SUCCESS: "success bg-green-100 border border-green-400 text-green-700",
 }
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
