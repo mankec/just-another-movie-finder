@@ -1,17 +1,13 @@
 {% load static %}
-{% load vite_tags %}
 {% load icon_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {% load static %}
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
-  <link rel="stylesheet" href="{% static "dist/styles.css" %}">
+  <link rel="stylesheet" href="http://localhost:5173/src/css/styles.css">
 </head>
 <body class="h-screen text-white bg-black">
   <div class="h-1/6 grid grid-cols-12 relative">
@@ -82,6 +78,7 @@
     <div class="col-span-2 border-l-2"></div>
   </div>
 
-  <script src="{% vite_asset_path "js/main.js" %}" type="module"></script>
+  {% comment %} TODO: Update this for production {% endcomment %}
+  <script type="module" src="http://localhost:5173/src/js/main.js"></script>
 </body>
 </html>
