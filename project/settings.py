@@ -73,7 +73,6 @@ TEMPLATES = [
             ],
             'libraries': {
                 "icon_tags": "project.templatetags.icon_tags",
-                "vite_tags": "project.templatetags.vite_tags",
             },
         },
     },

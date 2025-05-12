@@ -1,11 +1,8 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.4",
+    "@tailwindcss/vite": "^4.1.6",
     "alpinejs": "^3.14.9",
-    "tailwindcss": "^4.1.4"
-  },
-  "scripts": {
-    "watch:css": "npx @tailwindcss/cli -i ./static/src/styles.css -o ./static/dist/styles.css --watch"
+    "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
     "vite": "^6.3.5"
