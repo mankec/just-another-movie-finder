@@ -1,0 +1,62 @@
+name: GitHub Actions
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DJANGO_SETTINGS_MODULE: project.settings
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/jamf_test
+
+    services:
+      postgres:
+        image: postgres:16.9
+        env:
+          POSTGRES_DB: jamf_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13.3'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14'
+
+      - name: Install Pipenv
+        run: pip install pipenv
+
+      - name: Install Python dependencies
+        run: pipenv install
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run Django tests
+        env:
+          POSTGRES_DB: jamf_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: |
+          pipenv run python manage.py migrate
+          pipenv run python manage.py test
