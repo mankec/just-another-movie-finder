@@ -4,7 +4,8 @@ from . import views
 
 app_name = "movies"
 urlpatterns = [
-    path("auth", views.auth, name="auth"),
+    # TODO: Refactor this and use oauth/authorize and oauth/authenticate
+    path("auth/", views.auth, name="auth"),
     path("{<str:movie_logger>/authorize-application",
         views.authorize_application,
         name="authorize_application"

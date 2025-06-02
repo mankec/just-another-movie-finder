@@ -2,7 +2,7 @@ from http import HTTPMethod
 
 from requests import get, post, RequestException
 
-
+# TODO: Add tests for this method
 def send_request(*, method, url, headers={}, payload={}):
     response = None
     try:

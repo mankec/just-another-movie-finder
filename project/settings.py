@@ -153,5 +153,9 @@ MESSAGE_TAGS = {
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+USER_AGENT = "JustAnotherMovieFinder/1.0.0"
+
+API_REDIRECT_URL = "http://localhost:8000/movies/auth"
+
 # Set to NO if you want to temporarily disable
 SKIP_EXTERNAL_TESTS = SkipExternalTests.YES

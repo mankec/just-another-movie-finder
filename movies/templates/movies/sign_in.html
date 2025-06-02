@@ -17,4 +17,21 @@
       </div>
     </form>
   </div>
+
+  <div class="grid grid-cols-12">
+    <form
+      method="POST"
+      action="{% url "movies:authorize_application" trakt %}"
+      class="col-span-6 grid grid-cols-12"
+    >
+      {% csrf_token %}
+
+      <div class="col-span-12 grid grid-cols-12 mb-8 border border-white text-white bg-black">
+        <div class="col-span-6 flex justify-center text-lg p-2.5 font-extrabold">Trakt</div>
+        <div class="col-span-6">
+          <input type="submit" name="{{ trakt }}" value="Sign in" class="border-l-1 border-white text-white text-lg  bg-black hover:bg-white hover:text-black hover:font-semibold cursor-pointer w-full h-full"/>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}
