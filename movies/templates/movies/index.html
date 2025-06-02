@@ -2,31 +2,9 @@
 
 {% block content %}
   <div class="flex justify-center">
-    <form class="grid grid-cols-12">
-      <div class="mb-5 col-span-12 mx-6">
-        <label for="country" class="block mb-2 text-sm font-medium">Country</label>
-        <input type="text" id="country" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black" required />
-      </div>
-      <div class="mb-5 col-span-12 mx-6">
-        <label for="genre" class="block mb-2 text-sm font-medium">Genre</label>
-        <input type="text" id="genre" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black" required />
-      </div>
-      <div class="mb-5 col-span-12 mx-6">
-        <label for="country" class="block mb-2 text-sm font-medium">Year of release</label>
-        <input type="text" id="country" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black" required />
-      </div>
-
-      <div class="mb-5 col-span-6 mx-6">
-        <label for="genre" class="block mb-2 text-sm font-medium">Runtime min</label>
-        <input type="text" id="genre" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black" required />
-      </div>
-      <div class="mb-12 col-span-6 mx-6">
-        <label for="genre" class="block mb-2 text-sm font-medium">Runtime max</label>
-        <input type="text" id="genre" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black" required />
-      </div>
-      <div class="mb-5 col-span-12 mx-6">
-        <input type="submit" class="border-1 border-white text-white text-sm rounded-md block w-full p-2.5 bg-black hover:bg-white hover:text-black hover:font-semibold cursor-pointer"/>
-      </div>
-    </form>
+      <form method="POST" action="{% url "movies:add_to_watchlist" 1 %}">
+        {% csrf_token %}
+        <input type="submit" value="Add Movie To Watchlist" class="uppercase cursor-pointer"/>
+      </form>
   </div>
 {% endblock %}

@@ -108,6 +108,7 @@ class CollectMovieMetadataTest(TestCase):
     def test_movie_not_found(self):
         # Movie ID counting starts from 1 therefore movie with id 2 will raise not found exception.
         not_found_movie_id = 2
+        # TODO: Refactor this so it uses stub_request_exception instead
         responses = [
             {"body": self.movie_1_file_content},
             {"body": HTTPStatus.NOT_FOUND.phrase, "status_code": HTTPStatus.NOT_FOUND.value},
