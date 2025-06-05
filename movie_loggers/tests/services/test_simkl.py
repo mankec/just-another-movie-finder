@@ -18,7 +18,9 @@ class SimklTestCase(TestCase):
 
     def test_authorizing_application(self):
         code = "code"
-        response = {"access_token": "mocked_token"}
+        response = {"body":
+            {"access_token": "mocked_token"}
+        }
 
         with stub_request(self.movie_logger, response=response):
             self.movie_logger.exchange_code_and_save_token(code)
@@ -33,11 +35,13 @@ class SimklTestCase(TestCase):
                 "tvdb": movie_id,
             }
         }
-        response = {'added': {
-            'movies': [
-                {'type': 'movie', 'title': 'Frozen Stiff', 'poster': '99/9914076e60318349c', 'year': 2002, 'status': 'released', 'ids': {'simkl': 71106, 'slug': 'frozen-stiff', 'tvdb': movie_id}, 'to': 'plantowatch'
-                }
-            ], 'shows': []}, 'not_found': {'movies': [], 'shows': []}
+        response = {"body":
+            {'added': {
+                'movies': [
+                    {'type': 'movie', 'title': 'Frozen Stiff', 'poster': '99/9914076e60318349c', 'year': 2002, 'status': 'released', 'ids': {'simkl': 71106, 'slug': 'frozen-stiff', 'tvdb': movie_id}, 'to': 'plantowatch'
+                    }
+                ], 'shows': []}, 'not_found': {'movies': [], 'shows': []}
+            }
         }
 
         with stub_request(self.movie_logger, response=response):

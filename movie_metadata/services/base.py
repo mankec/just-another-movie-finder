@@ -1,7 +1,7 @@
 from environs import Env
 
 from project.utils import send_request, build_url
-from project.constants import NOT_FOUND_MESSAGE
+from project.constants import NOT_FOUND_STATUS_CODE, NOT_FOUND_MESSAGE
 
 env = Env()
 
@@ -24,8 +24,9 @@ class MovieMetadata:
                     url= url,
                     payload=payload,
                 )
+                response_body = response.json()
                 # Save token in .envrc
-                # print(response["data"]["token"])
+                # print(response_body["data"]["token"])
             except Exception as error:
                 # TODO: Create logger for messages like these
                 # It should show file path where error happend and it should display error message
@@ -57,9 +58,10 @@ class MovieMetadata:
                     url=url,
                     headers=headers,
                 )
-                return response
+                if response.status_code == NOT_FOUND_STATUS_CODE:
+                    raise Exception(NOT_FOUND_MESSAGE)
+                response_body = response.json()
+                return response_body
             except Exception as error:
                 print("Failed to fetch movie from TVDB: %s" % error)
-                if str(error) == NOT_FOUND_MESSAGE:
-                    raise Exception(NOT_FOUND_MESSAGE)
                 raise
