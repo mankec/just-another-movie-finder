@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from collections import Counter
 
 from django.core.management.base import BaseCommand
 
@@ -39,8 +38,9 @@ class Command(BaseCommand):
         self.movie_count = ...
 
     def add_arguments(self, parser):
-        parser.add_argument('--metadata-dir-path', type=str, required=True, help='Directory you will save your metadata to.')
-        parser.add_argument('--backup-dir-path', type=str, required=True, help='Directory that will act as a backup for you metadata directory.')
+        parser.add_argument('--metadata-dir-path', type=str, required=False, help='Directory you will save your metadata to.')
+        parser.add_argument('--backup-dir-path', type=str, required=False, help='Directory that will act as a backup for you metadata directory.')
+        parser.add_argument("--not-found-movie-ids-file-path", type=str, required=False, help="File that will be used to store ids of movies that haven't been found.")
         parser.add_argument('--max-movies-per-file', type=int, required=False, help='Max movies per file. Default is 2500.')
 
     def _movie_ids(self, *, directory):
@@ -153,8 +153,18 @@ class Command(BaseCommand):
             print(f"Metadata is not corrupted.")
 
     def _setUp(self, options):
-        self.metadata_dir = Path(options["metadata_dir_path"])
-        self.backup_dir = Path(options["backup_dir_path"])
+        if options["metadata_dir_path"]:
+            self.metadata_dir = Path(options["metadata_dir_path"])
+        else:
+            self.metadata_dir = Path("movie_metadata/metadata")
+        if options["backup_dir_path"]:
+            self.backup_dir = Path(options["backup_dir_path"])
+        else:
+            self.backup_dir = Path("movie_metadata/backup")
+        if options["not_found_movie_ids_file_path"]:
+            self.not_found_movie_ids_file = Path(options["not_found_movie_ids_file_path"])
+        else:
+            self.not_found_movie_ids_file = Path("movie_metadata/not_found_movie_ids.json")
         self.max_movies_per_file = options["max_movies_per_file"] or self.__class__.DEFAULT_MAX_MOVIES_PER_FILE
 
         self._check_dir_validity(self.metadata_dir)
@@ -164,7 +174,6 @@ class Command(BaseCommand):
         self.backup_files = list(self.backup_dir.iterdir())
         self.metadata_file = self._find_eligible_metadata_file()
         self.backup_file = self.backup_dir / self.metadata_file.name
-        self.not_found_movie_ids_file = Path("movie_metadata/not_found_movie_ids.json")
 
         self._check_if_metadata_dir_is_corrupted()
 
