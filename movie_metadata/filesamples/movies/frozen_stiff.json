@@ -1,0 +1,424 @@
+{
+  "data": {
+    "id": 41834,
+    "name": "Frozen Stiff",
+    "slug": "frozen-stiff",
+    "image": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834.jpg",
+    "nameTranslations": [
+      "hrv",
+      "tur",
+      "eng",
+      "srp"
+    ],
+    "overviewTranslations": [
+      "hrv",
+      "tur",
+      "eng",
+      "srp",
+      "srp"
+    ],
+    "aliases": [],
+    "score": 549,
+    "runtime": 90,
+    "status": {
+      "id": 5,
+      "name": "Released",
+      "recordType": "movie",
+      "keepUpdated": true
+    },
+    "lastUpdated": "2024-04-15 23:26:57",
+    "year": "2002",
+    "trailers": null,
+    "genres": [
+      {
+        "id": 12,
+        "name": "Drama",
+        "slug": "drama"
+      },
+      {
+        "id": 15,
+        "name": "Comedy",
+        "slug": "comedy"
+      }
+    ],
+    "releases": [
+      {
+        "country": "global",
+        "date": "2002-01-01",
+        "detail": null
+      }
+    ],
+    "artworks": [
+      {
+        "id": 2563038,
+        "image": "https://artworks.thetvdb.com/banners/movies/41834/backgrounds/41834.jpg",
+        "thumbnail": "https://artworks.thetvdb.com/banners/movies/41834/backgrounds/41834_t.jpg",
+        "language": null,
+        "type": 15,
+        "score": 100000,
+        "width": 1920,
+        "height": 1080,
+        "includesText": false
+      },
+      {
+        "id": 2457523,
+        "image": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834.jpg",
+        "thumbnail": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834_t.jpg",
+        "language": "eng",
+        "type": 14,
+        "score": 100000,
+        "width": 680,
+        "height": 1000,
+        "includesText": true
+      }
+    ],
+    "remoteIds": [
+      {
+        "id": "tt0301634",
+        "type": 2,
+        "sourceName": "IMDB"
+      },
+      {
+        "id": "15303",
+        "type": 10,
+        "sourceName": "TheMovieDB.com"
+      }
+    ],
+    "characters": [
+      {
+        "id": 12584880,
+        "name": "Limeni",
+        "peopleId": 492389,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 4,
+        "isFeatured": true,
+        "url": "492389-nikola-đuricko",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Nikola Đuričko",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584881,
+        "name": "Maja",
+        "peopleId": 611295,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 5,
+        "isFeatured": true,
+        "url": "611295-sonja-kolacarić",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Sonja Kolačarić",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584882,
+        "name": "Kiza",
+        "peopleId": 492390,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 2,
+        "isFeatured": true,
+        "url": "492390-srđan-todorović",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Srđan Todorović",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584883,
+        "name": "Lemi",
+        "peopleId": 474031,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 3,
+        "isFeatured": true,
+        "url": "474031-nenad-jezdić",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Nenad Jezdić",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584884,
+        "name": "Radovan",
+        "peopleId": 662257,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 6,
+        "isFeatured": true,
+        "url": "662257-milorad-mandić",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Milorad Mandić",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584885,
+        "name": "Otac",
+        "peopleId": 506622,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 7,
+        "isFeatured": true,
+        "url": "506622-miodrag-krstović",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Miodrag Krstović",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584886,
+        "name": null,
+        "peopleId": 609460,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 1,
+        "image": "",
+        "sort": 4,
+        "isFeatured": false,
+        "url": "609460-milorad-milinković",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Director",
+        "personName": "Milorad Milinković",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 12584887,
+        "name": null,
+        "peopleId": 609460,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 2,
+        "image": "",
+        "sort": 4,
+        "isFeatured": false,
+        "url": "609460-milorad-milinković",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Writer",
+        "personName": "Milorad Milinković",
+        "tagOptions": null,
+        "personImgURL": ""
+      },
+      {
+        "id": 69068369,
+        "name": "Deda",
+        "peopleId": 8358098,
+        "seriesId": null,
+        "series": null,
+        "movie": null,
+        "movieId": 41834,
+        "episodeId": null,
+        "type": 3,
+        "image": "",
+        "sort": 1,
+        "isFeatured": true,
+        "url": "8358098-mihajlo-bata-paskaljevic",
+        "nameTranslations": null,
+        "overviewTranslations": null,
+        "aliases": null,
+        "peopleType": "Actor",
+        "personName": "Mihajlo 'Bata' Paskaljevic",
+        "tagOptions": null,
+        "personImgURL": ""
+      }
+    ],
+    "budget": null,
+    "boxOffice": null,
+    "boxOfficeUS": "",
+    "originalCountry": "yug",
+    "originalLanguage": "eng",
+    "audioLanguages": null,
+    "subtitleLanguages": null,
+    "studios": null,
+    "awards": null,
+    "tagOptions": null,
+    "lists": [],
+    "contentRatings": null,
+    "companies": {
+      "studio": [],
+      "network": [],
+      "production": [
+        {
+          "id": 28102,
+          "name": "Media Film",
+          "slug": "media-film",
+          "nameTranslations": null,
+          "overviewTranslations": null,
+          "aliases": null,
+          "country": null,
+          "primaryCompanyType": 3,
+          "activeDate": null,
+          "inactiveDate": null,
+          "companyType": {
+            "companyTypeId": 3,
+            "companyTypeName": "Production Company"
+          },
+          "parentCompany": {
+            "id": null,
+            "name": null,
+            "relation": {
+              "id": null,
+              "typeName": null
+            }
+          },
+          "tagOptions": null
+        },
+        {
+          "id": 35207,
+          "name": "Radio Televizija Srbije (RTS)",
+          "slug": "radio-televizija-srbije-rts",
+          "nameTranslations": null,
+          "overviewTranslations": null,
+          "aliases": null,
+          "country": null,
+          "primaryCompanyType": 3,
+          "activeDate": null,
+          "inactiveDate": null,
+          "companyType": {
+            "companyTypeId": 3,
+            "companyTypeName": "Production Company"
+          },
+          "parentCompany": {
+            "id": null,
+            "name": null,
+            "relation": {
+              "id": null,
+              "typeName": null
+            }
+          },
+          "tagOptions": null
+        },
+        {
+          "id": 35223,
+          "name": "Radović Company",
+          "slug": "radović-company",
+          "nameTranslations": null,
+          "overviewTranslations": null,
+          "aliases": null,
+          "country": null,
+          "primaryCompanyType": 3,
+          "activeDate": null,
+          "inactiveDate": null,
+          "companyType": {
+            "companyTypeId": 3,
+            "companyTypeName": "Production Company"
+          },
+          "parentCompany": {
+            "id": null,
+            "name": null,
+            "relation": {
+              "id": null,
+              "typeName": null
+            }
+          },
+          "tagOptions": null
+        },
+        {
+          "id": 45323,
+          "name": "Viktorija Film",
+          "slug": "viktorija-film",
+          "nameTranslations": null,
+          "overviewTranslations": null,
+          "aliases": null,
+          "country": null,
+          "primaryCompanyType": 3,
+          "activeDate": null,
+          "inactiveDate": null,
+          "companyType": {
+            "companyTypeId": 3,
+            "companyTypeName": "Production Company"
+          },
+          "parentCompany": {
+            "id": null,
+            "name": null,
+            "relation": {
+              "id": null,
+              "typeName": null
+            }
+          },
+          "tagOptions": null
+        }
+      ],
+      "distributor": [],
+      "special_effects": []
+    },
+    "production_countries": [
+      {
+        "id": 47423,
+        "country": "srb",
+        "name": "Serbia"
+      }
+    ],
+    "inspirations": [],
+    "spoken_languages": [
+      "srp"
+    ],
+    "first_release": {
+      "country": "global",
+      "date": "2002-01-01",
+      "detail": null
+    }
+  }
+}

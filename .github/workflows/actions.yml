@@ -12,6 +12,11 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: project.settings
+      POSTGRES_DB: jamf_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/jamf_test
 
     services:
@@ -51,12 +56,6 @@ jobs:
         run: npm ci
 
       - name: Run Django tests
-        env:
-          POSTGRES_DB: jamf_test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
         run: |
           pipenv run python manage.py migrate
-          pipenv run python manage.py test
+          pipenv run python manage.py test --verbosity 3
