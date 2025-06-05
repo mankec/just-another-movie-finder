@@ -37,20 +37,13 @@ def send_request(*, method, url, headers={}, payload={}):
                     f"Hey it's {method} method and I am not supported!" \
                     "Please update me at movies/services/apis/loggers/helpers.py."
                 )
-        response.raise_for_status()
-        return response.json()
+        return response
     except RequestException as error:
         if response is not None:
-            if response.status_code == TOO_MANY_REQUESTS_STATUS_CODE:
-                raise Exception(TOO_MANY_REQUESTS_MESSAGE)
-            elif response.status_code == NOT_FOUND_STATUS_CODE:
-                raise Exception(NOT_FOUND_MESSAGE)
+            print("RequestException in send_request: %s" % error)
         else:
             print("Response doesn't exist: %s" % error)
             raise
-    except KeyboardInterrupt as error:
-        print("Interrupted while sending request: %s" % error)
-        raise
     except Exception as error:
         print("Error while sending request: %s" % error)
         raise

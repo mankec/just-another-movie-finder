@@ -42,9 +42,10 @@ class Simkl(MovieLoggerProtocol):
                 url=url,
                 payload=payload,
             )
+            response_body = response.json()
         except Exception:
             raise Exception("Something went wrong while trying to sign you in.")
-        self.session["token"] = response["access_token"]
+        self.session["token"] = response_body["access_token"]
         return "Successfully signed to Simkl!"
 
     def add_to_watchlist(self, movie):
@@ -78,11 +79,12 @@ class Simkl(MovieLoggerProtocol):
             "year": movie["year"],
             "client_id": self.client_id,
         }
-        data: list = send_request(
+        response = send_request(
             method="GET",
             url=url,
             payload=payload,
         )
+        data = response.json()
 
         if not data: return
 

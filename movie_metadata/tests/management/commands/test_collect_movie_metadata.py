@@ -9,7 +9,7 @@ from movie_metadata.services.base import MovieMetadata
 # TODO: Move this to project utils
 from movie_loggers.tests.services.helpers import stub_request, stub_multiple_requests
 from project.utils import read_file, create_empty_json_file, write_to_json_file
-from project.constants import NOT_FOUND_MESSAGE
+from project.constants import NOT_FOUND_STATUS_CODE, NOT_FOUND_MESSAGE
 
 class CollectMovieMetadataTest(TestCase):
     @classmethod
@@ -60,8 +60,8 @@ class CollectMovieMetadataTest(TestCase):
         self.backup_file.unlink()
         self.metadata_file.unlink()
         responses = [
-            self.movie_1_file_content,
-            self.movie_2_file_content,
+            {"body": self.movie_1_file_content},
+            {"body": self.movie_2_file_content},
         ]
         expected = [
             self.movie_1_file_content["data"],
@@ -74,8 +74,8 @@ class CollectMovieMetadataTest(TestCase):
 
     def test_with_valid_data(self):
         responses = [
-            self.movie_1_file_content,
-            self.movie_2_file_content,
+            {"body": self.movie_1_file_content},
+            {"body": self.movie_2_file_content},
         ]
         expected = [
             self.movie_1_file_content["data"],
@@ -92,7 +92,7 @@ class CollectMovieMetadataTest(TestCase):
         ]
         write_to_json_file(backup_data, self.backup_file)
 
-        response = self.movie_2_file_content
+        response = {"body": self.movie_2_file_content}
         expected = [
             self.movie_1_file_content["data"],
             self.movie_2_file_content["data"],
@@ -110,9 +110,9 @@ class CollectMovieMetadataTest(TestCase):
         # Movie ID counting starts from 1 therefore movie with id 2 will raise not found exception.
         not_found_movie_id = 2
         responses = [
-            self.movie_1_file_content,
-            Exception(NOT_FOUND_MESSAGE),
-            self.movie_2_file_content,
+            {"body": self.movie_1_file_content},
+            {"body": NOT_FOUND_MESSAGE, "status_code": NOT_FOUND_STATUS_CODE},
+            {"body": self.movie_2_file_content},
         ]
         expected = [
             self.movie_1_file_content["data"],
