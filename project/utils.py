@@ -82,14 +82,12 @@ def append_to_json_file(new_data, file):
             except json.JSONDecodeError as error:
                 print(f"JSON DecodeError while safe appending JSON to '{file.name}'")
                 raise
-            file.seek(0)
-            file.truncate()
             if isinstance(new_data, list):
                 data.extend(new_data)
             else:
                 data.append(new_data)
+            file.seek(0)
             json.dump(data, file, indent=2)
-            file.truncate()
             os.fsync(file.fileno())
     except (Exception, KeyboardInterrupt) as error:
         if error:
