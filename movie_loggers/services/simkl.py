@@ -1,9 +1,7 @@
-from urllib.parse import urljoin
-
 from environs import Env
 from django.contrib.sessions.models import Session
 
-from project.utils import build_url, send_request
+from project.utils import build_url, build_url_with_query, send_request
 from movie_loggers.services.base import MovieLoggerProtocol
 from movie_loggers.services.helpers import tvdb_id
 
@@ -15,8 +13,8 @@ class Simkl(MovieLoggerProtocol):
         self.session = session
         self.name = session["movie_logger_name"]
         self.api_url = "https://api.simkl.com"
-        self.client_id = env.str("SIMKL_CLIENT_ID")
-        self.client_secret = env.str("SIMKL_CLIENT_SECRET")
+        self.client_id = env.str("SIMKL_CLIENT_ID", "")
+        self.client_secret = env.str("SIMKL_CLIENT_SECRET", "")
         self.redirect_uri = "http://localhost:8000/movies/auth"
 
     def authorize_application_url(self):
@@ -27,10 +25,10 @@ class Simkl(MovieLoggerProtocol):
             "redirect_uri": self.redirect_uri,
             "movie_logger_name": self.name
         }
-        return build_url(url, query)
+        return build_url_with_query(url, query)
 
     def exchange_code_and_save_token(self, code):
-        url = urljoin(self.api_url, "oauth/token")
+        url = build_url(self.api_url, "oauth/token")
         payload = {
             "code": code,
             "client_id": self.client_id,
@@ -57,7 +55,7 @@ class Simkl(MovieLoggerProtocol):
         movie_data["to"] = "plantowatch"
         movie_data["ids"]["tvdb"] = movie["id"]
 
-        url = urljoin(self.api_url, "sync/add-to-list")
+        url = build_url(self.api_url, "sync/add-to-list")
         headers = {
             'Authorization': f"Bearer {self.session["token"]}",
             'simkl-api-key': self.client_id
@@ -73,7 +71,7 @@ class Simkl(MovieLoggerProtocol):
         )
 
     def _fetch_movie(self, movie: dict) -> dict:
-        url = urljoin(self.api_url, "search/id")
+        url = build_url(self.api_url, "search/id")
         payload = {
             "tvdb": tvdb_id(movie["id"], movie["title"]),
             "title": movie["title"],

@@ -1,8 +1,7 @@
-from urllib.parse import urljoin
-
 from environs import Env
 
-from project.utils import send_request
+from project.utils import send_request, build_url
+from project.constants import NOT_FOUND_MESSAGE
 
 env = Env()
 
@@ -10,30 +9,57 @@ class MovieMetadata:
     class TVDB:
         def __init__(self):
             self.api_url = "https://api4.thetvdb.com/v4/"
-            self.api_key = env.str("TVDB_API_KEY")
+            self.api_key = env.str("TVDB_API_KEY", "")
             self.token = env.str("TVDB_TOKEN", "") or self._fetch_token()
+            self.total_movies = self._fetch_total_movies()
 
         def _fetch_token(self):
-            url = urljoin(self.api_url, "login")
-            payload = {
-                "apikey": self.api_key,
-            }
-            response = send_request(
-                method="POST",
-                url= url,
-                payload=payload,
-            )
-            # Save token in .envrc
-            # print(response["data"]["token"])
+            try:
+                url = build_url(self.api_url, "login")
+                payload = {
+                    "apikey": self.api_key,
+                }
+                response = send_request(
+                    method="POST",
+                    url= url,
+                    payload=payload,
+                )
+                # Save token in .envrc
+                # print(response["data"]["token"])
+            except Exception as error:
+                # TODO: Create logger for messages like these
+                # It should show file path where error happend and it should display error message
+                print("Failed to fetch token from TVDB: %s" % error)
 
-        def fetch_all(self, next_page_url=""):
-            url = next_page_url or urljoin(self.api_url, "movies")
+        def _fetch_total_movies(self):
+            try:
+                url = build_url(self.api_url, "movies")
+                headers = {
+                    "Authorization": f"Bearer {self.token}",
+                }
+                response = send_request(
+                    method="GET",
+                    url= url,
+                    headers=headers,
+                )
+                return response["links"]["total_items"]
+            except Exception as error:
+                print("Failed to fetch total movies from TVDB: %s" % error)
+
+        def fetch_extended(self, movie_id):
+            url = build_url(self.api_url, "movies", movie_id, "extended")
             headers = {
                 "Authorization": f"Bearer {self.token}",
             }
-            response = send_request(
-                method="GET",
-                url=url,
-                headers=headers,
-            )
-            return response
+            try:
+                response = send_request(
+                    method="GET",
+                    url=url,
+                    headers=headers,
+                )
+                return response
+            except Exception as error:
+                print("Failed to fetch movie from TVDB: %s" % error)
+                if str(error) == NOT_FOUND_MESSAGE:
+                    raise Exception(NOT_FOUND_MESSAGE)
+                raise
