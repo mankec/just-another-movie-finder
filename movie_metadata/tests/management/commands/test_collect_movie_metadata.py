@@ -1,6 +1,7 @@
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
+from http import HTTPStatus
 
 from django.core.management import call_command
 from django.test import TestCase
@@ -9,7 +10,6 @@ from movie_metadata.services.base import MovieMetadata
 # TODO: Move this to project utils
 from movie_loggers.tests.services.helpers import stub_request, stub_multiple_requests
 from project.utils import read_file, create_empty_json_file, write_to_json_file
-from project.constants import NOT_FOUND_STATUS_CODE, NOT_FOUND_MESSAGE
 
 class CollectMovieMetadataTest(TestCase):
     @classmethod
@@ -111,7 +111,7 @@ class CollectMovieMetadataTest(TestCase):
         not_found_movie_id = 2
         responses = [
             {"body": self.movie_1_file_content},
-            {"body": NOT_FOUND_MESSAGE, "status_code": NOT_FOUND_STATUS_CODE},
+            {"body": HTTPStatus.NOT_FOUND.phrase, "status_code": HTTPStatus.NOT_FOUND.value},
             {"body": self.movie_2_file_content},
         ]
         expected = [

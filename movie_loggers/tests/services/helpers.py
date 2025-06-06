@@ -1,13 +1,12 @@
 from unittest.mock import Mock, patch
-
-from project.constants import SUCCESS_STATUS_CODE
+from http import HTTPStatus
 
 def _mock_response(response):
     mock_response = Mock()
     if response.get("status_code"):
         mock_response.status_code = response["status_code"]
     else:
-        mock_response.status_code = SUCCESS_STATUS_CODE
+        mock_response.status_code = HTTPStatus.OK.value
     mock_response.json.return_value = response["body"]
     return mock_response
 

@@ -8,13 +8,6 @@ from http import HTTPMethod
 
 from requests import get, post, RequestException
 
-from project.constants import (
-    TOO_MANY_REQUESTS_STATUS_CODE,
-    NOT_FOUND_STATUS_CODE,
-    TOO_MANY_REQUESTS_MESSAGE,
-    NOT_FOUND_MESSAGE
-)
-
 #TODO: Create separate files for these methods. Call them in this format: utilrequests, utilurls etc.
 
 def build_url(*path_segments):
