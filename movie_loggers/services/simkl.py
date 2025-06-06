@@ -1,3 +1,5 @@
+from http import HTTPMethod
+
 from environs import Env
 from django.contrib.sessions.models import Session
 
@@ -38,7 +40,7 @@ class Simkl(MovieLoggerProtocol):
         }
         try:
             response = send_request(
-                method="POST",
+                method=HTTPMethod.POST.name,
                 url=url,
                 payload=payload,
             )
@@ -65,7 +67,7 @@ class Simkl(MovieLoggerProtocol):
             "movies": [movie_data],
         }
         response = send_request(
-            method="POST",
+            method=HTTPMethod.POST.name,
             url=url,
             headers=headers,
             payload=payload,
@@ -80,7 +82,7 @@ class Simkl(MovieLoggerProtocol):
             "client_id": self.client_id,
         }
         response = send_request(
-            method="GET",
+            method=HTTPMethod.GET.name,
             url=url,
             payload=payload,
         )

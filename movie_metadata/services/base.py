@@ -1,3 +1,5 @@
+from http import HTTPMethod
+
 from environs import Env
 
 from project.utils import send_request, build_url
@@ -20,7 +22,7 @@ class MovieMetadata:
                     "apikey": self.api_key,
                 }
                 response = send_request(
-                    method="POST",
+                    method=HTTPMethod.POST.name,
                     url= url,
                     payload=payload,
                 )
@@ -39,7 +41,7 @@ class MovieMetadata:
                     "Authorization": f"Bearer {self.token}",
                 }
                 response = send_request(
-                    method="GET",
+                    method=HTTPMethod.GET.name,
                     url= url,
                     headers=headers,
                 )
@@ -54,7 +56,7 @@ class MovieMetadata:
             }
             try:
                 response = send_request(
-                    method="GET",
+                    method=HTTPMethod.GET.name,
                     url=url,
                     headers=headers,
                 )

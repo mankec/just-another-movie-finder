@@ -4,6 +4,7 @@ import json
 from urllib.parse import urlencode
 from pathlib import Path
 from itertools import chain
+from http import HTTPMethod
 
 from requests import get, post, RequestException
 
@@ -28,9 +29,9 @@ def send_request(*, method, url, headers={}, payload={}):
     response = None
     try:
         match method:
-            case "GET":
+            case HTTPMethod.GET.name:
                 response = get(url, params=payload, headers=headers)
-            case "POST":
+            case HTTPMethod.POST.name:
                 response = post(url, json=payload, headers=headers)
             case _:
                 raise ValueError(
