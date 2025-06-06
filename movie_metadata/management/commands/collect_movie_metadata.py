@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from http import HTTPStatus
 
 from django.core.management.base import BaseCommand
 
@@ -16,8 +17,6 @@ from project.utils import (
     flatten
 )
 from project.settings import TIME_ZONE
-from project.constants import NOT_FOUND_MESSAGE
-
 
 class Command(BaseCommand):
     DEFAULT_MAX_MOVIES_PER_FILE = 2500
@@ -218,7 +217,7 @@ class Command(BaseCommand):
                     shutil.copy(self.metadata_file, self.backup_file)
                 except Exception as error:
                     message = str(error)
-                    if message == NOT_FOUND_MESSAGE:
+                    if message == HTTPStatus.NOT_FOUND.phrase:
                         if movie_id not in self.not_found_movie_ids:
                             append_to_json_file(movie_id, self.not_found_movie_ids_file)
                         time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)

@@ -1,9 +1,8 @@
-from http import HTTPMethod
+from http import HTTPMethod, HTTPStatus
 
 from environs import Env
 
 from project.utils import send_request, build_url
-from project.constants import NOT_FOUND_STATUS_CODE, NOT_FOUND_MESSAGE
 
 env = Env()
 
@@ -60,8 +59,8 @@ class MovieMetadata:
                     url=url,
                     headers=headers,
                 )
-                if response.status_code == NOT_FOUND_STATUS_CODE:
-                    raise Exception(NOT_FOUND_MESSAGE)
+                if response.status_code == HTTPStatus.NOT_FOUND.value:
+                    raise Exception(HTTPStatus.NOT_FOUND.phrase)
                 response_body = response.json()
                 return response_body
             except Exception as error:
