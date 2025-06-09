@@ -14,7 +14,7 @@
   {% endif %}
 </head>
 <body class="h-full flex flex-col justify-between m-0 text-white bg-black">
-  <div class="grid grid-cols-12 mb-16">
+  <div class="grid grid-cols-12">
     <div
       class="fixed top-0 left-1/2 transform -translate-x-1/2 w-1/2"
       id="flash-message-container"
@@ -47,7 +47,7 @@
     </nav>
   </div>
 
-  <main class="">
+  <main class="flex-grow">
     {% block content %}
     {% endblock %}
   </main>

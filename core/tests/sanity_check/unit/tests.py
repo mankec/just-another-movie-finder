@@ -3,7 +3,7 @@ from pathlib import Path
 from django.test import TestCase, tag
 
 from core.tests.mixins import CustomAssertionsMixin
-from core.tests.utils import ChromeMode
+from core.enums import ChromeMode
 from project import settings
 
 

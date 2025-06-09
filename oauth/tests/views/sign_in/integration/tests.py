@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from core.tests.mixins import CustomAssertionsMixin
 from core.sessions.utils import initialize_session
-from oauth.tests.utils import sign_in_user
+from core.tests.utils import sign_in_user
 
 
 class SignInViewIntegrationTestCase(TestCase, CustomAssertionsMixin):

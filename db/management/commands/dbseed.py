@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 from core.files.utils import read_json_file
 from movies.models import Country, Genre, Movie
-from movies.constants import TVDB_SUPPORTED_LANGUAGES
+from languages.constants import TVDB_SUPPORTED_LANGUAGES
 
 class Command(BaseCommand):
     help = "Seed database."

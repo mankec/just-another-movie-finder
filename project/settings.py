@@ -15,8 +15,7 @@ from pathlib import Path
 from environs import Env
 from django.contrib.messages import constants as message_constants
 
-from core.tests.helpers import SkipExternalTests
-from core.tests.utils import ChromeMode
+from core.enums import SkipExternalTests, ChromeMode
 
 import os
 

@@ -3,6 +3,7 @@ from django.test import TestCase
 from movies.models import Movie, Genre
 from movies.services.movie_finder.services import MovieFinder
 from movies.tests.utils import create_dummy_movie
+from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME, MATCH_FILTERS_ALL
 
 class MovieFinderUnitTestCase(TestCase):
     fixtures = ["movies.json", "genres.json", "countries.json"]
@@ -29,30 +30,62 @@ class MovieFinderUnitTestCase(TestCase):
 
         self.default_year = self.movie_without_genres.year
 
-    def test_find_movies_that_match_some_criteria(self):
-        params = {
-            "years": [self.default_year]
+        self.params = {
+            "countries": [],
+            "languages": [],
+            "genres": [],
+            "exclude_countries": [],
+            "exclude_languages": [],
+            "exclude_genres": [],
+            "year_from": "",
+            "year_to": "",
+            "runtime_min": "",
+            "runtime_max": "",
+            "match_filters": MATCH_FILTERS_SOME,
         }
-        movies = MovieFinder(**params).perform()
+
+    #TODO: Write test for each if in movie_finder/services.py
+    def test_find_movies_that_match_some_filters(self):
+        self.params["year_from"] = self.default_year
+        self.params["year_to"] = self.default_year
+        movies = MovieFinder(**self.params).perform()
+        self.assertTrue(movies)
         self.assertEqual(len(movies), Movie.objects.count())
 
         self.movie_without_genres.year = self.default_year - 1
         self.movie_without_genres.save()
         self.movie_fantasy.year = self.default_year - 1
         self.movie_fantasy.save()
-        params = {
-            "genres": ["Drama"],
-            "years": [self.default_year]
-        }
-        movies = MovieFinder(**params).perform()
-        self.assertNotIn(self.movie_without_genres, movies)
-        self.assertNotIn(self.movie_fantasy, movies)
+        self.params["genres"] = ["Drama"]
+        movie_ids = MovieFinder(**self.params).perform()
+        self.assertIn(self.movie_drama.tvdb_id, movie_ids)
+        self.assertIn(self.movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_without_genres.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_fantasy.tvdb_id, movie_ids)
 
-    def test_find_movies_that_match_all_criteria(self):
-        params = {
-            "match_some_criteria": False,
-            "genres": ["Drama", "Reality"]
-        }
-        movies = MovieFinder(**params).perform()
-        self.assertEqual(len(movies), 1)
-        self.assertEqual(movies[0], self.movie_drama_reality)
+    def test_find_movies_that_match_some_filters_with_excluding_filters(self):
+        self.params["year_from"] = self.default_year
+        self.params["year_to"] = self.default_year
+        movie_ids = MovieFinder(**self.params).perform()
+        self.assertEqual(len(movie_ids), Movie.objects.count())
+
+        self.movie_without_genres.year = self.default_year - 1
+        self.movie_without_genres.save()
+        self.movie_fantasy.year = self.default_year - 1
+        self.movie_fantasy.save()
+        self.params["genres"] = ["Drama"]
+        self.params["exclude_genres"] = ["Reality", "Fantasy"]
+        movie_ids = MovieFinder(**self.params).perform()
+        self.assertIn(self.movie_drama.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_without_genres.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.movie_drama_reality.tvdb_id, movie_ids)
+
+    def test_find_movies_that_match_all_filters(self):
+        self.params["match_filters"] = MATCH_FILTERS_ALL
+        self.params["genres"] = ["Drama", "Reality"]
+        movie_ids = MovieFinder(**self.params).perform()
+        self.assertEqual(len(movie_ids), 1)
+        self.assertEqual(movie_ids[0], self.movie_drama_reality.tvdb_id)

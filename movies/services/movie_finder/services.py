@@ -1,70 +1,101 @@
 from django.db.models import Count, Q
 
-from movies.models import Movie, Genre
-
+from core.wrappers import handle_exception
+from movies.models import Movie
+from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
 
 class MovieFinder():
+    def __init__(self, **kwargs):
+        self.countries = kwargs["countries"]
+        self.languages = kwargs["languages"]
+        self.genres = kwargs["genres"]
+        self.exclude_countries = kwargs["exclude_countries"]
+        self.exclude_languages = kwargs["exclude_languages"]
+        self.exclude_genres = kwargs["exclude_genres"]
+        self.year_from = kwargs["year_from"]
+        self.year_to = kwargs["year_to"]
+        self.runtime_min = kwargs["runtime_min"]
+        self.runtime_max = kwargs["runtime_max"]
+        self.match_some_filters = kwargs["match_filters"] == MATCH_FILTERS_SOME
 
-    def __init__(self, match_some_criteria=True, **kwargs):
-        self.match_some_criteria = match_some_criteria
-        self.countries = kwargs.get("countries", [])
-        self.languages = kwargs.get("languages", [])
-        self.years = kwargs.get("years", [])
-        self.genres = kwargs.get("genres", [])
-        self.runtime_min = kwargs.get("runtime_min", None)
-        self.runtime_max = kwargs.get("runtime_max", None)
-
-    def perform(self):
-        if self.match_some_criteria:
-            filter_query = Q()
+    @handle_exception
+    def perform(self) -> list:
+        if self.match_some_filters:
+            include_filter_query = Q()
             if self.countries:
-                filter_query |= Q(country__in=self.countries)
+                include_filter_query |= Q(country__name__in=self.countries)
 
             if self.languages:
-                filter_query |= Q(language__in=self.languages)
+                include_filter_query |= Q(language__in=self.languages)
 
-            if self.years:
-                filter_query |= Q(year__in=self.years)
+            if self.year_from and self.year_to:
+                include_filter_query |= Q(year__range=(self.year_from, self.year_to))
+            elif self.year_from:
+                include_filter_query |= Q(year__gte=self.year_from)
+            elif self.year_to:
+                include_filter_query |= Q(year__lte=self.year_to)
 
             if self.runtime_min and self.runtime_max:
-                filter_query |= Q(runtime__range=(self.runtime_min, self.runtime_max))
+                include_filter_query |= Q(runtime__range=(self.runtime_min, self.runtime_max))
             elif self.runtime_min:
-                filter_query |= Q(runtime__gte=self.runtime_min)
+                include_filter_query |= Q(runtime__gte=self.runtime_min)
             elif self.runtime_max:
-                filter_query |= Q(runtime__lte=self.runtime_max)
+                include_filter_query |= Q(runtime__lte=self.runtime_max)
 
-            movies = Movie.objects.filter(filter_query)
+            exclude_filter_query = Q()
+            if self.exclude_countries:
+                exclude_filter_query |= Q(country__name__in=self.exclude_countries)
+
+            if self.exclude_languages:
+                exclude_filter_query != Q(language__in=self.exclude_languages)
+
+            if self.exclude_genres:
+                exclude_filter_query |= Q(genres__name__in=self.exclude_genres)
+
+            movies = (
+                Movie.objects.filter(
+                    include_filter_query
+                )
+                .exclude(exclude_filter_query)
+            )
 
             if self.genres:
                 movies_with_genres = (
                     Movie.objects.filter(
                         Q(genres__name__in=self.genres)
                     )
-                    .prefetch_related("genres")
                 )
+
+                if exclude_filter_query:
+                    movies_with_genres = movies_with_genres.exclude(exclude_filter_query)
+
                 movies = movies_with_genres.union(movies)
         else:
-            filter_kwargs = {}
+            include_filter_kwargs = {}
             if self.countries:
-                filter_kwargs["country__in"] = self.countries
+                include_filter_kwargs["country__name__in"] = self.countries
 
             if self.languages:
-                filter_kwargs["language__in"] = self.languages
+                include_filter_kwargs["language__in"] = self.languages
 
-            if self.years:
-                filter_kwargs["year__in"] = self.years
+            if self.year_from and self.year_to:
+                include_filter_kwargs["year__range"] = (self.year_from, self.year_to)
+            elif self.year_from:
+                include_filter_kwargs["year__gte"] = self.year_from
+            elif self.year_to:
+                include_filter_kwargs["year__lte"] = self.year_to
 
             if self.runtime_min and self.runtime_max:
-                filter_kwargs["runtime__range"] = (self.runtime_min, self.runtime_max)
+                include_filter_kwargs["runtime__range"] = (self.runtime_min, self.runtime_max)
             elif self.runtime_min:
-                filter_kwargs["runtime__gte"] = self.runtime_min
+                include_filter_kwargs["runtime__gte"] = self.runtime_min
             elif self.runtime_max:
-                filter_kwargs["runtime__lte"] = self.runtime_max
+                include_filter_kwargs["runtime__lte"] = self.runtime_max
 
             if self.genres:
                 # TODO: Check if total_genres is redundant
-                filter_kwargs["total_genres"] = len(self.genres)
-                filter_kwargs["matched_genres"] = len(self.genres)
+                include_filter_kwargs["total_genres"] = len(self.genres)
+                include_filter_kwargs["matched_genres"] = len(self.genres)
                 movies = (
                     Movie.objects.annotate(
                         total_genres=Count("genres", distinct=True),
@@ -78,11 +109,7 @@ class MovieFinder():
             else:
                 movies = Movie.objects
 
-            movies = (
-                movies.filter(
-                    **filter_kwargs,
-                )
-                .prefetch_related("genres")
-                .distinct()
-            )
-        return movies
+            if include_filter_kwargs:
+                movies = movies.filter(**include_filter_kwargs)
+
+        return list(movies.values_list("tvdb_id", flat=True))

@@ -16,7 +16,7 @@ class CustomAssertionsMixin:
         self.assertEqual(message, expected_message)
 
     def assertJsFlashMessage(self, expected_message: str, timeout=5):
-        flash_message = WebDriverWait(self.selenium, timeout).until(
+        flash_message = WebDriverWait(self.browser, timeout).until(
             expected_conditions.visibility_of_element_located(
                 (By.ID, "flash-message-text")
             )
