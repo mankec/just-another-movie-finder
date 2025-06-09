@@ -1,9 +1,37 @@
 import inspect
 from unittest.mock import Mock, patch
 from http import HTTPStatus
-from enum import Enum
+from typing import Literal
 
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.by import By
+from django.contrib.sessions.models import Session
+from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
+from django.test import TestCase
+
+from movie_loggers.tests.services.constants import DEFAULT_TEST_MOVIE_LOGGER
+from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
+from movies.models import Country, Genre
+from languages.constants import TVDB_SUPPORTED_LANGUAGES
+
+
+def sign_in_user(session: Session):
+    session["movie_logger"] = DEFAULT_TEST_MOVIE_LOGGER
+    session["token"] = "token"
+    session.save()
+
+
+# TODO: Perhaps change this to mixin? If you do, add also selenium_url that will prepend live_server_url to target url.
+def selenium_sign_in_user(test_case: TestCase, movie_logger):
+    try:
+        url = reverse("oauth:selenium_sign_in", kwargs={
+            "movie_logger": movie_logger,
+        })
+        test_case.browser.get(f"{test_case.live_server_url}/{url}")
+    except NoReverseMatch:
+        test_case.fail("This URL is only available in test environment. Run `DJANGO_ENV=test python manage.py test` to be able to access it.")
+
 
 def mock_response(response):
     if not isinstance(response, dict):
@@ -53,19 +81,55 @@ def stub_request_exception(klass_or_instance, *, exception):
     )
 
 
-class ChromeMode(Enum):
-    HEADLESS = "headless"
-    DEFAULT = "default"
+def fill_and_submit_movie_finder_form(
+    browser: WebDriver,
+    *,
+    countries=[],
+    exclude_countries=[],
+    languages=[],
+    exclude_languages=[],
+    genres=[],
+    exclude_genres=[],
+    year_from="",
+    year_to="",
+    runtime_min="",
+    runtime_max="",
+    match_filters: Literal["some", "all"] = MATCH_FILTERS_SOME,
+):
+    for c in countries:
+        country = Country.objects.get(name=c)
+        browser.find_element(By.ID, f"countries_{country.alpha_3}").click()
+    for c in exclude_countries:
+        country = Country.objects.get(name=c)
+        browser.find_element(By.ID, f"exclude_countries_{country.alpha_3}").click()
+    for l in languages:
+        alpha_3 = next(
+            k for k, v in TVDB_SUPPORTED_LANGUAGES.items()
+            if v["name"] == l
+        )
+        browser.find_element(By.ID, f"languages_{alpha_3}").click()
+    for l in exclude_languages:
+        alpha_3 = next(
+            k for k, v in TVDB_SUPPORTED_LANGUAGES.items()
+            if v["name"] == l
+        )
+        browser.find_element(By.ID, f"exclude_languages_{alpha_3}").click()
+    for g in genres:
+        genre = Genre.objects.get(name=genre)
+        browser.find_element(By.ID, f"genres_{genre.slug}").click()
+    for g in exclude_genres:
+        genre = Genre.objects.get(name=genre)
+        browser.find_element(By.ID, f"exclude_genres_{genre.slug}").click()
 
-    @property
-    def options(self):
-        options = Options()
-        if self.value == "headless":
-            options.add_argument("--headless")
-        return options
+    year_from_input = browser.find_element(By.NAME, "year_from")
+    year_from_input.send_keys(year_from)
+    year_to_input = browser.find_element(By.NAME, "year_to")
+    year_to_input.send_keys(year_to)
+    runtime_min_input = browser.find_element(By.NAME, "runtime_min")
+    runtime_min_input.send_keys(runtime_min)
+    runtime_max_input = browser.find_element(By.NAME, "runtime_max")
+    runtime_max_input.send_keys(runtime_max)
 
-    @property
-    def reason(self):
-        return """
-        Chrome Headless mode should only be disabled when testing locally. If you wish to ignore this check append `--exclude-tag=ci`. Refer to https://docs.djangoproject.com/en/5.2/topics/testing/tools/#tagging-tests.
-        """
+    browser.find_element(By.ID, f"radio_button_{match_filters}").click()
+
+    browser.find_element(By.XPATH, '//button[@type="submit"]').click()

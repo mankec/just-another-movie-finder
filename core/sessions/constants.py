@@ -3,4 +3,5 @@ DEFAULT_SESSION_DATA = {
     "token": "",
     "refresh_token":  "",
     "token_expires_at": "", # type: int
+    "movie_ids": [],
 }
