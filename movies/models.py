@@ -14,7 +14,7 @@ class Movie(models.Model):
     status = models.CharField(max_length=20, blank=True)
     keep_updated = models.BooleanField()
     year = models.PositiveSmallIntegerField(null=True, blank=True)
-    tvdb_id = models.PositiveIntegerField(null=True)
+    tvdb_id = models.PositiveIntegerField()
     imdb_id = models.CharField(max_length=16, null=True)
     tmdb_id = models.PositiveIntegerField(null=True)
     budget = models.PositiveBigIntegerField(null=True)
