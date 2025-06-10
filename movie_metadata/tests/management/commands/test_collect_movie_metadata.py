@@ -9,7 +9,7 @@ from django.test import TestCase
 from movie_metadata.services.base import MovieMetadata
 # TODO: Move this to project utils
 from movie_loggers.tests.services.helpers import stub_request, stub_multiple_requests
-from project.utils import read_file, create_empty_json_file, write_to_json_file
+from project.utils.file_utils import read_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):
     @classmethod
