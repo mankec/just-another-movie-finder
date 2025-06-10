@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
 from movie_loggers.services.simkl import Simkl
-from .helpers import stub_request
+from project.utils.testing_utils import stub_request
 
 
 class SimklTestCase(TestCase):
