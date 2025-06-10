@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "movie_metadata.apps.MovieMetadataConfig",
     "movie_loggers.apps.MovieLoggersConfig",
     "movies.apps.MoviesConfig",
+    "db.apps.DbConfig",
     'django.contrib.sessions',
     # 'django.contrib.staticfiles',
     'django.contrib.messages',
