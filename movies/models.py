@@ -5,6 +5,7 @@ class Movie(models.Model):
         db_table = "movie"
         
     title = models.CharField(max_length=50, null=False, blank=True)
+    slug = models.CharField(max_length=50, null=False, blank=True)
     image = models.ImageField(upload_to='movie_posters/', null=False, blank=True)
     runtime = models.PositiveIntegerField(null=False)
     status = models.CharField(max_length=20, null=False, blank=True)
