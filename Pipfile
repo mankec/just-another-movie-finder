@@ -8,6 +8,7 @@ django = "*"
 environs = {extras = ["django"], version = "*"}
 psycopg = {extras = ["binary"], version = "*"}
 requests = "*"
+pillow = "*"
 
 [dev-packages]
 
