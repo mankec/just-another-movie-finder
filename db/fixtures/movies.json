@@ -1,0 +1,15 @@
+[
+  {
+    "model": "movies.movie",
+    "pk": 1,
+    "fields": {
+      "title": "Dummy Movie 1",
+      "slug": "dummy-movie-1",
+      "runtime": 60,
+      "status": "Released",
+      "last_updated": "2025-06-11 00:00:00",
+      "keep_updated": true,
+      "tvdb_id": 1
+    }
+  }
+]
