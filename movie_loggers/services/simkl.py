@@ -6,7 +6,6 @@ from django.contrib.sessions.models import Session
 from project.utils.url_utils import build_url, build_url_with_query
 from project.utils.request_utils import send_request
 from movie_loggers.services.base import MovieLoggerProtocol
-from movie_loggers.services.helpers import tvdb_id
 
 env = Env()
 
@@ -77,7 +76,7 @@ class Simkl(MovieLoggerProtocol):
     def _fetch_movie(self, movie: dict) -> dict:
         url = build_url(self.api_url, "search/id")
         payload = {
-            "tvdb": tvdb_id(movie["id"], movie["title"]),
+            # "tvdb": tvdb_id(movie["id"], movie["title"]),
             "title": movie["title"],
             "year": movie["year"],
             "client_id": self.client_id,
