@@ -31,7 +31,7 @@ class CollectMovieMetadataTest(TestCase):
         self.tmp_backup_dir = Path(self.tmp_dir.name) / "movie_metadata" / "backup"
         self.metadata_file_name = "metadata_0001.json"
         self.metadata_file_name_2 = "metadata_0002.json"
-        self.movies_dir = Path("movie_metadata/filesamples/movies")
+        self.movies_dir = Path("movies/samples")
 
         movie_1_file = Path(self.movies_dir / "frozen_stiff.json")
         movie_2_file = Path(self.movies_dir / "gladiator.json")
