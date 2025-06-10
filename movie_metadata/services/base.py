@@ -2,7 +2,8 @@ from http import HTTPMethod, HTTPStatus
 
 from environs import Env
 
-from project.utils import send_request, build_url
+from project.utils.url_utils import build_url
+from project.utils.request_utils import send_request, build_url
 
 env = Env()
 
