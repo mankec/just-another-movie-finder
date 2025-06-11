@@ -5,7 +5,7 @@ from . import views
 app_name = "movies"
 urlpatterns = [
     path("auth", views.auth, name="auth"),
-    path("{<str:movie_logger_name>/authorize-application",
+    path("{<str:movie_logger>/authorize-application",
         views.authorize_application,
         name="authorize_application"
     ),

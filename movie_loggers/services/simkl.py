@@ -13,7 +13,7 @@ env = Env()
 class Simkl(MovieLoggerProtocol):
     def __init__(self, session: Session):
         self.session = session
-        self.name = session["movie_logger_name"]
+        self.name = session["movie_logger"]
         self.api_url = "https://api.simkl.com"
         self.client_id = env.str("SIMKL_CLIENT_ID", "")
         self.client_secret = env.str("SIMKL_CLIENT_SECRET", "")
@@ -25,7 +25,7 @@ class Simkl(MovieLoggerProtocol):
             "response_type": "code",
             "client_id": self.client_id,
             "redirect_uri": self.redirect_uri,
-            "movie_logger_name": self.name
+            "movie_logger": self.name
         }
         return build_url_with_query(url, query)
 

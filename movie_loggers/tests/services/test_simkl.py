@@ -10,7 +10,7 @@ from project.utils.testing_utils import stub_request
 class SimklTestCase(TestCase):
     def setUp(self):
         self.session = SessionStore()
-        self.session["movie_logger_name"] = "simkl"
+        self.session["movie_logger"] = "simkl"
         self.session["token"] = ""
         self.session.create()
         self.movie_logger = Simkl(self.session)
