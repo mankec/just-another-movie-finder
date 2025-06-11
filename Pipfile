@@ -9,6 +9,7 @@ environs = {extras = ["django"], version = "*"}
 psycopg = {extras = ["binary"], version = "*"}
 requests = "*"
 pillow = "*"
+freezegun = "*"
 
 [dev-packages]
 
