@@ -20,16 +20,9 @@ def add_to_watchlist(request, movie_id):
     return redirect("index")
 
 
-def authorize_application(request):
-    keys = list(request.POST.keys())
-    submits = list(filter(lambda x: request.POST[x] == "Sign in", keys))
-
-    if len(submits) > 1:
-        raise RuntimeError(
-            f"Tried to sign in to multiple services at once: {submits.join(", ")}."
-        )
+def authorize_application(request, movie_logger_name):
     request.session["token"] = ""
-    request.session["movie_logger_name"] = submits.pop(0)
+    request.session["movie_logger_name"] = movie_logger_name
     url = MovieLoggerCreator(request.session).authorize_application_url()
     return redirect(url)
 

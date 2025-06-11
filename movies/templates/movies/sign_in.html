@@ -4,7 +4,7 @@
   <div class="grid grid-cols-12">
     <form
       method="POST"
-      action="{% url "movies:authorize_application" %}"
+      action="{% url "movies:authorize_application" "simkl" %}"
       class="col-span-6 grid grid-cols-12"
     >
       {% csrf_token %}
