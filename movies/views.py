@@ -9,20 +9,20 @@ env = Env()
 def index(request):
     context = {
         "token": request.session.get("token", ""),
-        "movie_logger_name": request.session.get("movie_logger_name", ""),
+        "movie_logger": request.session.get("movie_logger", ""),
     }
     return render(request, "movies/index.html", context)
 
 
 def add_to_watchlist(request, movie_id):
-    request.session["movie_logger_name"] = "simkl"
+    request.session["movie_logger"] = "simkl"
     MovieLoggerCreator(request.session).add_to_watchlist(movie_id)
     return redirect("index")
 
 
-def authorize_application(request, movie_logger_name):
+def authorize_application(request, movie_logger):
     request.session["token"] = ""
-    request.session["movie_logger_name"] = movie_logger_name
+    request.session["movie_logger"] = movie_logger
     url = MovieLoggerCreator(request.session).authorize_application_url()
     return redirect(url)
 
@@ -47,6 +47,6 @@ def sign_in(request):
 
 def sign_out(request):
     request.session["token"] = ""
-    request.session["movie_logger_name"] = ""
+    request.session["movie_logger"] = ""
     messages.success(request, "Signed out.")
     return redirect("index")

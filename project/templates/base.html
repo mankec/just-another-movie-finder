@@ -56,7 +56,7 @@
           <a href="{% url "index" %}">Find movies</a>
         </li>
         <li>
-          {% if token and movie_logger_name %}
+          {% if token and movie_logger %}
             <form method="POST" action="{% url "sign_out" %}">
               {% csrf_token %}
               <input type="submit" value="Sign out" class="uppercase cursor-pointer"/>
