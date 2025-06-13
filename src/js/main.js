@@ -1,5 +1,5 @@
 // Load Tailwind CSS and custom CSS
-import '../css/styles.css';
+import '../styles/main.css';
 
 import Alpine from 'alpinejs'
 

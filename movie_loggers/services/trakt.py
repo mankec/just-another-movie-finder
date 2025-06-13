@@ -5,8 +5,8 @@ from requests.exceptions import HTTPError
 from requests import Response
 from django.contrib.sessions.models import Session
 
-from project.utils.url_utils import build_url, build_url_with_query
-from project.utils.request_utils import send_request
+from project.url.utils import build_url, build_url_with_query
+from project.request.utils import send_request
 from project.settings import API_REDIRECT_URL, USER_AGENT
 from project.wrappers import handle_exception
 from project.constants import ONE_DAY_IN_SECONDS

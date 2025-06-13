@@ -1,4 +1,4 @@
-from project.utils.session_utils import is_signed_in
+from project.auth.utils import is_signed_in
 
 
 def is_signed_in_cp(request):

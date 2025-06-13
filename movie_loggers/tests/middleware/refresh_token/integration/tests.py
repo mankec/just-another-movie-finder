@@ -4,9 +4,9 @@ from zoneinfo import ZoneInfo
 from django.test import TestCase, Client
 from freezegun import freeze_time
 
-from project.utils.testing_utils import stub_request
+from project.test.utils import stub_request
 from project.settings import TIME_ZONE
-from movie_loggers.tests.constants import DEFAULT_TEST_MOVIE_LOGGER
+from movie_loggers.tests.services.constants import DEFAULT_TEST_MOVIE_LOGGER
 from movie_loggers.services.creator import MovieLoggerCreator
 
 class RefreshTokenMiddlewareIntegrationTestCase(TestCase):
