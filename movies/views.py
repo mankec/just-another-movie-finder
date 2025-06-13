@@ -2,6 +2,7 @@ from environs import Env
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
+from project.utils.session_utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
 env = Env()
@@ -42,6 +43,9 @@ def auth(request):
 
 
 def sign_in(request):
+    if is_signed_in(request.session):
+        messages.error(request, "Already signed in.")
+        return redirect("/")
     ctx = {
         "simkl": MovieLogger.SIMKL.value,
     }
