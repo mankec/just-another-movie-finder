@@ -15,7 +15,7 @@ from pathlib import Path
 from environs import Env
 from django.contrib.messages import constants as message_constants
 
-from project.test.helpers import SkipExternalTests
+from core.test.helpers import SkipExternalTests
 
 import os
 

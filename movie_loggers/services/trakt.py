@@ -5,11 +5,11 @@ from requests.exceptions import HTTPError
 from requests import Response
 from django.contrib.sessions.models import Session
 
-from project.url.utils import build_url, build_url_with_query
-from project.request.utils import send_request
+from core.url.utils import build_url, build_url_with_query
+from core.request.utils import send_request
+from core.constants import ONE_DAY_IN_SECONDS
 from project.settings import API_REDIRECT_URL, USER_AGENT
 from project.wrappers import handle_exception
-from project.constants import ONE_DAY_IN_SECONDS
 from movie_loggers.services.base import AbstractMovieLogger, MovieLogger
 from movies.models import Movie
 

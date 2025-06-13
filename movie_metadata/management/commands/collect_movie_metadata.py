@@ -10,8 +10,8 @@ from http import HTTPStatus
 from django.core.management.base import BaseCommand
 
 from movie_metadata.services.base import MovieMetadata
-from project.common.utils import flatten
-from project.file.utils import (
+from core.utils import flatten
+from core.file.utils import (
     append_to_json_file,
     create_empty_json_file,
     read_file,

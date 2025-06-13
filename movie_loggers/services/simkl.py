@@ -3,8 +3,8 @@ from http import HTTPMethod
 from environs import Env
 from django.contrib.sessions.models import Session
 
-from project.url.utils import build_url, build_url_with_query
-from project.request.utils import send_request
+from core.url.utils import build_url, build_url_with_query
+from core.request.utils import send_request
 from movie_loggers.services.base import AbstractMovieLogger
 
 env = Env()
