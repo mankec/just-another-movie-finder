@@ -5,7 +5,7 @@ from django.contrib.sessions.backends.db import SessionStore
 
 from movie_loggers.services.base import MovieLogger
 from movie_loggers.services.simkl import Simkl
-from project.utils.testing_utils import stub_request
+from project.test.utils import stub_request
 
 
 class SimklTestCase(TestCase):

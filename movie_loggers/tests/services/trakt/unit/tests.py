@@ -1,9 +1,7 @@
-from unittest.mock import patch
-
 from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
-from project.utils.testing_utils import stub_multiple_requests
+from project.test.utils import stub_multiple_requests
 from movie_loggers.services.trakt import Trakt
 from movie_loggers.services.base import MovieLogger
 
