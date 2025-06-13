@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import sys
 from pathlib import Path
 
 from environs import Env
 from django.contrib.messages import constants as message_constants
+
+from project.helpers.testing_helpers import SkipExternalTests
 
 import os
 
@@ -150,3 +151,6 @@ MESSAGE_TAGS = {
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Set to NO if you want to temporarily disable
+SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
