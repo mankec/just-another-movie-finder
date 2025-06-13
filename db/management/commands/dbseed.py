@@ -2,7 +2,7 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
-from project.file.utils import read_file
+from core.file.utils import read_file
 from movies.models import Movie
 
 class Command(BaseCommand):

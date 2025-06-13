@@ -7,8 +7,8 @@ from django.urls import reverse
 from requests.exceptions import HTTPError
 
 from project.settings import SKIP_EXTERNAL_TESTS
-from project.test.utils import stub_request, stub_request_exception, mock_response
-from project.test.mixins import CustomAssertionsMixin
+from core.test.utils import stub_request, stub_request_exception, mock_response
+from core.test.mixins import CustomAssertionsMixin
 from movie_loggers.services.trakt import Trakt
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
