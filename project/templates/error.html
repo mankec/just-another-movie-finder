@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="flex justify-center text-5xl mb-5">
+      <h1>Something went wrong...</h1>
+    </div>
+    <div class="flex justify-center text-3xl">
+      {% if message %}
+        <h2 class="block">Error: {{ message }}</h2>
+      {% endif %}
+    </div>
+{% endblock %}

@@ -57,3 +57,10 @@ def sign_out(request):
     request.session["movie_logger"] = ""
     messages.success(request, "Signed out.")
     return redirect("index")
+
+
+def error(request):
+    ctx = {
+        "headerless": True
+    }
+    return render(request, "error.html", ctx)

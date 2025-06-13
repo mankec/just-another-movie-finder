@@ -15,7 +15,7 @@
         {% for message in messages %}
           <li
             x-data="{ show: true }"
-            x-init="setTimeout(() => show = false, 3500)"
+            x-init="setTimeout(() => show = false, 10000)"
             x-show="show"
             x-transition
             class="px-4 py-3 {{ message.tags }}"
@@ -39,15 +39,15 @@
       </span>
     </div>
     <div class="col-span-2 flex items-center ml-8">
-      <h1 class="text-2xl font-semibold">
-        {% if request.path == "/" %}
-          Find movies
-        {% elif request.path == "/sign-in" %}
-          Sign in
-        {% else %}
-          Helloo where is my header name??
-        {% endif %}
-      </h1>
+      {% if not headerless %}
+        <h1 class="text-2xl font-semibold">
+          {% if request.path == "/" %}
+            Find movies
+          {% elif request.path == "/sign-in" %}
+            Sign in
+          {% endif %}
+        </h1>
+      {% endif %}
     </div>
     <div class="col-span-6"></div>
     <div class="col-span-2 flex items-center">
