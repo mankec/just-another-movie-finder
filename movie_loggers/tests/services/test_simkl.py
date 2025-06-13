@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
+from movie_loggers.services.base import MovieLogger
 from movie_loggers.services.simkl import Simkl
 from project.utils.testing_utils import stub_request
 
@@ -10,7 +11,7 @@ from project.utils.testing_utils import stub_request
 class SimklTestCase(TestCase):
     def setUp(self):
         self.session = SessionStore()
-        self.session["movie_logger"] = "simkl"
+        self.session["movie_logger"] = MovieLogger.SIMKL.value
         self.session["token"] = ""
         self.session.create()
         self.movie_logger = Simkl(self.session)
