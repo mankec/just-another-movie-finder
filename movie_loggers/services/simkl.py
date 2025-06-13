@@ -5,12 +5,12 @@ from django.contrib.sessions.models import Session
 
 from project.utils.url_utils import build_url, build_url_with_query
 from project.utils.request_utils import send_request
-from movie_loggers.services.base import MovieLoggerProtocol
+from movie_loggers.services.base import AbstractMovieLogger
 
 env = Env()
 
 
-class Simkl(MovieLoggerProtocol):
+class Simkl(AbstractMovieLogger):
     def __init__(self, session: Session):
         self.session = session
         self.name = session["movie_logger"]
