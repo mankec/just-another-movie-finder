@@ -8,5 +8,6 @@ urlpatterns = [
     path("sign-in", movies_views.sign_in, name="sign_in"),
     path("sign-out", movies_views.sign_out, name="sign_out"),
     path("movies/", include("movies.urls")),
+    path('error/', movies_views.error, name='error'),
     # path("admin/", admin.site.urls),
 ]
