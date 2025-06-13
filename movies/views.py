@@ -33,7 +33,7 @@ def auth(request):
 
     if code:
         try:
-            message = MovieLoggerCreator(request.session).obtain_token(code)
+            message = MovieLoggerCreator(request.session).obtain_token(code=code)
         except Exception as error:
             messages.error(request, error)
             return redirect("sign_in")

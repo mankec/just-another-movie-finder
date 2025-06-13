@@ -29,7 +29,7 @@ class Simkl(AbstractMovieLogger):
         }
         return build_url_with_query(url, query)
 
-    def obtain_token(self, code):
+    def obtain_token(self, *, code):
         url = build_url(self.api_url, "oauth/token")
         payload = {
             "code": code,
