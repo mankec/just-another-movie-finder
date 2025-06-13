@@ -18,14 +18,12 @@ class Command(BaseCommand):
         )
 
     def handle(self, *_args, **_options):
-        seeds_dir = Path("movies/seeds")
+        seeds_dir = Path("db/seeds")
         movies = read_file(seeds_dir / "movies.json")
 
         for movie in movies:
             print(f"Creating movie with id {movie["id"]}")
 
-                # if movie["id"] == 148:
-                #     breakpoint()
             movie = Movie.objects.create(
                 title=movie["name"],
                 slug=movie["slug"],
