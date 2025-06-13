@@ -24,7 +24,7 @@ class SimklTestCase(TestCase):
         }
 
         with stub_request(self.movie_logger, response=response):
-            self.movie_logger.exchange_code_and_save_token(code)
+            self.movie_logger.obtain_token(code)
 
     def test_adding_movie_to_watchlist(self):
         movie_id = 41834

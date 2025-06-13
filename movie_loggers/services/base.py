@@ -18,7 +18,7 @@ class AbstractMovieLogger(ABC):
         ...
 
     @abstractmethod
-    def exchange_code_and_save_token(self, *, code) -> str:
+    def obtain_token(self, *, code) -> str:
         ...
 
     @abstractmethod
