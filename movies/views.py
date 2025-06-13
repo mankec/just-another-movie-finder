@@ -2,7 +2,7 @@ from environs import Env
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from movie_loggers.services.creator import MovieLoggerCreator
+from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
 env = Env()
 
@@ -42,7 +42,10 @@ def auth(request):
 
 
 def sign_in(request):
-    return render(request, "movies/sign_in.html")
+    ctx = {
+        "simkl": MovieLogger.SIMKL.value,
+    }
+    return render(request, "movies/sign_in.html", ctx)
 
 
 def sign_out(request):
