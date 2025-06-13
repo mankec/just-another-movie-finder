@@ -24,3 +24,10 @@ def stub_multiple_requests(instance, *, responses: list):
         f"{instance.__class__.__module__}.send_request",
         side_effect=map(_mock_response, responses)
     )
+
+
+def stub_request_exception(instance, *, exception):
+    return patch(
+        f"{instance.__class__.__module__}.send_request",
+        side_effect=exception,
+    )
