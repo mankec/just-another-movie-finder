@@ -7,8 +7,8 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from movie_metadata.services.base import MovieMetadata
-from project.utils.testing_utils import stub_request, stub_multiple_requests
-from project.utils.file_utils import read_file, create_empty_json_file, write_to_json_file
+from project.test.utils import stub_request, stub_multiple_requests
+from project.file.utils import read_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):
     @classmethod

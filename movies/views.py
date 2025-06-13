@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from project.wrappers import handle_exception
-from project.utils.session_utils import is_signed_in
+from project.auth.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 from movies.models import Movie
 

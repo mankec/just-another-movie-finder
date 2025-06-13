@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.handlers.wsgi import WSGIRequest
 
-from project.utils.url_utils import is_url
+from project.url.utils import is_url
 
 
 def handle_exception(func_or_message: FunctionType | str, message: str = None, log=True):
