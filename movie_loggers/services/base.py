@@ -1,4 +1,4 @@
-from typing import Protocol
+from abc import ABC, abstractmethod
 from enum import Enum
 
 from django.contrib.sessions.models import Session
@@ -8,5 +8,19 @@ class MovieLogger(Enum):
     SIMKL = "simkl"
 
 
-class MovieLoggerProtocol(Protocol):
-    ...
+class AbstractMovieLogger(ABC):
+    def __init__(self, session: Session):
+        self.session = session
+        name = session["movie_logger"]
+
+    @abstractmethod
+    def authorize_application_url(self) -> str:
+        ...
+
+    @abstractmethod
+    def exchange_code_and_save_token(self, *, code) -> str:
+        ...
+
+    @abstractmethod
+    def add_to_watchlist(self, movie: dict):
+        ...
