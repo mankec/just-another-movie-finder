@@ -42,7 +42,7 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                             "message": message,
                             "headerless": True
                         }
-                        return render(request, "error.html", context)
+                        return render(request, "core/error.html", context)
                 if log:
                     tb = traceback.extract_tb(error.__traceback__, limit=-1)
                     fs: FrameSummary = tb[0]
