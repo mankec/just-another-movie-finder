@@ -20,27 +20,3 @@ def add_to_watchlist(request, movie_id):
     message = MovieLoggerCreator(request.session).add_to_watchlist(movie)
     messages.success(request, message)
     return redirect("/")
-
-
-@handle_exception
-def auth(request):
-    session = request.session
-    code = request.GET["code"]
-
-    if not code:
-        session.clear()
-        message = f"Failed to sign you in to {session["movie_logger"].capitalize()}"
-        messages.error(request, message)
-        return redirect("sign_in")
-    movie_logger = MovieLoggerCreator(session)
-    movie_logger.obtain_token(code=code)
-    message = "Successfully signed with Trakt!"
-    messages.success(request, message)
-    return redirect("/")
-
-
-def error(request):
-    ctx = {
-        "headerless": True
-    }
-    return render(request, "error.html", ctx)
