@@ -3,6 +3,7 @@ from http import HTTPMethod
 from environs import Env
 from django.contrib.sessions.models import Session
 
+from project.settings import API_REDIRECT_URL
 from core.url.utils import build_url, build_url_with_query
 from core.request.utils import send_request
 from movie_loggers.services.base import AbstractMovieLogger
@@ -17,7 +18,7 @@ class Simkl(AbstractMovieLogger):
         self.api_url = "https://api.simkl.com"
         self.client_id = env.str("SIMKL_CLIENT_ID", "")
         self.client_secret = env.str("SIMKL_CLIENT_SECRET", "")
-        self.redirect_uri = "http://localhost:8000/movies/auth"
+        self.redirect_uri = API_REDIRECT_URL
 
     def authorize_application_url(self):
         url = "https://simkl.com/oauth/authorize"
