@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "movies.apps.MoviesConfig",
     "db.apps.DbConfig",
     "core.apps.CoreConfig",
+    "auth.apps.AuthConfig",
     'django.contrib.sessions',
     # 'django.contrib.staticfiles',
     'django.contrib.messages',
