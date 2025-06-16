@@ -24,14 +24,6 @@ def add_to_watchlist(request, movie_id):
 
 
 @handle_exception
-def authorize_application(request, movie_logger):
-    session = request.session
-    session["movie_logger"] = movie_logger
-    url = MovieLoggerCreator(session).authorize_application_url()
-    return redirect(url)
-
-
-@handle_exception
 def auth(request):
     session = request.session
     code = request.GET["code"]
