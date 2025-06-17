@@ -47,7 +47,6 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
         mocked_response = {
             "body": {"not_found": {"movies": []}},
-            "status_code": HTTPStatus.CREATED.value
         }
         message = f"'{self.movie.title}' has been added to your Trakt's watchlist."
         with stub_request(self.trakt, response=mocked_response):

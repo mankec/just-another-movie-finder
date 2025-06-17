@@ -1,53 +1,52 @@
-from unittest.mock import patch
-
 from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
-from movie_loggers.services.base import MovieLogger
+from core.test.utils import stub_multiple_requests
 from movie_loggers.services.simkl import Simkl
-from core.test.utils import stub_request
+from movie_loggers.services.base import MovieLogger
 
 
-class SimklTestCase(TestCase):
-    def setUp(self):
-        self.session = SessionStore()
-        self.session["movie_logger"] = MovieLogger.SIMKL.value
-        self.session["token"] = ""
-        self.session.create()
-        self.movie_logger = Simkl(self.session)
-        self.klass = self.movie_logger.__class__
+class SimklUnitTestCase(TestCase):
 
-    def test_authorizing_application(self):
-        code = "code"
-        response = {"body":
-            {"access_token": "mocked_token"}
-        }
+    def test_fetching_user_watchlist(self):
+        session = SessionStore()
+        session["movie_logger"] = MovieLogger.SIMKL.value
+        session["token"] = "token"
+        session.create()
+        simkl = Simkl(session)
 
-        with stub_request(self.movie_logger, response=response):
-            self.movie_logger.obtain_token(code=code)
-
-    def test_adding_movie_to_watchlist(self):
-        movie_id = 41834
-        movie = {
-            "id": movie_id,
-        }
-        movie_data = {
-            "ids": {
-                "tvdb": movie_id,
-            }
-        }
-        response = {"body":
-            {'added': {
-                'movies': [
-                    {'type': 'movie', 'title': 'Frozen Stiff', 'poster': '99/9914076e60318349c', 'year': 2002, 'status': 'released', 'ids': {'simkl': 71106, 'slug': 'frozen-stiff', 'tvdb': movie_id}, 'to': 'plantowatch'
-                    }
-                ], 'shows': []}, 'not_found': {'movies': [], 'shows': []}
-            }
-        }
-
-        with stub_request(self.movie_logger, response=response):
-            with patch(
-                f"{self.klass.__module__}.{self.klass.__name__}._fetch_movie",
-                return_value=movie_data
-            ):
-                self.movie_logger.add_to_watchlist(movie)
+        imdb_id_1 = "imdb_id_1"
+        tmdb_id_1 = "tmdb_id_1"
+        imdb_id_2 = "tmdb_id_2"
+        tmdb_id_2 = "tmdb_id_2"
+        responses = [
+            {
+                "body": {
+                    "movies": [
+                        {
+                            "movie": {
+                                "ids": {
+                                    "imdb": imdb_id_1,
+                                    "tmdb": tmdb_id_1,
+                                }
+                            }
+                        },
+                        {
+                            "movie": {
+                                "ids": {
+                                    "imdb": imdb_id_2,
+                                    "tmdb": tmdb_id_2,
+                                }
+                            }
+                        },
+                    ]
+                },
+            },
+        ]
+        expected = [
+            { "imdb_id": imdb_id_1, "tmdb_id": tmdb_id_1 },
+            { "imdb_id": imdb_id_2, "tmdb_id": tmdb_id_2 },
+        ]
+        with stub_multiple_requests(simkl, responses=responses):
+            movie_ids = simkl.fetch_movie_ids_in_watchlist()
+            self.assertEqual(movie_ids, expected)
