@@ -2,7 +2,7 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
-from core.file.utils import read_file
+from core.file.utils import read_json_file
 from movies.models import Movie, Genre
 
 class Command(BaseCommand):
@@ -20,8 +20,8 @@ class Command(BaseCommand):
     def handle(self, *_args, **_options):
         seeds_dir = Path("db/seeds")
         fixtures_dir = Path("db/fixtures")
-        movies = read_file(seeds_dir / "movies.json")
-        genres = read_file(fixtures_dir / "genres.json")
+        movies = read_json_file(seeds_dir / "movies.json")
+        genres = read_json_file(fixtures_dir / "genres.json")
 
         print("Creating genres...")
         for g in genres:

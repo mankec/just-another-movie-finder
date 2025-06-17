@@ -47,7 +47,7 @@ def write_to_json_file(data, file):
         raise
 
 
-def read_file(file):
+def read_json_file(file):
     with open(file, "r") as file:
         try:
             data = json.load(file)

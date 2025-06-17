@@ -15,7 +15,7 @@ from core.utils import flatten
 from core.file.utils import (
     append_to_json_file,
     create_empty_json_file,
-    read_file,
+    read_json_file,
 )
 from project.settings import TIME_ZONE
 
@@ -47,7 +47,7 @@ class Command(BaseCommand):
     def _movie_ids(self, *, directory):
         try:
             files = list(directory.iterdir())
-            files_data = [read_file(f) for f in files]
+            files_data = [read_json_file(f) for f in files]
             return [d["id"] for d in flatten(files_data)]
         except Exception as error:
             print(f"Error while trying to fetch movie ids in {directory.name}: {error}")
@@ -107,7 +107,7 @@ class Command(BaseCommand):
             )
             return metadata_file
         eligible_file = next(
-            (f for f in files if len(read_file(f)) < self.max_movies_per_file),
+            (f for f in files if len(read_json_file(f)) < self.max_movies_per_file),
             None
         )
         if not eligible_file:
@@ -180,7 +180,7 @@ class Command(BaseCommand):
 
         self.movie_ids_in_backup = self._movie_ids(directory=self.backup_dir)
         self.movie_ids_in_metadata = self._movie_ids(directory=self.metadata_dir)
-        self.not_found_movie_ids = read_file(self.not_found_movie_ids_file)
+        self.not_found_movie_ids = read_json_file(self.not_found_movie_ids_file)
         self.movie_count = len(self.movie_ids_in_metadata)
 
     def handle(self, *_args, **options):
