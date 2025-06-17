@@ -2,7 +2,7 @@ from environs import Env
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from project.wrappers import handle_exception
+from core.wrappers import handle_exception
 from movie_loggers.services.creator import MovieLoggerCreator
 from movies.models import Movie
 
