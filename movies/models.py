@@ -1,9 +1,19 @@
 from django.db import models
 
+
+class Genre(models.Model):
+    class Meta:
+        db_table = "genre"
+
+    tvdb_id = models.PositiveIntegerField()
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=30)
+
+
 class Movie(models.Model):
     class Meta:
         db_table = "movie"
-        
+
     title = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=255)
     last_updated = models.CharField(
@@ -21,3 +31,4 @@ class Movie(models.Model):
     box_office = models.PositiveBigIntegerField(null=True)
     country = models.CharField(max_length=60, blank=True)
     language = models.CharField(max_length=20, blank=True)
+    genres = models.ManyToManyField(Genre)
