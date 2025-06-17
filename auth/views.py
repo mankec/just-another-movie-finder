@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
 
-from project.wrappers import handle_exception
+from core.wrappers import handle_exception
 from auth.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 

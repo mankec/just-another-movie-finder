@@ -9,7 +9,7 @@ from core.url.utils import build_url, build_url_with_query
 from core.request.utils import send_request
 from core.constants import ONE_DAY_IN_SECONDS
 from project.settings import API_REDIRECT_URL, USER_AGENT
-from project.wrappers import handle_exception
+from core.wrappers import handle_exception
 from movie_loggers.services.base import AbstractMovieLogger, MovieLogger
 from movies.models import Movie
 
@@ -75,7 +75,7 @@ class Trakt(AbstractMovieLogger):
         "Someting went wrong while trying to add a movie to your Trakt's watchlist.")
     def add_to_watchlist(self, movie: Movie) -> bool:
         try:
-            url = build_url(API_REDIRECT_URL, "sync/watchlist")
+            url = build_url(self.API_URL, "sync/watchlist")
             payload = {
                 "movies": [self._movie_data(movie)],
             }
@@ -98,7 +98,7 @@ class Trakt(AbstractMovieLogger):
             else:
                 message = self._resolve_http_exception_message(response)
             if not message:
-                message = "Someting went wrong while trying to add a movie to your Trakt's watchlist."
+                message = f"Someting went wrong while trying to add '{movie.title}' to your Trakt's watchlist."
             raise HTTPError(message)
 
     @handle_exception

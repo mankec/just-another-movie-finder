@@ -3,6 +3,9 @@ from http import HTTPStatus
 
 
 def mock_response(response):
+    if not isinstance(response, dict):
+        # Response can be an exception
+        return response
     mock_response = Mock()
     if status_code := response.get("status_code"):
         mock_response.status_code = status_code

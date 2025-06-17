@@ -5,9 +5,10 @@ from http import HTTPStatus
 
 from django.core.management import call_command
 from django.test import TestCase
+from requests.exceptions import HTTPError
 
 from movie_metadata.services.base import MovieMetadata
-from core.test.utils import stub_request, stub_multiple_requests
+from core.test.utils import stub_request, stub_multiple_requests, mock_response
 from core.file.utils import read_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):
@@ -108,10 +109,13 @@ class CollectMovieMetadataTest(TestCase):
     def test_movie_not_found(self):
         # Movie ID counting starts from 1 therefore movie with id 2 will raise not found exception.
         not_found_movie_id = 2
-        # TODO: Refactor this so it uses stub_request_exception instead
+        mocked_response = {
+            "body": {},
+            "status_code": HTTPStatus.NOT_FOUND.value,
+        }
         responses = [
             {"body": self.movie_1_file_content},
-            {"body": HTTPStatus.NOT_FOUND.phrase, "status_code": HTTPStatus.NOT_FOUND.value},
+            HTTPError(HTTPStatus.NOT_FOUND.phrase, response=mock_response(mocked_response)),
             {"body": self.movie_2_file_content},
         ]
         expected = [

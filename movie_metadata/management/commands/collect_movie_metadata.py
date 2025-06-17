@@ -7,6 +7,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from http import HTTPStatus
 
+from requests.exceptions import HTTPError
 from django.core.management.base import BaseCommand
 
 from movie_metadata.services.base import MovieMetadata
@@ -17,6 +18,7 @@ from core.file.utils import (
     read_file,
 )
 from project.settings import TIME_ZONE
+
 
 class Command(BaseCommand):
     DEFAULT_MAX_MOVIES_PER_FILE = 2500
@@ -215,23 +217,27 @@ class Command(BaseCommand):
 
                     print("Copying to backup...")
                     shutil.copy(self.metadata_file, self.backup_file)
-                except Exception as error:
-                    message = str(error)
-                    if message == HTTPStatus.NOT_FOUND.phrase:
+                    self.movie_count += 1
+                    movie_id += 1
+                    time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)
+                except HTTPError as error:
+                    response = error.response
+                    if response.status_code == HTTPStatus.NOT_FOUND.value:
                         if movie_id not in self.not_found_movie_ids:
                             append_to_json_file(movie_id, self.not_found_movie_ids_file)
+                        movie_id += 1
                         time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)
                         continue
                     else:
                         self._styled_output(message, level="ERROR")
-                        break
+                        sys.exit(1)
+                except Exception as error:
+                    message = str(error)
+                    self._styled_output(message, level="ERROR")
+                    sys.exit(1)
                 except KeyboardInterrupt:
                     print("Gracefully stopping...")
-                    break
-                finally:
-                    movie_id += 1
-                self.movie_count += 1
-                time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)
+                    sys.exit(1)
             print(f"Finished at {datetime.now(ZoneInfo(TIME_ZONE)).strftime("%D %H:%M")}.")
         except Exception as error:
             print("Error while handling `collect_movie_metadata` command: %s" % error)

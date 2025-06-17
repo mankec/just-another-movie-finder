@@ -78,7 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
                 # 'django.contrib.auth.context_processors.auth',
-                'project.context_processors.is_signed_in_cp',
+                'core.context_processors.is_signed_in_cp',
             ],
             'libraries': {
                 "icon_tags": "project.templatetags.icon_tags",
