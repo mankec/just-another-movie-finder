@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-ti!2dlnrgystyzw%ng3km@^7dnhi0-97dx4_uz=5y#6yw_y-67
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -81,7 +81,7 @@ TEMPLATES = [
                 'core.context_processors.is_signed_in_cp',
             ],
             'libraries': {
-                "icon_tags": "project.templatetags.icon_tags",
+                "icon_tags": "core.templatetags.icon_tags",
             },
         },
     },
