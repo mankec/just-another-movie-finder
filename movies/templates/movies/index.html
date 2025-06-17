@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="flex justify-center">
-      <form method="POST" action="{% url "movies:add_to_watchlist" 1 %}">
+      <form method="POST" action="{% url "movies:add_to_watchlist" 2 %}">
         {% csrf_token %}
         <input type="submit" value="Add Movie To Watchlist" class="uppercase cursor-pointer"/>
       </form>
