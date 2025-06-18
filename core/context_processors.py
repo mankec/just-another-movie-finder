@@ -1,4 +1,4 @@
-from auth.utils import is_signed_in
+from oauth.utils import is_signed_in
 
 
 def is_signed_in_cp(request):

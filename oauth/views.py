@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from core.wrappers import handle_exception
-from auth.utils import is_signed_in
+from oauth.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
 
@@ -42,7 +42,7 @@ def sign_in(request):
         "simkl": MovieLogger.SIMKL.value,
         "trakt": MovieLogger.TRAKT.value,
     }
-    return render(request, "auth/sign_in.html", ctx)
+    return render(request, "oauth/sign_in.html", ctx)
 
 
 @handle_exception

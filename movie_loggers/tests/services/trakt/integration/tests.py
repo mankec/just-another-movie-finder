@@ -38,7 +38,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             }
         }
         message = "Successfully signed with Trakt!"
-        url = reverse("auth:index")
+        url = reverse("oauth:index")
         with stub_request(self.trakt, response=mocked_response):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
             self.assertFlashMessage(response, message)
