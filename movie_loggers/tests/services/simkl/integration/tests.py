@@ -41,7 +41,7 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_adding_to_watchlist_success(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {"not_found": {"movies": []}},
         }
@@ -51,7 +51,7 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_adding_to_watchlist_movie_not_found(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {"not_found": {"movies": [
                 {"ids": {"imdb": self.movie.imdb_id}}

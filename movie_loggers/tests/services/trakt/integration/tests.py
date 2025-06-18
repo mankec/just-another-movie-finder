@@ -44,7 +44,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_adding_to_watchlist_success(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {"not_found": {"movies": []}},
         }
@@ -54,7 +54,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_adding_to_watchlist_movie_not_found(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {"not_found": {"movies": [
                 {"ids": {"imdb": self.movie.imdb_id}}
@@ -66,7 +66,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_account_is_locked(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -85,7 +85,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             self.assertFlashMessage(response, message)
 
     def test_account_is_deactivated(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -105,7 +105,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
 
     @skipIf(SKIP_EXTERNAL_TESTS.value, SKIP_EXTERNAL_TESTS.reason)
     def test_account_requires_vip_upgrade(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {},
             "status_code": self.trakt.HTTP_STATUS_CODE_VIP_ENHANCED,
@@ -124,7 +124,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             )
 
     def test_vip_account_reached_limit(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {},
             "status_code": self.trakt.HTTP_STATUS_CODE_VIP_ENHANCED,

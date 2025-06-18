@@ -5,17 +5,18 @@ class Genre(models.Model):
     class Meta:
         db_table = "genre"
 
-    tvdb_id = models.PositiveIntegerField()
-    name = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=30)
+    tvdb_id = models.PositiveIntegerField(primary_key=True)
+    name = models.CharField(max_length=30, unique=True)
+    slug = models.SlugField(max_length=30, unique=True)
 
 
 class Movie(models.Model):
     class Meta:
         db_table = "movie"
 
+    tvdb_id = models.PositiveIntegerField(primary_key=True)
     title = models.CharField(max_length=255, blank=True)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     last_updated = models.CharField(
         db_comment="Date and time when the movie was last updated from TVDB.",
     )
@@ -24,7 +25,6 @@ class Movie(models.Model):
     status = models.CharField(max_length=20, blank=True)
     keep_updated = models.BooleanField()
     year = models.PositiveSmallIntegerField(null=True, blank=True)
-    tvdb_id = models.PositiveIntegerField()
     imdb_id = models.CharField(max_length=16, null=True)
     tmdb_id = models.PositiveIntegerField(null=True)
     budget = models.PositiveBigIntegerField(null=True)
