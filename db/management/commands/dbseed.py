@@ -37,7 +37,7 @@ class Command(BaseCommand):
             movie = Movie.objects.create(
                 title=m["name"],
                 slug=m["slug"],
-                image =m["image"],
+                poster =m["image"],
                 runtime=m["runtime"],
                 status=m["status"]["name"],
                 last_updated=m["lastUpdated"],
