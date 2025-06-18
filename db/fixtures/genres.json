@@ -1,178 +1,318 @@
 
 [
   {
-    "id": 1,
-    "name": "Soap",
-    "slug": "soap"
+    "model": "movies.genre",
+    "pk": 1,
+    "fields": {
+      "tvdb_id": 1,
+      "name": "Soap",
+      "slug": "soap"
+    }
   },
   {
-    "id": 2,
-    "name": "Science Fiction",
-    "slug": "science-fiction"
+    "model": "movies.genre",
+    "pk": 2,
+    "fields": {
+      "tvdb_id": 2,
+      "name": "Science Fiction",
+      "slug": "science-fiction"
+    }
   },
   {
-    "id": 3,
-    "name": "Reality",
-    "slug": "reality"
+    "model": "movies.genre",
+    "pk": 3,
+    "fields": {
+      "tvdb_id": 3,
+      "name": "Reality",
+      "slug": "reality"
+    }
   },
   {
-    "id": 4,
-    "name": "News",
-    "slug": "news"
+    "model": "movies.genre",
+    "pk": 4,
+    "fields": {
+      "tvdb_id": 4,
+      "name": "News",
+      "slug": "news"
+    }
   },
   {
-    "id": 5,
-    "name": "Mini-Series",
-    "slug": "mini-series"
+    "model": "movies.genre",
+    "pk": 5,
+    "fields": {
+      "tvdb_id": 5,
+      "name": "Mini-Series",
+      "slug": "mini-series"
+    }
   },
   {
-    "id": 6,
-    "name": "Horror",
-    "slug": "horror"
+    "model": "movies.genre",
+    "pk": 6,
+    "fields": {
+      "tvdb_id": 6,
+      "name": "Horror",
+      "slug": "horror"
+    }
   },
   {
-    "id": 7,
-    "name": "Home and Garden",
-    "slug": "home-and-garden"
+    "model": "movies.genre",
+    "pk": 7,
+    "fields": {
+      "tvdb_id": 7,
+      "name": "Home and Garden",
+      "slug": "home-and-garden"
+    }
   },
   {
-    "id": 8,
-    "name": "Game Show",
-    "slug": "game-show"
+    "model": "movies.genre",
+    "pk": 8,
+    "fields": {
+      "tvdb_id": 8,
+      "name": "Game Show",
+      "slug": "game-show"
+    }
   },
   {
-    "id": 9,
-    "name": "Food",
-    "slug": "food"
+    "model": "movies.genre",
+    "pk": 9,
+    "fields": {
+      "tvdb_id": 9,
+      "name": "Food",
+      "slug": "food"
+    }
   },
   {
-    "id": 10,
-    "name": "Fantasy",
-    "slug": "fantasy"
+    "model": "movies.genre",
+    "pk": 10,
+    "fields": {
+      "tvdb_id": 10,
+      "name": "Fantasy",
+      "slug": "fantasy"
+    }
   },
   {
-    "id": 11,
-    "name": "Family",
-    "slug": "family"
+    "model": "movies.genre",
+    "pk": 11,
+    "fields": {
+      "tvdb_id": 11,
+      "name": "Family",
+      "slug": "family"
+    }
   },
   {
-    "id": 12,
-    "name": "Drama",
-    "slug": "drama"
+    "model": "movies.genre",
+    "pk": 12,
+    "fields": {
+      "tvdb_id": 12,
+      "name": "Drama",
+      "slug": "drama"
+    }
   },
   {
-    "id": 13,
-    "name": "Documentary",
-    "slug": "documentary"
+    "model": "movies.genre",
+    "pk": 13,
+    "fields": {
+      "tvdb_id": 13,
+      "name": "Documentary",
+      "slug": "documentary"
+    }
   },
   {
-    "id": 14,
-    "name": "Crime",
-    "slug": "crime"
+    "model": "movies.genre",
+    "pk": 14,
+    "fields": {
+      "tvdb_id": 14,
+      "name": "Crime",
+      "slug": "crime"
+    }
   },
   {
-    "id": 15,
-    "name": "Comedy",
-    "slug": "comedy"
+    "model": "movies.genre",
+    "pk": 15,
+    "fields": {
+      "tvdb_id": 15,
+      "name": "Comedy",
+      "slug": "comedy"
+    }
   },
   {
-    "id": 16,
-    "name": "Children",
-    "slug": "children"
+    "model": "movies.genre",
+    "pk": 16,
+    "fields": {
+      "tvdb_id": 16,
+      "name": "Children",
+      "slug": "children"
+    }
   },
   {
-    "id": 17,
-    "name": "Animation",
-    "slug": "animation"
+    "model": "movies.genre",
+    "pk": 17,
+    "fields": {
+      "tvdb_id": 17,
+      "name": "Animation",
+      "slug": "animation"
+    }
   },
   {
-    "id": 18,
-    "name": "Adventure",
-    "slug": "adventure"
+    "model": "movies.genre",
+    "pk": 18,
+    "fields": {
+      "tvdb_id": 18,
+      "name": "Adventure",
+      "slug": "adventure"
+    }
   },
   {
-    "id": 19,
-    "name": "Action",
-    "slug": "action"
+    "model": "movies.genre",
+    "pk": 19,
+    "fields": {
+      "tvdb_id": 19,
+      "name": "Action",
+      "slug": "action"
+    }
   },
   {
-    "id": 21,
-    "name": "Sport",
-    "slug": "sport"
+    "model": "movies.genre",
+    "pk": 20,
+    "fields": {
+      "tvdb_id": 21,
+      "name": "Sport",
+      "slug": "sport"
+    }
   },
   {
-    "id": 22,
-    "name": "Suspense",
-    "slug": "suspense"
+    "model": "movies.genre",
+    "pk": 21,
+    "fields": {
+      "tvdb_id": 22,
+      "name": "Suspense",
+      "slug": "suspense"
+    }
   },
   {
-    "id": 23,
-    "name": "Talk Show",
-    "slug": "talk-show"
+    "model": "movies.genre",
+    "pk": 22,
+    "fields": {
+      "tvdb_id": 23,
+      "name": "Talk Show",
+      "slug": "talk-show"
+    }
   },
   {
-    "id": 24,
-    "name": "Thriller",
-    "slug": "thriller"
+    "model": "movies.genre",
+    "pk": 23,
+    "fields": {
+      "tvdb_id": 24,
+      "name": "Thriller",
+      "slug": "thriller"
+    }
   },
   {
-    "id": 25,
-    "name": "Travel",
-    "slug": "travel"
+    "model": "movies.genre",
+    "pk": 24,
+    "fields": {
+      "tvdb_id": 25,
+      "name": "Travel",
+      "slug": "travel"
+    }
   },
   {
-    "id": 26,
-    "name": "Western",
-    "slug": "western"
+    "model": "movies.genre",
+    "pk": 25,
+    "fields": {
+      "tvdb_id": 26,
+      "name": "Western",
+      "slug": "western"
+    }
   },
   {
-    "id": 27,
-    "name": "Anime",
-    "slug": "anime"
+    "model": "movies.genre",
+    "pk": 26,
+    "fields": {
+      "tvdb_id": 27,
+      "name": "Anime",
+      "slug": "anime"
+    }
   },
   {
-    "id": 28,
-    "name": "Romance",
-    "slug": "romance"
+    "model": "movies.genre",
+    "pk": 27,
+    "fields": {
+      "tvdb_id": 28,
+      "name": "Romance",
+      "slug": "romance"
+    }
   },
   {
-    "id": 29,
-    "name": "Musical",
-    "slug": "musical"
+    "model": "movies.genre",
+    "pk": 28,
+    "fields": {
+      "tvdb_id": 29,
+      "name": "Musical",
+      "slug": "musical"
+    }
   },
   {
-    "id": 30,
-    "name": "Podcast",
-    "slug": "podcast"
+    "model": "movies.genre",
+    "pk": 29,
+    "fields": {
+      "tvdb_id": 30,
+      "name": "Podcast",
+      "slug": "podcast"
+    }
   },
   {
-    "id": 31,
-    "name": "Mystery",
-    "slug": "mystery"
+    "model": "movies.genre",
+    "pk": 30,
+    "fields": {
+      "tvdb_id": 31,
+      "name": "Mystery",
+      "slug": "mystery"
+    }
   },
   {
-    "id": 32,
-    "name": "Indie",
-    "slug": "indie"
+    "model": "movies.genre",
+    "pk": 31,
+    "fields": {
+      "tvdb_id": 32,
+      "name": "Indie",
+      "slug": "indie"
+    }
   },
   {
-    "id": 33,
-    "name": "History",
-    "slug": "history"
+    "model": "movies.genre",
+    "pk": 32,
+    "fields": {
+      "tvdb_id": 33,
+      "name": "History",
+      "slug": "history"
+    }
   },
   {
-    "id": 34,
-    "name": "War",
-    "slug": "war"
+    "model": "movies.genre",
+    "pk": 33,
+    "fields": {
+      "tvdb_id": 34,
+      "name": "War",
+      "slug": "war"
+    }
   },
   {
-    "id": 35,
-    "name": "Martial Arts",
-    "slug": "martial-arts"
+    "model": "movies.genre",
+    "pk": 34,
+    "fields": {
+      "tvdb_id": 35,
+      "name": "Martial Arts",
+      "slug": "martial-arts"
+    }
   },
   {
-    "id": 36,
-    "name": "Awards Show",
-    "slug": "awards-show"
+    "model": "movies.genre",
+    "pk": 35,
+    "fields": {
+      "tvdb_id": 36,
+      "name": "Awards Show",
+      "slug": "awards-show"
+    }
   }
 ]

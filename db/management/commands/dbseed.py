@@ -42,9 +42,9 @@ class Command(BaseCommand):
         print("Creating genres...")
         for g in genres:
             Genre.objects.create(
-                tvdb_id=g["id"],
-                name=g["name"],
-                slug=g["slug"],
+                tvdb_id=g["fields"]["tvdb_id"],
+                name=g["fields"]["name"],
+                slug=g["fields"]["slug"],
             )
         print("Done.")
 
