@@ -19,7 +19,7 @@ class Movie(models.Model):
     last_updated = models.CharField(
         db_comment="Date and time when the movie was last updated from TVDB.",
     )
-    image = models.ImageField(upload_to='movie_posters/', null=True)
+    poster = models.ImageField(upload_to='movie_posters/', null=True)
     runtime = models.PositiveIntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, blank=True)
     keep_updated = models.BooleanField()
