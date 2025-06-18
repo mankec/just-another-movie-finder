@@ -60,7 +60,7 @@ class Trakt(AbstractMovieLogger):
         else:
             raise ValueError("Either code or refresh token must be present")
         response = send_request(
-            method=HTTPMethod.POST.name,
+            method=HTTPMethod.POST.value,
             url=url,
             headers=self.REQUIRED_HEADERS,
             payload=payload,
@@ -79,7 +79,7 @@ class Trakt(AbstractMovieLogger):
                 "movies": [self._movie_data(movie)],
             }
             response = send_request(
-                method=HTTPMethod.POST.name,
+                method=HTTPMethod.POST.value,
                 url=url,
                 headers=self._oauth_required_headers(),
                 payload=payload,
@@ -114,7 +114,7 @@ class Trakt(AbstractMovieLogger):
                 "limit": limit
             }
             response =  send_request(
-                method=HTTPMethod.GET.name,
+                method=HTTPMethod.GET.value,
                 url=url,
                 payload=payload,
                 headers=self._oauth_required_headers(),

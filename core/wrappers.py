@@ -29,14 +29,14 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                 if request:
                     message = str(error)
 
-                    if request.method == HTTPMethod.POST.name:
+                    if request.method == HTTPMethod.POST.value:
                         messages.error(request, message)
                         if is_url(message) and (url := message):
                             return redirect(url)
                         if referer := request.META.get("HTTP_REFERER"):
                             return redirect(referer)
                         return redirect("/")
-                    elif request.method == HTTPMethod.GET.name:
+                    elif request.method == HTTPMethod.GET.value:
                         # TODO: This should depend on environment. Don't show message in production and test environments.
                         context = {
                             "message": message,
