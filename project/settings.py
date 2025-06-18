@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "movies.apps.MoviesConfig",
     "db.apps.DbConfig",
     "core.apps.CoreConfig",
-    "auth.apps.AuthConfig",
+    "oauth.apps.OAuthConfig",
     'django.contrib.sessions',
     # 'django.contrib.staticfiles',
     'django.contrib.messages',
@@ -157,7 +157,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USER_AGENT = "JustAnotherMovieFinder/1.0.0"
 
-API_REDIRECT_URL = "http://localhost:8000/auth/"
+API_REDIRECT_URL = "http://localhost:8000/oauth/"
 
 # Set to NO if you want to temporarily disable
 SKIP_EXTERNAL_TESTS = SkipExternalTests.YES

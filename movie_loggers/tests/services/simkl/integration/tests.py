@@ -35,7 +35,7 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
             }
         }
         message = "Successfully signed with Simkl!"
-        url = reverse("auth:index")
+        url = reverse("oauth:index")
         with stub_request(self.simkl, response=mocked_response):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
             self.assertFlashMessage(response, message)
