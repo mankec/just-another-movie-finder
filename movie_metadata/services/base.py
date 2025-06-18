@@ -24,7 +24,7 @@ class MovieMetadata:
                 "apikey": self.api_key,
             }
             response = send_request(
-                method=HTTPMethod.POST.name,
+                method=HTTPMethod.POST.value,
                 url= url,
                 payload=payload,
             )
@@ -39,7 +39,7 @@ class MovieMetadata:
                 "Authorization": f"Bearer {self.token}",
             }
             response = send_request(
-                method=HTTPMethod.GET.name,
+                method=HTTPMethod.GET.value,
                 url= url,
                 headers=headers,
             )
@@ -52,7 +52,7 @@ class MovieMetadata:
                 "Authorization": f"Bearer {self.token}",
             }
             response = send_request(
-                method=HTTPMethod.GET.name,
+                method=HTTPMethod.GET.value,
                 url=url,
                 headers=headers,
             )

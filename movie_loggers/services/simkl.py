@@ -50,7 +50,7 @@ class Simkl(AbstractMovieLogger):
             "grant_type": "authorization_code",
         }
         response = send_request(
-            method=HTTPMethod.POST.name,
+            method=HTTPMethod.POST.value,
             url=url,
             payload=payload,
         )
@@ -66,7 +66,7 @@ class Simkl(AbstractMovieLogger):
                 "movies": [self._movie_data(movie)],
             }
             response = send_request(
-                method=HTTPMethod.POST.name,
+                method=HTTPMethod.POST.value,
                 url=url,
                 headers=self._oauth_required_headers(),
                 payload=payload,
@@ -95,7 +95,7 @@ class Simkl(AbstractMovieLogger):
             "extended": "ids_only",
         }
         response =  send_request(
-            method=HTTPMethod.GET.name,
+            method=HTTPMethod.GET.value,
             url=url,
             payload=payload,
             headers=self._oauth_required_headers(),

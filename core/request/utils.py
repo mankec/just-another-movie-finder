@@ -9,9 +9,9 @@ from core.wrappers import handle_exception
 def send_request(*, method, url, headers={}, payload={}):
     response = None
     match method:
-        case HTTPMethod.GET.name:
+        case HTTPMethod.GET.value:
             response = get(url, params=payload, headers=headers)
-        case HTTPMethod.POST.name:
+        case HTTPMethod.POST.value:
             response = post(url, json=payload, headers=headers)
         case _:
             raise ValueError(
