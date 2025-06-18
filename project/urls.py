@@ -12,5 +12,5 @@ urlpatterns = [
     path('error/', core_views.error, name='error'),
     path("oauth/", include("oauth.urls")),
     path("movies/", include("movies.urls")),
-    # path("admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
 ]
