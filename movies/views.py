@@ -11,7 +11,11 @@ env = Env()
 
 @handle_exception
 def index(request):
-    return render(request, "movies/index.html")
+    movies = Movie.objects.all()[:10]
+    ctx = {
+        "movies": movies,
+    }
+    return render(request, "movies/index.html", ctx)
 
 
 @handle_exception
