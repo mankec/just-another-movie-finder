@@ -14,6 +14,9 @@ export default defineConfig({
       }
     }
   },
+  server: {
+    hmr: false
+  },
   plugins: [
     tailwindcss(),
   ],
