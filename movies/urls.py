@@ -4,5 +4,6 @@ from . import views
 
 app_name = "movies"
 urlpatterns = [
+    path("", views.index, name="index"),
     path("<int:movie_id>/add-to-watchlist", views.add_to_watchlist, name="add_to_watchlist"),
 ]
