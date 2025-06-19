@@ -81,7 +81,7 @@ TEMPLATES = [
                 'core.context_processors.is_signed_in_cp',
             ],
             'libraries': {
-                "icon_tags": "core.templatetags.icon_tags",
+                "custom_tags": "core.templatetags.custom_tags",
             },
         },
     },
@@ -148,8 +148,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 10 # 10 years in seconds
 
 MESSAGE_TAGS = {
-    message_constants.ERROR: "error bg-red-100 border border-red-400 text-red-700 ",
     message_constants.SUCCESS: "success bg-green-100 border border-green-400 text-green-700",
+    message_constants.ERROR: "error bg-red-100 border border-red-400 text-red-700 ",
 }
 
 MEDIA_URL = 'media/'

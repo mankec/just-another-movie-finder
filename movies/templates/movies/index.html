@@ -1,26 +1,64 @@
 {% extends "base.html" %}
 
+{% load custom_tags %}
+
 {% block content %}
-  <div class="grid grid-cols-12 gap-y-12">
-    {% for movie in movies %}
-      <div class="col-span-6 flex justify-center">
-        <div class="flex flex-col max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-          <div>
-            <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />
-          </div>
-          <div class="flex flex-col justify-between flex-grow gap-y-6 px-5 pb-5">
+  {% if is_signed_in %}
+    <div class="grid grid-cols-12 gap-y-12">
+      {% for movie in movies %}
+        <div class="col-span-6 flex justify-center">
+          <div class="flex flex-col max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div>
-              <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                {{ movie.title }} ({{ movie.year }})
-              </h5>
+              <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />
             </div>
-            <div class="flex items-center justify-between">
-              <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
-              <a href="{% url "movies:add_to_watchlist" movie.id %}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add to watchlist</a>
+            <div class="flex flex-col justify-between flex-grow gap-y-6 px-5 pb-5">
+              <div>
+                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {{ movie.title }} ({{ movie.year }})
+                </h5>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
+                <button
+                  class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 cursor-pointer"
+                  x-data="{ loading: false, added: false, error: false }"
+                  x-on:click="
+                    loading = true;
+                    fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                      },
+                    })
+                    .then(response => response.json())
+                    .then(response => {
+                      loading = false;
+                      if (response.status == 200) {
+                        added = true;
+                        $showFlashMessage(
+                          `{% flash_message "'"|add:movie.title|add:"' has been added to "|add:movie_logger|add:"'s watchlist." message_tags.success with_js=True %}`
+                        );
+                      } else {
+                        $showFlashMessage(
+                          `{% flash_message "Something went wrong while trying to add '"|add:movie.title|add:"' to "|add:movie_logger|add:"'s watchlist." message_tags.error with_js=True %}`
+                        );
+                      }
+                    });
+                  "
+                  x-text="
+                    added ? 'Added to watchlist' :
+                    loading ? 'Adding to watchlist...' :
+                    'Add to watchlist';
+                  "
+                >
+                  Add to watchlist
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}
