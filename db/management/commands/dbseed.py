@@ -8,6 +8,11 @@ from movies.models import Movie, Genre
 class Command(BaseCommand):
     help = "Seed database."
 
+    REMOTE_IDS = {
+        "imdb": "IMDB",
+        "tmdb": "TheMovieDB.com"
+    }
+
     def _remote_id(self, remote_ids, *, source_name):
         return next(
             (
@@ -44,8 +49,14 @@ class Command(BaseCommand):
                 keep_updated=m["status"]["keepUpdated"],
                 year=int(m["year"]),
                 tvdb_id=m["id"],
-                imdb_id=self._remote_id(m["remoteIds"], source_name="IMDB"),
-                tmdb_id=self._remote_id(m["remoteIds"], source_name="ThemDB.com"),
+                imdb_id=self._remote_id(
+                    m["remoteIds"],
+                    source_name=self.REMOTE_IDS["imdb"]
+                ),
+                tmdb_id=self._remote_id(
+                    m["remoteIds"],
+                    source_name=self.REMOTE_IDS["tmdb"]
+                ),
                 budget=int(float(m["budget"])) if m["budget"] else None,
                 box_office=int(float(m["boxOffice"])) if m["boxOffice"] else None,
                 country=m["originalCountry"],
