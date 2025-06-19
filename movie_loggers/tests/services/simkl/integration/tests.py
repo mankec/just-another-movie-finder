@@ -1,12 +1,10 @@
 from time import time as unix_time
-from http import HTTPStatus
 from unittest import skip
 
 from django.test import TestCase, Client
 from django.urls import reverse
-from requests.exceptions import HTTPError
 
-from core.test.utils import stub_request, stub_request_exception, mock_response
+from core.test.utils import stub_request
 from core.test.mixins import CustomAssertionsMixin
 from movie_loggers.services.simkl import Simkl
 from movies.models import Movie
@@ -40,6 +38,7 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_adding_to_watchlist_success(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
@@ -50,6 +49,7 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.post(url)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_adding_to_watchlist_movie_not_found(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {

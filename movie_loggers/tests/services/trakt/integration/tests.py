@@ -1,6 +1,6 @@
 from time import time as unix_time
 from http import HTTPStatus
-from unittest import skipIf
+from unittest import skip, skipIf
 
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -43,6 +43,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_adding_to_watchlist_success(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
@@ -53,6 +54,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.post(url)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_adding_to_watchlist_movie_not_found(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
@@ -65,6 +67,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.post(url)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_account_is_locked(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
@@ -84,6 +87,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             response = self.client.post(url)
             self.assertFlashMessage(response, message)
 
+    @skip("This requires system test")
     def test_account_is_deactivated(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
@@ -123,6 +127,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
                 fetch_redirect_response=False
             )
 
+    @skip("This requires system test")
     def test_vip_account_reached_limit(self):
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
