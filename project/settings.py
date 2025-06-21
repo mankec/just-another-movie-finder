@@ -41,6 +41,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "languages.apps.LanguagesConfig",
     "movie_metadata.apps.MovieMetadataConfig",
     "movie_loggers.apps.MovieLoggersConfig",
     "movies.apps.MoviesConfig",
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -155,7 +157,7 @@ MESSAGE_TAGS = {
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-USER_AGENT = "JustAnotherMovieFinder/1.0.0"
+USER_AGENT = "JustAnotherMovieFinder/1.0.0 (justanothermoviefinder@gmail.com)"
 
 API_REDIRECT_URL = "http://localhost:8000/oauth/"
 

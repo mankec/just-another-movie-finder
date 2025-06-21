@@ -3,7 +3,8 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 
 from core.file.utils import read_json_file
-from movies.models import Movie, Genre
+from movies.models import Country, Genre, Movie
+from movies.constants import TVDB_SUPPORTED_LANGUAGES
 
 class Command(BaseCommand):
     help = "Seed database."
@@ -27,6 +28,16 @@ class Command(BaseCommand):
         fixtures_dir = Path("db/fixtures")
         movies = read_json_file(seeds_dir / "movies.json")
         genres = read_json_file(fixtures_dir / "genres.json")
+        countries = read_json_file(fixtures_dir / "countries.json")
+
+        print("Creating countries...")
+        for c in countries:
+            Country.objects.create(
+                name=c["fields"]["name"],
+                alpha_3=c["fields"]["alpha_3"],
+                official_languages=c["fields"]["official_languages"],
+            )
+        print("Done.")
 
         print("Creating genres...")
         for g in genres:
@@ -59,8 +70,9 @@ class Command(BaseCommand):
                 ),
                 budget=int(float(m["budget"])) if m["budget"] else None,
                 box_office=int(float(m["boxOffice"])) if m["boxOffice"] else None,
-                country=m["originalCountry"],
-                language=m["originalLanguage"],
+                country=Country.objects.get(alpha_3=m["originalCountry"]),
+                language=TVDB_SUPPORTED_LANGUAGES[m["originalLanguage"]]["name"],
+                language_alpha_3=m["originalLanguage"],
             )
             if genres := m["genres"]:
                 for g in genres:

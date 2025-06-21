@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Genre(models.Model):
@@ -8,6 +9,21 @@ class Genre(models.Model):
     tvdb_id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=30, unique=True)
     slug = models.SlugField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Country(models.Model):
+    class Meta:
+        db_table = "country"
+
+    name = models.CharField(max_length=50, unique=True)
+    alpha_3 = models.CharField(max_length=3, unique=True)
+    official_languages = ArrayField(
+        models.CharField(max_length=50),
+        default=list,
+    )
 
     def __str__(self):
         return self.name
@@ -32,9 +48,10 @@ class Movie(models.Model):
     tmdb_id = models.PositiveIntegerField(null=True)
     budget = models.PositiveBigIntegerField(null=True)
     box_office = models.PositiveBigIntegerField(null=True)
-    country = models.CharField(max_length=60, blank=True)
     language = models.CharField(max_length=20, blank=True)
+    language_alpha_3 = models.CharField(max_length=3)
     genres = models.ManyToManyField(Genre)
+    country = models.ForeignKey(Country, on_delete=models.RESTRICT)
 
     def __str__(self):
         return f"{self.title}  ({self.year})"
