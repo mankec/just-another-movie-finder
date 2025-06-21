@@ -40,8 +40,8 @@ def append_to_json_file(new_data, file):
 
 def write_to_json_file(data, file):
     try:
-        with open(file, "w") as file:
-            json.dump(data, file, indent=2)
+        with open(file, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
     except (Exception, KeyboardInterrupt) as error:
         print("Error while writing JSON: %s" % error)
         raise

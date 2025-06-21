@@ -7,6 +7,7 @@ from db.constants import POSTGRES_DEFAULT_DB
 env = Env()
 
 class Command(BaseCommand):
+    # TODO: This is wrong description
     help = "Drop and then create database again. Useful when you want to migrate from a scratch."
 
     def handle(self, *_args, **_options):

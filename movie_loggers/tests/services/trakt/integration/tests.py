@@ -14,7 +14,7 @@ from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 
 class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
-    fixtures = ["movies.json"]
+    fixtures = ["movies.json", "countries.json"]
 
     def setUp(self):
         self.client = Client()
