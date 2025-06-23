@@ -10,6 +10,7 @@ psycopg = {extras = ["binary"], version = "*"}
 requests = "*"
 pillow = "*"
 freezegun = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
