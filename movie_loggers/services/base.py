@@ -5,8 +5,8 @@ from django.contrib.sessions.models import Session
 
 
 class MovieLogger(Enum):
-    SIMKL = "simkl"
-    TRAKT = "trakt"
+    SIMKL = "Simkl"
+    TRAKT = "Trakt"
 
 
 class AbstractMovieLogger(ABC):
