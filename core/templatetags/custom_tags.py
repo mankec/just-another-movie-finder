@@ -1,9 +1,26 @@
+from pathlib import Path
+
 from django import template
+from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 
 from core.templatetags.constants import DEFAULT_MESSAGE_TAGS
+from core.file.utils import read_json_file
 
 register = template.Library()
+
+
+@register.simple_tag
+def vite_asset_path(file_name):
+    dist_dir = Path("dist")
+    manifest_file = Path("core") / "static" / dist_dir / ".vite" / "manifest.json"
+    manifest = read_json_file(manifest_file)
+    for _, v in manifest.items():
+        if file_name.endswith("css"):
+            asset_file = v["css"][0]
+        else:
+            asset_file = v["file"]
+    return static(dist_dir / asset_file)
 
 
 @register.simple_tag
