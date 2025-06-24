@@ -55,7 +55,10 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+      - name: Build assets
+        run: npx vite build
+
       - name: Run Django tests
         run: |
           pipenv run python manage.py migrate
-          pipenv run python manage.py test --verbosity 3
+          DJANGO_ENV=test pipenv run python manage.py test --verbosity 3

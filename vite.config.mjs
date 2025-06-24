@@ -5,12 +5,12 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   root: '.',
   build: {
-    outDir: "./static/build",
+    outDir: "./core/static/dist",
     emptyOutDir: true,
     manifest: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, './src/js/main.js'),
+        main: resolve(__dirname, './core/static/src/js/main.js'),
       }
     }
   },
