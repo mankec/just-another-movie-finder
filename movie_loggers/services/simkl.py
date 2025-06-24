@@ -82,7 +82,7 @@ class Simkl(AbstractMovieLogger):
             if response.status_code == HTTPStatus.NOT_FOUND:
                 message = f"Simkl couldn't find '{movie.title}'."
             else:
-                message = f"Someting went wrong while trying to add '{movie.title}' to your Trakt's watchlist."
+                message = f"Something went wrong while trying to add '{movie.title}' to Trakt's watchlist."
             raise HTTPError(message)
 
     @handle_exception

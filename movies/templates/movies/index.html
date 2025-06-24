@@ -21,6 +21,7 @@
                 <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
                 <button
                   class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 cursor-pointer"
+                  id="add-to-watchlist-{{ movie.tvdb_id }}"
                   x-data="{ loading: false, added: false, error: false }"
                   x-on:click="
                     loading = true;
@@ -28,21 +29,20 @@
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                       },
                     })
                     .then(response => response.json())
                     .then(response => {
                       loading = false;
-                      if (response.status == 200) {
+                      if (response.ok) {
                         added = true;
-                        $showFlashMessage(
-                          `{% flash_message "'"|add:movie.title|add:"' has been added to "|add:movie_logger|add:"'s watchlist." message_tags.success with_js=True %}`
-                        );
+                        const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
+                        $showFlashMessage(flashMessageHTML, response.message);
                       } else {
-                        $showFlashMessage(
-                          `{% flash_message "Something went wrong while trying to add '"|add:movie.title|add:"' to "|add:movie_logger|add:"'s watchlist." message_tags.error with_js=True %}`
-                        );
+                        const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
+                        $showFlashMessage(flashMessageHTML, response.message);
                       }
                     });
                   "

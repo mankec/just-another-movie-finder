@@ -11,6 +11,7 @@ requests = "*"
 pillow = "*"
 freezegun = "*"
 beautifulsoup4 = "*"
+selenium = "*"
 
 [dev-packages]
 

@@ -1,12 +1,13 @@
 import traceback
 from functools import wraps
-from http import HTTPMethod
+from http import HTTPMethod, HTTPStatus
 from traceback import FrameSummary
 from types import FunctionType
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.handlers.wsgi import WSGIRequest
+from django.http import JsonResponse
 
 from core.url.utils import is_url
 
@@ -30,9 +31,17 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                     message = str(error)
 
                     if request.method == HTTPMethod.POST.value:
-                        messages.error(request, message)
-                        if is_url(message) and (url := message):
+                        if is_url(message):
+                            url = message
                             return redirect(url)
+
+                        if request.headers.get("Accept") == "application/json":
+                            return JsonResponse({
+                                "status": HTTPStatus.INTERNAL_SERVER_ERROR.value,
+                                "message": str(error),
+                            })
+
+                        messages.error(request, message)
                         if referer := request.META.get("HTTP_REFERER"):
                             return redirect(referer)
                         return redirect("/")

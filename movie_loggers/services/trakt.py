@@ -71,7 +71,7 @@ class Trakt(AbstractMovieLogger):
         self.session["token_expires_at"] = response_body["created_at"] + ONE_DAY_IN_SECONDS
         return True
 
-    @handle_exception("Someting went wrong.")
+    @handle_exception("Something went wrong.")
     def add_to_watchlist(self, movie: Movie) -> bool:
         try:
             url = build_url(self.API_URL, "sync/watchlist")
@@ -97,7 +97,7 @@ class Trakt(AbstractMovieLogger):
             else:
                 message = self._resolve_http_exception_message(response)
             if not message:
-                message = f"Someting went wrong while trying to add {movie.title} to your Trakt's watchlist."
+                message = f"Something went wrong while trying to add {movie.title} to your Trakt's watchlist."
             raise HTTPError(message)
 
     @handle_exception

@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from movies.models import Movie, Genre
 from movies.services.movie_finder import MovieFinder
-from movies.tests.helpers import create_dummy_movie
+from movies.tests.utils import create_dummy_movie
 
 class MovieFinderUnitTestCase(TestCase):
     fixtures = ["movies.json", "genres.json", "countries.json"]

@@ -1,9 +1,10 @@
 import Alpine from 'alpinejs';
 
-export function showFlashMessage(flashMessageHTML) {
+export function showFlashMessage(flashMessageHTML, message) {
+  debugger
   const flashMessageContainer = document.querySelector("#flash-message-container")
-
-  flashMessageContainer.innerHTML = flashMessageHTML
+  const html = flashMessageHTML.replace("__MESSAGE__", message)
+  flashMessageContainer.innerHTML = html
 }
 
 Alpine.magic('showFlashMessage', () => showFlashMessage);

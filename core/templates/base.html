@@ -15,16 +15,18 @@
 </head>
 <body class="h-full m-0 text-white bg-black">
   <div class="h-1/6 grid grid-cols-12 relative">
-    <ul
+    <div
       class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/2"
       id="flash-message-container"
     >
       {% if messages %}
         {% for message in messages %}
-          {% flash_message message message.tags %}
+          {% if forloop.first %}
+            {% flash_message message %}
+          {% endif %}
         {% endfor %}
       {% endif %}
-    </ul>
+    </div>
 
     <div class="border-r-2 border-white col-span-2">
       <span class="h-full flex justify-center items-center">
