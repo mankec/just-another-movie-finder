@@ -27,24 +27,7 @@
         {% endfor %}
       {% endif %}
     </div>
-
-    <div class="border-r-2 border-white col-span-2">
-      <span class="h-full flex justify-center items-center">
-        <a href="{% url "index" %}">LOGO</a>
-      </span>
-    </div>
-    <div class="col-span-2 flex items-center ml-8">
-      {% if not headerless %}
-        <h1 class="text-2xl font-semibold">
-          {% if request.path == "/" %}
-            Find movies
-          {% elif request.path == "/sign-in" %}
-            Sign in
-          {% endif %}
-        </h1>
-      {% endif %}
-    </div>
-    <div class="col-span-6"></div>
+    <div class="col-span-10"></div>
     <div class="col-span-2 flex items-center">
       <ul class="w-full flex justify-evenly uppercase">
         <li>
@@ -64,12 +47,12 @@
     </div>
   </div>
   <div class="h-5/6 grid grid-cols-12">
-    <div class="border-r-2 border-white col-span-2"></div>
+    <div class="col-span-2"></div>
     <div class="col-span-8 p-8">
       {% block content %}
       {% endblock %}
     </div>
-    <div class="col-span-2 border-l-2"></div>
+    <div class="col-span-2"></div>
   </div>
 
   {% if is_development %}
