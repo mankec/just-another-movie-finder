@@ -81,6 +81,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.contrib.auth.context_processors.auth',
                 'core.context_processors.is_signed_in_cp',
+                'core.context_processors.is_development_cp',
+                'core.context_processors.is_test_cp',
+                'core.context_processors.is_production_cp',
             ],
             'libraries': {
                 "custom_tags": "core.templatetags.custom_tags",
@@ -163,3 +166,5 @@ API_REDIRECT_URL = "http://localhost:8000/oauth/"
 
 # Set to NO if you want to temporarily disable
 SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
+
+DJANGO_ENV = env.str("DJANGO_ENV", "development")
