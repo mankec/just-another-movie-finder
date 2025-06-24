@@ -25,10 +25,11 @@ class MetaUnitTestCase(TestCase, CustomAssertionsMixin):
         return [x for x in fd.iterdir() if x.is_dir()]
 
     def _inspect_fd(self, fd):
+        if not self._init_file(fd):
+            self._raise_invalid_python_module_error(fd)
         for item in fd.iterdir():
-            if item.is_dir() and (fd := item):
-                if not self._init_file(fd):
-                    self._raise_invalid_python_module_error(fd)
+            if item.is_dir():
+                fd = item
                 self._inspect_fd(fd)
 
     def test_each_tests_folder_and_its_descendants_must_be_proper_python_modules(self):

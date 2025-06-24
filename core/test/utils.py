@@ -1,7 +1,9 @@
 import inspect
 from unittest.mock import Mock, patch
 from http import HTTPStatus
+from enum import Enum
 
+from selenium.webdriver.chrome.options import Options
 
 def mock_response(response):
     if not isinstance(response, dict):
@@ -49,3 +51,15 @@ def stub_request_exception(klass_or_instance, *, exception):
         f"{klass.__module__}.send_request",
         side_effect=exception,
     )
+
+
+class ChromeMode(Enum):
+    HEADLESS = "headless"
+    DEFAULT = "default"
+
+    @property
+    def options(self):
+        options = Options()
+        if self.value == "headless":
+            options.add_argument("--headless")
+        return options

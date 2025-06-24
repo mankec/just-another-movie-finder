@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from core.wrappers import handle_exception
+from core.environments.utils import is_test
 from oauth.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
@@ -49,4 +50,13 @@ def sign_in(request):
 def sign_out(request):
     request.session.flush()
     messages.success(request, "Signed out.")
+    return redirect("/")
+
+
+@handle_exception
+def selenium_sign_in(request, movie_logger):
+    if not is_test():
+        return redirect("/")
+    request.session["movie_logger"] = movie_logger
+    request.session["token"] = "token"
     return redirect("/")

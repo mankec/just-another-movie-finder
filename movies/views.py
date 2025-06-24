@@ -27,10 +27,12 @@ def index(request):
     return render(request, "movies/index.html", ctx)
 
 
+@handle_exception
 def add_to_watchlist(request, movie_id):
-    try:
-        movie = Movie.objects.get(pk=movie_id)
-        MovieLoggerCreator(request.session).add_to_watchlist(movie)
-        return JsonResponse({"status": HTTPStatus.OK.value})
-    except Exception:
-        return JsonResponse({"status": HTTPStatus.INTERNAL_SERVER_ERROR.value})
+    movie = Movie.objects.get(pk=movie_id)
+    movie_logger = request.session["movie_logger"].capitalize()
+    MovieLoggerCreator(request.session).add_to_watchlist(movie)
+    return JsonResponse({
+        "status": HTTPStatus.OK.value,
+        "message": f"'{movie.title}' has been added to {movie_logger}'s watchlist."
+    })

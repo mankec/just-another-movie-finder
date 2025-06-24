@@ -1,6 +1,3 @@
-from time import time as unix_time
-from unittest import skip
-
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -36,28 +33,4 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
         url = reverse("oauth:index")
         with stub_request(self.simkl, response=mocked_response):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
-            self.assertFlashMessage(response, message)
-
-    @skip("This requires system test")
-    def test_adding_to_watchlist_success(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
-        mocked_response = {
-            "body": {"not_found": {"movies": []}},
-        }
-        message = f"'{self.movie.title}' has been added to your Simkl's watchlist."
-        with stub_request(self.simkl, response=mocked_response):
-            response = self.client.post(url)
-            self.assertFlashMessage(response, message)
-
-    @skip("This requires system test")
-    def test_adding_to_watchlist_movie_not_found(self):
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
-        mocked_response = {
-            "body": {"not_found": {"movies": [
-                {"ids": {"imdb": self.movie.imdb_id}}
-            ]}},
-        }
-        message = f"Simkl couldn't find '{self.movie.title}'."
-        with stub_request(self.simkl, response=mocked_response):
-            response = self.client.post(url)
             self.assertFlashMessage(response, message)
