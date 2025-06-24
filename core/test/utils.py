@@ -1,3 +1,4 @@
+import inspect
 from unittest.mock import Mock, patch
 from http import HTTPStatus
 
@@ -17,22 +18,34 @@ def mock_response(response):
     return mock_response
 
 
-def stub_request(instance, *, response):
+def stub_request(klass_or_instance, *, response):
+    if inspect.isclass(klass_or_instance):
+        klass = klass_or_instance
+    else:
+        klass = klass_or_instance.__class__
     return patch(
-        f"{instance.__class__.__module__}.send_request",
+        f"{klass.__module__}.send_request",
         return_value=mock_response(response),
     )
 
 
-def stub_multiple_requests(instance, *, responses: list):
+def stub_multiple_requests(klass_or_instance, *, responses: list):
+    if inspect.isclass(klass_or_instance):
+        klass = klass_or_instance
+    else:
+        klass = klass_or_instance.__class__
     return patch(
-        f"{instance.__class__.__module__}.send_request",
+        f"{klass.__module__}.send_request",
         side_effect=map(mock_response, responses)
     )
 
 
-def stub_request_exception(instance, *, exception):
+def stub_request_exception(klass_or_instance, *, exception):
+    if inspect.isclass(klass_or_instance):
+        klass = klass_or_instance
+    else:
+        klass = klass_or_instance.__class__
     return patch(
-        f"{instance.__class__.__module__}.send_request",
+        f"{klass.__module__}.send_request",
         side_effect=exception,
     )
