@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="http://localhost:5173/core/static/src/styles/main.css">
   {% endif %}
 </head>
-<body class="h-full m-0 text-white bg-black">
-  <div class="h-1/6 grid grid-cols-12 relative">
+<body class="h-full flex flex-col justify-between m-0 text-white bg-black">
+  <div class="relative grid grid-cols-12 mb-16">
     <div
       class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/2"
       id="flash-message-container"
@@ -28,9 +28,9 @@
       {% endif %}
     </div>
     <div class="col-span-10"></div>
-    <div class="col-span-2 flex items-center">
+    <nav class="h-full col-span-2 flex items-center p-8">
       <ul class="w-full flex justify-evenly uppercase">
-        <li>
+        <li class="mr-5">
           <a href="{% url "index" %}">Find movies</a>
         </li>
         <li>
@@ -44,16 +44,20 @@
           {% endif %}
         </li>
       </ul>
-    </div>
+    </nav>
   </div>
-  <div class="h-5/6 grid grid-cols-12">
-    <div class="col-span-2"></div>
-    <div class="col-span-8 p-8">
-      {% block content %}
-      {% endblock %}
-    </div>
-    <div class="col-span-2"></div>
-  </div>
+
+  <main class="">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="w-full mt-16">
+    <a class="flex justify-center items-center mx-0 p-[15px] bg-[#365658] hover:bg-[#406264] border border-[#0d1313] min-h-[80px] text-[13px]" style="" href="https://thetvdb.com/subscribe">
+      <img src="https://thetvdb.com/images/attribution/logo1.png" class="h-[45px] mx-4">
+      Metadata provided by TheTVDB. Please consider adding missing information or subscribing.
+    </a>
+  </footer>
 
   {% if is_development %}
     <script type="module" src="http://localhost:5173/core/static/src/js/main.js"></script>
