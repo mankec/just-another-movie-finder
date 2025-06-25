@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from core.tests.utils import stub_request
 from core.tests.mixins import CustomAssertionsMixin
+from core.sessions.utils import initialize_session
 from movie_loggers.services.simkl import Simkl
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
@@ -10,19 +11,14 @@ from movie_loggers.services.base import MovieLogger
 class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
     fixtures = ["movies.json", "countries.json"]
 
-    def setUp(self):
-        self.client = Client()
+    def test_signing_in(self):
+        client = Client()
         session = self.client.session
-        session["movie_logger"] =MovieLogger.SIMKL.value
-        session["token"] = "token"
+        initialize_session(session)
+        session["movie_logger"] = MovieLogger.SIMKL.value
         session.save()
         self.simkl = Simkl(session)
         self.movie = Movie.objects.get(pk=1)
-
-    def test_signing_in(self):
-        session = self.client.session
-        del session["token"]
-        session.save()
 
         mocked_response = {
             "body": {
