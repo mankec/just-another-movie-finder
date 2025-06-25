@@ -8,7 +8,7 @@ from django.test import TestCase
 from requests.exceptions import HTTPError
 
 from movie_metadata.services.base import MovieMetadata
-from core.test.utils import stub_request, stub_multiple_requests, mock_response
+from core.tests.utils import stub_request, stub_multiple_requests, mock_response
 from core.file.utils import read_json_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):

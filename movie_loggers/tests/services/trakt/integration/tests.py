@@ -6,8 +6,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from project.settings import SKIP_EXTERNAL_TESTS
-from core.test.utils import stub_request, stub_request_exception, mock_response
-from core.test.mixins import CustomAssertionsMixin
+from core.tests.utils import stub_request, stub_request_exception, mock_response
+from core.tests.mixins import CustomAssertionsMixin
 from movie_loggers.services.trakt import Trakt
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger

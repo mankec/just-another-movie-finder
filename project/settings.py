@@ -15,8 +15,8 @@ from pathlib import Path
 from environs import Env
 from django.contrib.messages import constants as message_constants
 
-from core.test.helpers import SkipExternalTests
-from core.test.utils import ChromeMode
+from core.tests.helpers import SkipExternalTests
+from core.tests.utils import ChromeMode
 
 import os
 
@@ -168,8 +168,7 @@ API_REDIRECT_URL = "http://localhost:8000/oauth/"
 # Set to NO if you want to temporarily disable
 SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
 
-DJANGO_ENV = env.str("DJANGO_ENV", "development")
-
-# TODO: Create check on CI if this and SkipExternal are enabled
 # Set to DEFAULT if you want to temporarily see UI
 CHROME_OPTIONS = ChromeMode.HEADLESS.options
+
+DJANGO_ENV = env.str("DJANGO_ENV", "development")
