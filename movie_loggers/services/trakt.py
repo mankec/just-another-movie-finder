@@ -162,7 +162,7 @@ class Trakt(AbstractMovieLogger):
                 return response.headers["X-Upgrade-URL"]
 
     def _oauth_required_headers(self):
-        if not (token := self.session.get("token")):
+        if not (token := self.session["token"]):
             raise ValueError("Token must be present for using this action.")
         return {
             **self.REQUIRED_HEADERS,

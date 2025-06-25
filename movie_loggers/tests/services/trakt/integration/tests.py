@@ -6,6 +6,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from project.settings import SKIP_EXTERNAL_TESTS
+from core.sessions.utils import initialize_session
 from core.tests.utils import stub_request, stub_request_exception, mock_response
 from core.tests.mixins import CustomAssertionsMixin
 from movie_loggers.services.trakt import Trakt
@@ -18,17 +19,15 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
     def setUp(self):
         self.client = Client()
         session = self.client.session
-        session["movie_logger"] =MovieLogger.TRAKT.value
-        session["token"] = "token"
+        initialize_session(session)
         session.save()
         self.trakt = Trakt(session)
         self.movie = Movie.objects.get(pk=1)
 
     def test_signing_in(self):
         session = self.client.session
-        del session["token"]
+        session["movie_logger"] =MovieLogger.TRAKT.value
         session.save()
-
         mocked_response = {
             "body": {
                 "access_token": "token",
@@ -44,6 +43,10 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
 
     @skipIf(SKIP_EXTERNAL_TESTS.value, SKIP_EXTERNAL_TESTS.reason)
     def test_account_requires_vip_upgrade(self):
+        session = self.client.session
+        session["movie_logger"] =MovieLogger.TRAKT.value
+        session["token"] = "token"
+        session.save()
         url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
         mocked_response = {
             "body": {},
