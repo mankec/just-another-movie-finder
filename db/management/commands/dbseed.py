@@ -13,6 +13,7 @@ class Command(BaseCommand):
         "imdb": "IMDB",
         "tmdb": "TheMovieDB.com"
     }
+    BATCH_SIZE = 1000
 
     def _remote_id(self, remote_ids, *, source_name):
         return next(
@@ -49,8 +50,10 @@ class Command(BaseCommand):
         print("Done.")
 
         print("Creating movies...")
+        movie_genres = {}
+        movie_objs = []
         for m in movies:
-            movie = Movie.objects.create(
+            movie = Movie(
                 title=m["name"],
                 slug=m["slug"],
                 poster =m["image"],
@@ -75,8 +78,19 @@ class Command(BaseCommand):
                 language_alpha_3=m["originalLanguage"],
             )
             if genres := m["genres"]:
-                for g in genres:
-                    genre = Genre.objects.get(pk=g["id"])
-                    movie.genres.add(genre)
-            movie.save()
+                genre_ids = [g["id"] for g in genres]
+
+                movie_genres[movie.tvdb_id] = genre_ids
+            movie_objs.append(movie)
+
+        created_movies = Movie.objects.bulk_create(
+            movie_objs,
+            batch_size=self.BATCH_SIZE
+        )
+        print("Done.")
+
+        print("Adding genres to movies...")
+        for m in created_movies:
+            if g := movie_genres.get(m.tvdb_id):
+                m.genres.add(*g)
         print("Done.")
