@@ -14,6 +14,7 @@ from movie_loggers.services.creator import MovieLoggerCreator
 from movies.models import Movie
 from movies.forms.movie_finder.forms import MovieFinderForm
 from movies.services.movie_finder.services import MovieFinder
+from core.sessions.utils import is_signed_in
 
 env = Env()
 
@@ -26,10 +27,17 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     movie_ids = paginator.page(page_number).object_list
     movies = Movie.objects.filter(tvdb_id__in=movie_ids)
+    results = [
+        {
+            "movie": m,
+            "on_watchlist": m.remote_ids() in session["movies_on_watchlist_remote_ids"],
+        }
+        for m in  movies
+    ]
     ctx = {
         "page_obj": page_obj,
         "movie_logger": request.session["movie_logger"].capitalize(),
-        "movies": movies,
+        "results": results,
         "message_tags": {
             "success": MESSAGE_TAGS[messages.SUCCESS],
             "error": MESSAGE_TAGS[messages.ERROR],
@@ -41,7 +49,12 @@ def index(request):
 def find(request):
     form = MovieFinderForm(request.GET)
     if form.is_valid():
-        request.session["movie_ids"] = MovieFinder(**form.cleaned_data).perform()
+        session = request.session
+        session["movie_ids"] = MovieFinder(**form.cleaned_data).get_movie_ids()
+        if is_signed_in(session):
+            session["movies_on_watchlist_remote_ids"] = MovieLoggerCreator(
+                session
+            ).fetch_movies_on_watchlist_remote_ids()
         url = reverse("movies:index")
         return redirect(url)
     message = list(flatten(form.errors.values())).pop(0)

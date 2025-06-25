@@ -87,6 +87,8 @@ def create_dummy_movie(original: Movie):
     new_movie.tvdb_id = num
     new_movie.title = f"Dummy Movie {num}"
     new_movie.slug = f"dummy-movie-{num}"
+    new_movie.imdb_id = f"imdb{num}"
+    new_movie.tmdb_id = num
     new_movie.save()
     return new_movie
 

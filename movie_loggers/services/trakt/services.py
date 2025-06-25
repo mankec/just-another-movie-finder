@@ -101,11 +101,11 @@ class Trakt(AbstractMovieLogger):
             raise HTTPError(message)
 
     @handle_exception
-    def fetch_movie_ids_in_watchlist(self) -> list:
+    def fetch_movies_on_watchlist_remote_ids(self) -> list:
         page = 1
         limit = self.PAGINATION_LIMIT
         total_pages = 1
-        movie_ids = []
+        remote_ids = []
         while page <= total_pages:
             url = build_url(self.API_URL, "sync/watchlist/movies")
             payload = {
@@ -122,15 +122,15 @@ class Trakt(AbstractMovieLogger):
             total_pages = int(response.headers["X-Pagination-Page-Count"])
             response_body = response.json()
             ids = [
-                {
-                    "imdb_id": d["movie"]["ids"]["imdb"],
-                    "tmdb_id": d["movie"]["ids"]["tmdb"]
-                }
+                [
+                    d["movie"]["ids"]["imdb"],
+                    d["movie"]["ids"]["tmdb"],
+                ]
                 for d in response_body
             ]
-            movie_ids.extend(ids)
+            remote_ids.extend(ids)
             page += 1
-        return movie_ids
+        return remote_ids
 
     def _movie_data(self, movie: Movie) -> dict:
         return {

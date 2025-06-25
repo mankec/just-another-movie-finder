@@ -55,3 +55,6 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title}  ({self.year})"
+
+    def remote_ids(self):
+        return [self.imdb_id, str(self.tmdb_id)]

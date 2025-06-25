@@ -1,3 +1,5 @@
+import traceback
+from traceback import FrameSummary
 from http import HTTPMethod
 
 from requests import get, post
@@ -9,10 +11,13 @@ from project.settings import SKIP_EXTERNAL_TESTS
 
 @handle_exception
 def send_request(*, method, url, headers={}, payload={}):
-    if is_test() and SKIP_EXTERNAL_TESTS.value:
-        raise RuntimeError("""
+    if is_test():
+        stack = traceback.extract_stack()
+        fs: FrameSummary = stack[-3]
+        raise RuntimeError(f"""
         Attempted to send a real request in test environment.
-        Stub it or disable SKIP_EXTERNAL_TESTS.
+        {fs.filename}
+        Called by `{fs.name}`.
         """
         )
     response = None
