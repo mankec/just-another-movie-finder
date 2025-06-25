@@ -86,8 +86,8 @@ class Simkl(AbstractMovieLogger):
             raise HTTPError(message)
 
     @handle_exception
-    def fetch_movie_ids_in_watchlist(self) -> list:
-        movie_ids = []
+    def fetch_movies_on_watchlist_remote_ids(self) -> list:
+        remote_ids = []
         url = build_url(self.API_URL, "sync/all-items")
         payload = {
             "type": "movies",
@@ -104,14 +104,14 @@ class Simkl(AbstractMovieLogger):
         if not response_body:
             return []
         movies = response_body["movies"]
-        movie_ids = [
-            {
-                "imdb_id": d["movie"]["ids"]["imdb"],
-                "tmdb_id": d["movie"]["ids"]["tmdb"]
-            }
+        remote_ids = [
+            [
+                d["movie"]["ids"]["imdb"],
+                d["movie"]["ids"]["tmdb"],
+            ]
             for d in movies
         ]
-        return movie_ids
+        return remote_ids
 
     def _movie_data(self, movie: Movie) -> dict:
         return {

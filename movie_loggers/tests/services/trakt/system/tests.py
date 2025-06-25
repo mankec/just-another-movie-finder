@@ -2,10 +2,8 @@ from http import HTTPStatus
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from requests.exceptions import HTTPError
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.urls import reverse
 
 from project.settings import CHROME_OPTIONS
 from core.tests.utils import (
@@ -34,35 +32,59 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_adding_to_watchlist_success(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = {
+             "body": [],
+             "headers": {
+                 "X-Pagination-Page-Count": 0,
+             }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {"not_found": {"movies": []}},
         }
-        message = f"'{self.movie.title}' has been added to Trakt's watchlist."
         with stub_request(Trakt, response=mocked_response):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = f"'{self.movie.title}' has been added to Trakt's watchlist."
             self.assertJsFlashMessage(message)
 
     def test_adding_to_watchlist_movie_not_found(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = {
+             "body": [],
+             "headers": {
+                 "X-Pagination-Page-Count": 0,
+             }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {"not_found": {"movies": [
                 {"ids": {"imdb": self.movie.imdb_id}}
             ]}},
         }
-        message = f"Trakt couldn't find '{self.movie.title}'."
         with stub_request(Trakt, response=mocked_response):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = f"Trakt couldn't find '{self.movie.title}'."
             self.assertJsFlashMessage(message)
 
     def test_account_is_locked(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = {
+            "body": [],
+            "headers": {
+                "X-Pagination-Page-Count": 0,
+            }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -75,16 +97,24 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             HTTPStatus.LOCKED.phrase,
             response=mock_response(mocked_response)
         )
-        message = "Your Trakt account is locked. Please contact their support at support@trakt.tv."
         with stub_request_exception(Trakt, exception=exception):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = "Your Trakt account is locked. Please contact their support at support@trakt.tv."
             self.assertJsFlashMessage(message)
 
     def test_account_is_deactivated(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = {
+            "body": [],
+            "headers": {
+                "X-Pagination-Page-Count": 0,
+            }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -97,16 +127,24 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             HTTPStatus.LOCKED.phrase,
             response=mock_response(mocked_response)
         )
-        message = "Your Trakt account is deactivated. Please contact their support at support@trakt.tv."
         with stub_request_exception(Trakt, exception=exception):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = "Your Trakt account is deactivated. Please contact their support at support@trakt.tv."
             self.assertJsFlashMessage(message)
 
     def test_vip_account_reached_limit(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = {
+            "body": [],
+            "headers": {
+                "X-Pagination-Page-Count": 0,
+            }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {},
             "status_code": Trakt.HTTP_STATUS_CODE_VIP_ENHANCED,
@@ -116,9 +154,33 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             }
         }
         exception = HTTPError(response=mock_response(mocked_response))
-        message = "You have reached limit for your Trakt account."
         with stub_request_exception(Trakt, exception=exception):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = "You have reached limit for your Trakt account."
             self.assertJsFlashMessage(message)
+
+    def test_movie_is_already_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        total_pages = 1
+        mocked_response = {
+            "body": [
+                {
+                    "movie": {
+                        "ids": {
+                            "imdb": self.movie.imdb_id,
+                            "tmdb": str(self.movie.tmdb_id),
+                        }
+                    }
+                }
+            ],
+            "headers": { "X-Pagination-Page-Count": total_pages }
+        }
+        with stub_request(Trakt, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        text = "Already on watchlist"
+        button = self.browser.find_element(
+            By.XPATH, f"//button[@disabled and normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(button)

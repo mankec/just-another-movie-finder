@@ -4,4 +4,5 @@ DEFAULT_SESSION_DATA = {
     "refresh_token":  "",
     "token_expires_at": "", # type: int
     "movie_ids": [],
+    "movies_on_watchlist_remote_ids": [],
 }

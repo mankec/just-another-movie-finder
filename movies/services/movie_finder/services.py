@@ -34,7 +34,7 @@ class MovieFinder():
         self.match_some_filters = kwargs["match_filters"] == MATCH_FILTERS_SOME
 
     @handle_exception
-    def perform(self) -> list:
+    def get_movie_ids(self) -> list:
         if self.match_some_filters:
             include_filter_query = Q()
             if self.countries:

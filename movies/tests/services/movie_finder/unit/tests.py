@@ -48,7 +48,7 @@ class MovieFinderUnitTestCase(TestCase):
     def test_find_movies_that_match_some_filters(self):
         self.params["year_from"] = self.default_year
         self.params["year_to"] = self.default_year
-        movies = MovieFinder(**self.params).perform()
+        movies = MovieFinder(**self.params).get_movie_ids()
         self.assertTrue(movies)
         self.assertEqual(len(movies), Movie.objects.count())
 
@@ -57,7 +57,7 @@ class MovieFinderUnitTestCase(TestCase):
         self.movie_fantasy.year = self.default_year - 1
         self.movie_fantasy.save()
         self.params["genres"] = [self.genre_drama.slug]
-        movie_ids = MovieFinder(**self.params).perform()
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
         self.assertIn(self.movie_drama.tvdb_id, movie_ids)
         self.assertIn(self.movie_drama_reality.tvdb_id, movie_ids)
         self.assertIn(self.movie_drama_fantasy.tvdb_id, movie_ids)
@@ -67,13 +67,13 @@ class MovieFinderUnitTestCase(TestCase):
     def test_find_movies_that_match_some_filters_with_excluding_filters(self):
         self.params["year_from"] = self.default_year
         self.params["year_to"] = self.default_year
-        movie_ids = MovieFinder(**self.params).perform()
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
         self.assertEqual(len(movie_ids), Movie.objects.count())
 
         self.movie_fantasy.save()
         self.params["genres"] = [self.genre_drama.slug]
         self.params["exclude_genres"] = [self.genre_reality.slug, self.genre_fantasy.slug]
-        movie_ids = MovieFinder(**self.params).perform()
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
         self.assertIn(self.movie_drama.tvdb_id, movie_ids)
         self.assertIn(self.movie_without_genres.tvdb_id, movie_ids)
         self.assertNotIn(self.movie_fantasy.tvdb_id, movie_ids)
@@ -83,6 +83,6 @@ class MovieFinderUnitTestCase(TestCase):
     def test_find_movies_that_match_all_filters(self):
         self.params["match_filters"] = MATCH_FILTERS_ALL
         self.params["genres"] = [self.genre_drama.slug, self.genre_reality.slug]
-        movie_ids = MovieFinder(**self.params).perform()
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
         self.assertEqual(len(movie_ids), 1)
         self.assertEqual(movie_ids[0], self.movie_drama_reality.tvdb_id)

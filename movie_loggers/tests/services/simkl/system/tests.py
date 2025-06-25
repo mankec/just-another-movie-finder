@@ -29,28 +29,58 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_adding_to_watchlist_success(self):
         selenium_sign_in_user(self, MovieLogger.SIMKL.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = { "body": [] }
+        with stub_request(Simkl, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {"not_found": {"movies": []}},
         }
-        message = f"'{self.movie.title}' has been added to Simkl's watchlist."
         with stub_request(Simkl, response=mocked_response):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = f"'{self.movie.title}' has been added to Simkl's watchlist."
             self.assertJsFlashMessage(message)
 
     def test_adding_to_watchlist_movie_not_found(self):
         selenium_sign_in_user(self, MovieLogger.SIMKL.value)
-        fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        mocked_response = { "body": [] }
+        with stub_request(Simkl, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
         mocked_response = {
             "body": {"not_found": {"movies": [
                 {"ids": {"imdb": self.movie.imdb_id}}
             ]}},
         }
-        message = f"Simkl couldn't find '{self.movie.title}'."
         with stub_request(Simkl, response=mocked_response):
             self.browser.find_element(
                 By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
             ).click()
+            message = f"Simkl couldn't find '{self.movie.title}'."
             self.assertJsFlashMessage(message)
+
+    def test_movie_is_already_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        mocked_response = {
+            "body": {
+                "movies": [
+                    {
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    },
+                ]
+            }
+        }
+        with stub_request(Simkl, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        text = "Already on watchlist"
+        button = self.browser.find_element(
+            By.XPATH, f"//button[@disabled and normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(button)

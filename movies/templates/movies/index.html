@@ -3,90 +3,85 @@
 {% load custom_tags %}
 
 {% block content %}
-  <div class="grid grid-cols-12 gap-y-12 mb-16">
-    {% for movie in movies %}
-      <div
-        class="col-span-6 flex justify-center"
-        id="{{ movie.slug }}"
-      >
-        <div class="w-3/4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-          <div>
-            <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />
-          </div>
-          <div class="flex flex-col justify-between flex-grow gap-y-6 px-5 pb-5">
+  <div class="grid grid-cols-12 gap-y-12">
+    {% for result in results %}
+      {% with result.movie as movie %}
+        <div
+          class="col-span-6 flex justify-center"
+          id="{{ movie.slug }}"
+        >
+          <div class="w-3/4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div>
-              <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                {{ movie.title }} ({{ movie.year }})
-              </h5>
+              <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />
             </div>
-            <div class="flex items-center justify-between">
-              <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
-              <button
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 cursor-pointer"
-                id="add-to-watchlist-{{ movie.tvdb_id }}"
-                x-data="{ loading: false, added: false, error: false }"
-                x-on:click="
-                  loading = true;
-                  fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded',
-                      'Accept': 'application/json',
-                      'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                  })
-                  .then(response => response.json())
-                  .then(response => {
-                    loading = false;
-                    if (response.status == 200) {
-                      added = true;
-                      const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
-                      $showFlashMessage(flashMessageHTML, response.message);
-                    } else {
-                      const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
-                      $showFlashMessage(flashMessageHTML, response.message);
-                    }
-                  });
-                "
-                x-text="
-                  added ? 'Added to watchlist' :
-                  loading ? 'Adding to watchlist...' :
-                  'Add to watchlist';
-                "
-              >
-                Add to watchlist
-              </button>
+            <div class="flex flex-col justify-between flex-grow gap-y-6 px-5 pb-5">
+              <div>
+                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {{ movie.title }} ({{ movie.year }})
+                </h5>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
+                {% if result.on_watchlist %}
+                  <button
+                    class="text-white bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-800 dark:focus:ring-green-800"
+                    disabled="true"
+                  >
+                    Already on watchlist
+                  </button>
+                {% else %}
+                  <button
+                    class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:focus:ring-green-800"
+                    id="add-to-watchlist-{{ movie.tvdb_id }}"
+                    :class="{
+                      'dark:hover:bg-green-800 cursor-pointer': !disabled,
+                      'dark:bg-green-800': disabled,
+                    }"
+                    :disabled="disabled"
+                    x-data="{
+                      loading: false,
+                      added: false,
+                      error: false,
+                      disabled: false,
+                    }"
+                    x-on:click="
+                      loading = true;
+                      fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                          'Accept': 'application/json',
+                          'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                      })
+                      .then(response => response.json())
+                      .then(response => {
+                        loading = false;
+                        if (response.status == 200) {
+                          added = true;
+                          disabled = true;
+                          const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
+                          $showFlashMessage(flashMessageHTML, response.message);
+                        } else {
+                          const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
+                          $showFlashMessage(flashMessageHTML, response.message);
+                        }
+                      });
+                    "
+                    x-text="
+                      added ? 'Added to watchlist' :
+                      loading ? 'Adding to watchlist...' :
+                      'Add to watchlist';
+                    "
+                  >
+                    Add to watchlist
+                  </button>
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      {% endwith %}
     {% endfor %}
-  </div>
-  <div class="flex justify-center">
-    <div class="flex items-center justify-evenly mt-2 xs:mt-0 w-1/3">
-      <div class="flex items-center">
-        {% if page_obj.has_previous %}
-          <svg
-            class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"
-          >
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-          </svg>
-          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
-      </div>
-      <span>
-        {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
-      <div class="flex items-center">
-        {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">Next</a>
-          <svg
-            class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"
-          >
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-          </svg>
-        {% endif %}
-      </div>
-    </div>
   </div>
 {% endblock %}

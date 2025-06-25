@@ -1,4 +1,4 @@
-from oauth.utils import is_signed_in
+from core.sessions.utils import is_signed_in
 from core.environments.utils import is_development, is_test, is_production
 
 
