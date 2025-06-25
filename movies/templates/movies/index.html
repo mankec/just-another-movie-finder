@@ -36,7 +36,7 @@
                     .then(response => response.json())
                     .then(response => {
                       loading = false;
-                      if (response.ok) {
+                      if (response.status == 200) {
                         added = true;
                         const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
                         $showFlashMessage(flashMessageHTML, response.message);
