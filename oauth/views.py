@@ -4,7 +4,7 @@ from django.contrib import messages
 
 from core.wrappers import handle_exception
 from core.environments.utils import is_test
-from oauth.utils import is_signed_in
+from core.sessions.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
 

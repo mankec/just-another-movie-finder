@@ -48,9 +48,9 @@ class TraktUnitTestCase(TestCase):
             },
         ]
         expected = [
-            { "imdb_id": imdb_id_1, "tmdb_id": tmdb_id_1 },
-            { "imdb_id": imdb_id_2, "tmdb_id": tmdb_id_2 },
+            [imdb_id_1, tmdb_id_1],
+            [imdb_id_2, tmdb_id_2],
         ]
         with stub_multiple_requests(trakt, responses=responses):
-            movie_ids = trakt.fetch_movie_ids_in_watchlist()
+            movie_ids = trakt.fetch_movies_on_watchlist_remote_ids()
             self.assertEqual(movie_ids, expected)

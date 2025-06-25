@@ -3,6 +3,7 @@
     "model": "movies.movie",
     "pk": 1,
     "fields": {
+      "tvdb_id": 1,
       "title": "Dummy Movie 1",
       "slug": "dummy-movie-1",
       "year": 2025,
@@ -12,7 +13,8 @@
       "last_updated": "2025-06-11 00:00:00",
       "keep_updated": true,
       "country_id": 1,
-      "tvdb_id": 1
+      "imdb_id": "imdb1",
+      "tmdb_id": 1
     }
   }
 ]
