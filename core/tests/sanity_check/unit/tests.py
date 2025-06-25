@@ -56,6 +56,7 @@ class SanityCheckUnitTestCase(TestCase, CustomAssertionsMixin):
                 continue
             self._inspect_fd(tests_dir)
 
+    @tag("ci")
     def test_optional_settings_must_be_properly_set(self):
         self.assertTrue(
             settings.SKIP_EXTERNAL_TESTS.value,
