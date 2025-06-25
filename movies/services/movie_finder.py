@@ -62,6 +62,7 @@ class MovieFinder():
                 filter_kwargs["runtime__lte"] = self.runtime_max
 
             if self.genres:
+                # TODO: Check if total_genres is redundant
                 filter_kwargs["total_genres"] = len(self.genres)
                 filter_kwargs["matched_genres"] = len(self.genres)
                 movies = (

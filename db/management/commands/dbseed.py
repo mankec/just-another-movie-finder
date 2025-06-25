@@ -13,6 +13,7 @@ class Command(BaseCommand):
         "imdb": "IMDB",
         "tmdb": "TheMovieDB.com"
     }
+    BATCH_SIZE = 1000
 
     def _remote_id(self, remote_ids, *, source_name):
         return next(
@@ -31,26 +32,36 @@ class Command(BaseCommand):
         countries = read_json_file(fixtures_dir / "countries.json")
 
         print("Creating countries...")
+        country_objs = []
         for c in countries:
-            Country.objects.create(
+            country = Country(
                 name=c["fields"]["name"],
                 alpha_3=c["fields"]["alpha_3"],
                 official_languages=c["fields"]["official_languages"],
             )
+            country_objs.append(country)
+
+        Country.objects.bulk_create(country_objs, batch_size=self.BATCH_SIZE)
         print("Done.")
 
         print("Creating genres...")
+        genre_objs = []
         for g in genres:
-            Genre.objects.create(
+            genre = Genre(
                 tvdb_id=g["fields"]["tvdb_id"],
                 name=g["fields"]["name"],
                 slug=g["fields"]["slug"],
             )
+            genre_objs.append(genre)
+
+        Genre.objects.bulk_create(genre_objs, batch_size=self.BATCH_SIZE)
         print("Done.")
 
         print("Creating movies...")
+        movie_genre_ids = {}
+        movie_objs = []
         for m in movies:
-            movie = Movie.objects.create(
+            movie = Movie(
                 title=m["name"],
                 slug=m["slug"],
                 poster =m["image"],
@@ -75,8 +86,16 @@ class Command(BaseCommand):
                 language_alpha_3=m["originalLanguage"],
             )
             if genres := m["genres"]:
-                for g in genres:
-                    genre = Genre.objects.get(pk=g["id"])
-                    movie.genres.add(genre)
-            movie.save()
+                genre_ids = [g["id"] for g in genres]
+
+                movie_genre_ids[movie.tvdb_id] = genre_ids
+            movie_objs.append(movie)
+
+        Movie.objects.bulk_create(movie_objs, batch_size=self.BATCH_SIZE)
+        print("Done.")
+
+        print("Adding genres to movies...")
+        for m in Movie.objects.all():
+            if ids := movie_genre_ids.get(m.tvdb_id):
+                m.genres.add(*ids)
         print("Done.")
