@@ -1,12 +1,14 @@
-import os
-import glob
 from pathlib import Path
 
-from django.test import TestCase
+from django.test import TestCase, tag
 
-from core.test.mixins import CustomAssertionsMixin
+from core.tests.mixins import CustomAssertionsMixin
+from core.tests.utils import ChromeMode
+from project import settings
 
-class MetaUnitTestCase(TestCase, CustomAssertionsMixin):
+
+@tag("sanity_check")
+class SanityCheckUnitTestCase(TestCase, CustomAssertionsMixin):
     def _raise_invalid_python_module_error(self, fd):
         raise ValueError(
             f"'{fd}' is not a proper Python module."
@@ -53,3 +55,14 @@ class MetaUnitTestCase(TestCase, CustomAssertionsMixin):
             if not self._subdirs(tests_dir):
                 continue
             self._inspect_fd(tests_dir)
+
+    def test_optional_settings_must_be_properly_set(self):
+        self.assertTrue(
+            settings.SKIP_EXTERNAL_TESTS.value,
+            settings.SKIP_EXTERNAL_TESTS.reason
+        )
+        self.assertEqual(
+            settings.CHROME_OPTIONS.arguments,
+            ChromeMode.HEADLESS.options.arguments,
+            ChromeMode.HEADLESS.reason
+        )

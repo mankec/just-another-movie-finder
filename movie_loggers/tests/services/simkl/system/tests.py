@@ -5,8 +5,8 @@ from django.urls import reverse
 
 # TODO: Rename them to plural form for consistency e.g. 'tests' instead of 'test'
 from project.settings import CHROME_OPTIONS
-from core.test.utils import stub_request
-from core.test.mixins import CustomAssertionsMixin
+from core.tests.utils import stub_request
+from core.tests.mixins import CustomAssertionsMixin
 from oauth.tests.utils import selenium_sign_in_user
 from movie_loggers.services.simkl import Simkl
 from movies.models import Movie

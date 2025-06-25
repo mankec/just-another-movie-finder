@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from core.test.utils import stub_request
-from core.test.mixins import CustomAssertionsMixin
+from core.tests.utils import stub_request
+from core.tests.mixins import CustomAssertionsMixin
 from movie_loggers.services.simkl import Simkl
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger

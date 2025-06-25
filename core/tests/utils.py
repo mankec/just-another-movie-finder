@@ -63,3 +63,9 @@ class ChromeMode(Enum):
         if self.value == "headless":
             options.add_argument("--headless")
         return options
+
+    @property
+    def reason(self):
+        return """
+        Chrome Headless mode should only be disabled when testing locally. If you wish to ignore this check append `--exclude-tag=sanity_check`. Refer to https://docs.djangoproject.com/en/5.2/topics/testing/tools/#tagging-tests.
+        """

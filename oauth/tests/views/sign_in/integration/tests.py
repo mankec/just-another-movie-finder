@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from core.test.mixins import CustomAssertionsMixin
+from core.tests.mixins import CustomAssertionsMixin
 from oauth.tests.utils import sign_in_user
 
 
