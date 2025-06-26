@@ -12,7 +12,7 @@ from project.settings import CHROME_OPTIONS
 from core.tests.utils import stub_request, stub_request_exception, mock_response
 from core.tests.mixins import CustomAssertionsMixin
 from oauth.tests.utils import selenium_sign_in_user
-from movie_loggers.services.trakt import Trakt
+from movie_loggers.services.trakt.services import Trakt
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 from movies.tests.utils import create_dummy_movie

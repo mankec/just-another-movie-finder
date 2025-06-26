@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
 from core.tests.utils import stub_multiple_requests
-from movie_loggers.services.simkl import Simkl
+from movie_loggers.services.simkl.services import Simkl
 from movie_loggers.services.base import MovieLogger
 
 

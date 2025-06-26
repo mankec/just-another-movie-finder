@@ -2,7 +2,6 @@ from http import HTTPMethod
 
 from project.settings import USER_AGENT
 from core.wrappers import handle_exception
-from core.url.utils import build_url
 from core.requests.utils import send_request
 
 

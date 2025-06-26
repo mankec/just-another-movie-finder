@@ -4,7 +4,7 @@ from django.urls import reverse
 from core.tests.utils import stub_request
 from core.tests.mixins import CustomAssertionsMixin
 from core.sessions.utils import initialize_session
-from movie_loggers.services.simkl import Simkl
+from movie_loggers.services.simkl.services import Simkl
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 

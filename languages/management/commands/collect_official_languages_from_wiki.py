@@ -3,8 +3,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
 
-from core.files.utils import write_to_json_file
-from languages.services.base import Wiki
+from languages.services.wiki.services import Wiki
 
 class Command(BaseCommand):
     # https://en.wikipedia.org/wiki/List_of_official_languages_by_country_and_territory
