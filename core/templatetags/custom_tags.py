@@ -6,8 +6,8 @@ from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 
 from core.templatetags.constants import DEFAULT_MESSAGE_TAGS
-from core.file.utils import read_json_file
-from core.file.utils import read_json_file
+from core.files.utils import read_json_file
+from core.files.utils import read_json_file
 
 register = template.Library()
 

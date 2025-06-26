@@ -8,7 +8,7 @@ from django.contrib.sessions.models import Session
 from project.settings import API_REDIRECT_URL
 from core.wrappers import handle_exception
 from core.url.utils import build_url, build_url_with_query
-from core.request.utils import send_request
+from core.requests.utils import send_request
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger, AbstractMovieLogger
 

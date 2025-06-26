@@ -6,7 +6,7 @@ from requests import Response
 from django.contrib.sessions.models import Session
 
 from core.url.utils import build_url, build_url_with_query
-from core.request.utils import send_request
+from core.requests.utils import send_request
 from core.constants import ONE_DAY_IN_SECONDS
 from project.settings import API_REDIRECT_URL, USER_AGENT
 from core.wrappers import handle_exception

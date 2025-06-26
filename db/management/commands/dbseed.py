@@ -2,7 +2,7 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
-from core.file.utils import read_json_file
+from core.files.utils import read_json_file
 from movies.models import Country, Genre, Movie
 from movies.constants import TVDB_SUPPORTED_LANGUAGES
 
