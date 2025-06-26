@@ -10,7 +10,7 @@ from http import HTTPStatus
 from requests.exceptions import HTTPError
 from django.core.management.base import BaseCommand
 
-from movie_metadata.services.base import MovieMetadata
+from movie_metadata.services import MovieMetadata
 from core.utils import flatten
 from core.files.utils import (
     append_to_json_file,

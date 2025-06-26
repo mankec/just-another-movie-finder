@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.sessions.backends.db import SessionStore
 
 from core.tests.utils import stub_multiple_requests
-from movie_loggers.services.trakt import Trakt
+from movie_loggers.services.trakt.services import Trakt
 from movie_loggers.services.base import MovieLogger
 
 class TraktUnitTestCase(TestCase):

@@ -61,8 +61,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'movie_loggers.middleware.initialize_session.InitializeSessionMiddleware',
-    'movie_loggers.middleware.refresh_token.RefreshTokenMiddleware',
+    'core.middleware.initialize_session.middleware.InitializeSessionMiddleware',
+    'core.middleware.refresh_token.middleware.RefreshTokenMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

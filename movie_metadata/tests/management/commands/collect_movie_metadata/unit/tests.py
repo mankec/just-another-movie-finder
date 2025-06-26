@@ -7,17 +7,17 @@ from django.core.management import call_command
 from django.test import TestCase
 from requests.exceptions import HTTPError
 
-from movie_metadata.services.base import MovieMetadata
+from movie_metadata.services import MovieMetadata
 from core.tests.utils import stub_request, stub_multiple_requests, mock_response
 from core.files.utils import read_json_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.fetch_token_patcher = patch('movie_metadata.services.base.MovieMetadata.TVDB._fetch_token', return_value="token")
+        cls.fetch_token_patcher = patch('movie_metadata.services.MovieMetadata.TVDB._fetch_token', return_value="token")
         cls.mock_fetch_token = cls.fetch_token_patcher.start()
 
-        cls.fetch_total_movies_patcher = patch('movie_metadata.services.base.MovieMetadata.TVDB._fetch_total_movies', return_value=2)
+        cls.fetch_total_movies_patcher = patch('movie_metadata.services.MovieMetadata.TVDB._fetch_total_movies', return_value=2)
         cls.mock_fetch_total_movies = cls.fetch_total_movies_patcher.start()
 
     @classmethod

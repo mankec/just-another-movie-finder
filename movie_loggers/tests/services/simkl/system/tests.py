@@ -8,7 +8,7 @@ from project.settings import CHROME_OPTIONS
 from core.tests.utils import stub_request
 from core.tests.mixins import CustomAssertionsMixin
 from oauth.tests.utils import selenium_sign_in_user
-from movie_loggers.services.simkl import Simkl
+from movie_loggers.services.simkl.services import Simkl
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 from movies.tests.utils import create_dummy_movie
