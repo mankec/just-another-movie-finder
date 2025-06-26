@@ -3,7 +3,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
 
-from core.file.utils import write_to_json_file
+from core.files.utils import write_to_json_file
 from languages.services.base import Wiki
 
 class Command(BaseCommand):

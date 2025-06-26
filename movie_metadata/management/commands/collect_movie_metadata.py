@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 
 from movie_metadata.services.base import MovieMetadata
 from core.utils import flatten
-from core.file.utils import (
+from core.files.utils import (
     append_to_json_file,
     create_empty_json_file,
     read_json_file,
