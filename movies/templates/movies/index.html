@@ -5,7 +5,10 @@
 {% block content %}
   <div class="grid grid-cols-12 gap-y-12 mb-16">
     {% for movie in movies %}
-      <div class="col-span-6 flex justify-center">
+      <div
+        class="col-span-6 flex justify-center"
+        id="{{ movie.slug }}"
+      >
         <div class="w-3/4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
           <div>
             <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />

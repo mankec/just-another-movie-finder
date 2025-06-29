@@ -2,6 +2,7 @@ import inspect
 from unittest.mock import Mock, patch
 from http import HTTPStatus
 from typing import Literal
+from copy import deepcopy
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -12,8 +13,7 @@ from django.test import TestCase
 
 from movie_loggers.tests.services.constants import DEFAULT_TEST_MOVIE_LOGGER
 from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
-from movies.models import Country, Genre
-from languages.constants import TVDB_SUPPORTED_LANGUAGES
+from movies.models import Movie
 
 
 def sign_in_user(session: Session):
@@ -81,6 +81,16 @@ def stub_request_exception(klass_or_instance, *, exception):
     )
 
 
+def create_dummy_movie(original: Movie):
+    num = Movie.objects.count() + 1
+    new_movie = deepcopy(original)
+    new_movie.tvdb_id = num
+    new_movie.title = f"Dummy Movie {num}"
+    new_movie.slug = f"dummy-movie-{num}"
+    new_movie.save()
+    return new_movie
+
+
 def fill_and_submit_movie_finder_form(
     browser: WebDriver,
     *,
@@ -96,30 +106,28 @@ def fill_and_submit_movie_finder_form(
     runtime_max="",
     match_filters: Literal["some", "all"] = MATCH_FILTERS_SOME,
 ):
-    for c in countries:
-        country = Country.objects.get(name=c)
-        browser.find_element(By.ID, f"countries_{country.alpha_3}").click()
-    for c in exclude_countries:
-        country = Country.objects.get(name=c)
-        browser.find_element(By.ID, f"exclude_countries_{country.alpha_3}").click()
-    for l in languages:
-        alpha_3 = next(
-            k for k, v in TVDB_SUPPORTED_LANGUAGES.items()
-            if v["name"] == l
+    def _search_and_click(name, text):
+        search_input = browser.find_element(By.ID, f"search_{name}")
+        search_input.clear()
+        search_input.send_keys(text)
+        label = browser.find_element(
+            By.XPATH, f"//ul[@id='{name}_list']/li[not(contains(@class, 'hidden'))]/div/label"
         )
-        browser.find_element(By.ID, f"languages_{alpha_3}").click()
-    for l in exclude_languages:
-        alpha_3 = next(
-            k for k, v in TVDB_SUPPORTED_LANGUAGES.items()
-            if v["name"] == l
-        )
-        browser.find_element(By.ID, f"exclude_languages_{alpha_3}").click()
-    for g in genres:
-        genre = Genre.objects.get(name=genre)
-        browser.find_element(By.ID, f"genres_{genre.slug}").click()
-    for g in exclude_genres:
-        genre = Genre.objects.get(name=genre)
-        browser.find_element(By.ID, f"exclude_genres_{genre.slug}").click()
+        input_id = label.get_attribute("for")
+        browser.find_element(By.ID, input_id).click()
+
+    for country in countries:
+        _search_and_click("countries", country)
+    for country in exclude_countries:
+        _search_and_click("exclude_countries", country)
+    for language in languages:
+        _search_and_click("languages", language)
+    for language in exclude_languages:
+        _search_and_click("exclude_languages", language)
+    for genre in genres:
+        _search_and_click("genres", genre)
+    for genre in exclude_genres:
+        _search_and_click("exclude_genres", genre)
 
     year_from_input = browser.find_element(By.NAME, "year_from")
     year_from_input.send_keys(year_from)

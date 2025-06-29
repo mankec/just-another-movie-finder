@@ -1,17 +1,32 @@
 from django.db.models import Count, Q
 
 from core.wrappers import handle_exception
-from movies.models import Movie
+from movies.models import Movie, Country, Genre
 from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
+from languages.constants import TVDB_SUPPORTED_LANGUAGES
 
 class MovieFinder():
     def __init__(self, **kwargs):
-        self.countries = kwargs["countries"]
-        self.languages = kwargs["languages"]
-        self.genres = kwargs["genres"]
-        self.exclude_countries = kwargs["exclude_countries"]
-        self.exclude_languages = kwargs["exclude_languages"]
-        self.exclude_genres = kwargs["exclude_genres"]
+        self.countries = Country.objects.filter(
+            alpha_3__in=kwargs["countries"]
+        ).values_list("name", flat=True)
+        self.exclude_countries = Country.objects.filter(
+            alpha_3__in=kwargs["exclude_countries"]
+        ).values_list("name", flat=True)
+        self.languages = [
+            v["name"] for k,v in TVDB_SUPPORTED_LANGUAGES.items()
+            if k in kwargs["languages"]
+        ]
+        self.exclude_languages = [
+            v["name"] for k,v in TVDB_SUPPORTED_LANGUAGES.items()
+            if k in kwargs["exclude_languages"]
+        ]
+        self.genres = Genre.objects.filter(
+            slug__in=kwargs["genres"]
+        ).values_list("name", flat=True)
+        self.exclude_genres = Genre.objects.filter(
+            slug__in=kwargs["exclude_genres"]
+        ).values_list("name", flat=True)
         self.year_from = kwargs["year_from"]
         self.year_to = kwargs["year_to"]
         self.runtime_min = kwargs["runtime_min"]
