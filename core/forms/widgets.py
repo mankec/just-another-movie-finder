@@ -12,19 +12,31 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
             format_html("""
                 <div class="bg-white rounded-lg shadow-sm w-60 dark:bg-gray-700">
                 <div class="p-3">
-                    <label for="input-group-search" class="sr-only">Search</label>
+                    <label for="search_{name}" class="sr-only">Search</label>
                     <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                     </div>
-                    <input type="text" id="input-group-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{placeholder}">
+                    <input
+                        type="text"
+                        id="search_{name}"
+                        value=""
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="{placeholder}"
+                        x-data
+                        @input="$searchSelectMultiple($event, `{name}`);"
+                    >
                     </div>
                 </div>
-                <ul class="h-38 px-3 pb-3 overflow-y-scroll text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                <ul
+                    class="h-38 px-3 pb-3 overflow-y-scroll text-sm text-gray-700 dark:text-gray-200"
+                    id="{name}_list"
+                >
                 """,
-                placeholder=self.attrs["placeholder"]
+                name=name,
+                placeholder=self.attrs["placeholder"],
             )
         )
         html.append(
@@ -40,7 +52,7 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
                         name="{name}"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     >
-                    <label for="{name}-{value}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{label}</label>
+                    <label for="{name}_{value}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{label}</label>
                 </div>
                 </li>
                 """,
