@@ -14,11 +14,11 @@ class MovieMetadata:
         def __init__(self):
             self.api_url = "https://api4.thetvdb.com/v4/"
             self.api_key = env.str("TVDB_API_KEY", "")
-            self.token = env.str("TVDB_TOKEN", "") or self._fetch_token()
+            self.token = env.str("TVDB_TOKEN", "") or self._fetch_tokens()
             self.total_movies = self._fetch_total_movies()
 
         @handle_exception
-        def _fetch_token(self):
+        def _fetch_tokens(self):
             url = build_url(self.api_url, "login")
             payload = {
                 "apikey": self.api_key,

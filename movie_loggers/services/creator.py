@@ -7,10 +7,11 @@ from movie_loggers.services.trakt.services import Trakt
 
 class MovieLoggerCreator:
     def __new__(self, session: Session):
+        token = session["token"]
         match session["movie_logger"]:
             case MovieLogger.SIMKL.value:
-                return Simkl(session)
+                return Simkl(token)
             case MovieLogger.TRAKT.value:
-                return Trakt(session)
+                return Trakt(token)
             case _:
                 raise ValueError("Unknown movie logger.")

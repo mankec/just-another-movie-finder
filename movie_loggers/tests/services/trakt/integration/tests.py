@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from project.settings import SKIP_EXTERNAL_TESTS
 from core.sessions.utils import initialize_session
+from core.constants import ONE_DAY_IN_SECONDS
 from core.tests.utils import stub_request, stub_request_exception, mock_response
 from core.tests.mixins import CustomAssertionsMixin
 from movie_loggers.services.trakt.services import Trakt
@@ -21,25 +22,35 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
         session = self.client.session
         initialize_session(session)
         session.save()
-        self.trakt = Trakt(session)
+        self.trakt = Trakt("")
         self.movie = Movie.objects.get(pk=1)
 
     def test_signing_in(self):
         session = self.client.session
         session["movie_logger"] =MovieLogger.TRAKT.value
         session.save()
+        token = "token"
+        refresh_token = "refresh_token"
+        token_expires_at = int(unix_time())
         mocked_response = {
             "body": {
-                "access_token": "token",
-                "refresh_token": "refresh_token",
-                "created_at": int(unix_time()),
+                "access_token": token,
+                "refresh_token":refresh_token,
+                "created_at": token_expires_at,
             }
         }
         message = "Successfully signed with Trakt!"
         url = reverse("oauth:index")
         with stub_request(self.trakt, response=mocked_response):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
+            session = self.client.session
             self.assertFlashMessage(response, message)
+            self.assertEqual(session["token"], token)
+            self.assertEqual(session["refresh_token"], refresh_token)
+            self.assertEqual(
+                session["token_expires_at"],
+                token_expires_at + ONE_DAY_IN_SECONDS
+            )
 
     @skipIf(SKIP_EXTERNAL_TESTS.value, SKIP_EXTERNAL_TESTS.reason)
     def test_account_requires_vip_upgrade(self):

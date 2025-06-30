@@ -3,7 +3,6 @@ from http import HTTPMethod, HTTPStatus
 from environs import Env
 from requests import Response
 from requests.exceptions import HTTPError
-from django.contrib.sessions.models import Session
 
 from project.settings import API_REDIRECT_URL
 from core.wrappers import handle_exception
@@ -24,8 +23,8 @@ class Simkl(AbstractMovieLogger):
         "simkl-api-key": CLIENT_ID,
     }
 
-    def __init__(self, session: Session):
-        self.session = session
+    def __init__(self, token):
+        self.token = token
         self.name = MovieLogger.SIMKL.value
 
     @handle_exception("Something went wrong while trying to sign you in to Simkl.")
@@ -40,7 +39,7 @@ class Simkl(AbstractMovieLogger):
         return build_url_with_query(url, query)
 
     @handle_exception("Something went wrong while trying to sign you in to Simkl.")
-    def obtain_token(self, *, code) -> bool:
+    def fetch_tokens(self, *, code) -> dict:
         url = build_url(self.API_URL, "oauth/token")
         payload = {
             "code": code,
@@ -55,8 +54,9 @@ class Simkl(AbstractMovieLogger):
             payload=payload,
         )
         response_body = response.json()
-        self.session["token"] = response_body["access_token"]
-        return True
+        return {
+            "token": response_body["access_token"],
+        }
 
     @handle_exception("Something went wrong.")
     def add_to_watchlist(self, movie: Movie) -> bool:
@@ -126,7 +126,9 @@ class Simkl(AbstractMovieLogger):
         }
 
     def _oauth_required_headers(self):
+        if not self.token:
+            raise ValueError(f"{self.name} token must be present for using this action.")
         return {
             **self.REQUIRED_HEADERS,
-            'Authorization': f"Bearer {self.session["token"]}",
+            'Authorization': f"Bearer {self.token}",
         }

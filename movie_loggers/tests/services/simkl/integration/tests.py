@@ -13,20 +13,22 @@ class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
 
     def test_signing_in(self):
         client = Client()
-        session = self.client.session
+        session = client.session
         initialize_session(session)
         session["movie_logger"] = MovieLogger.SIMKL.value
         session.save()
-        self.simkl = Simkl(session)
-        self.movie = Movie.objects.get(pk=1)
+        simkl = Simkl("")
 
+        token = "token"
         mocked_response = {
             "body": {
-                "access_token": "token",
+                "access_token": token,
             }
         }
         message = "Successfully signed with Simkl!"
         url = reverse("oauth:index")
-        with stub_request(self.simkl, response=mocked_response):
-            response = self.client.get(url, query_params={"code": "code"}, follow=True)
+        with stub_request(simkl, response=mocked_response):
+            response = client.get(url, query_params={"code": "code"}, follow=True)
+            session = client.session
             self.assertFlashMessage(response, message)
+            self.assertEqual(session["token"], token)

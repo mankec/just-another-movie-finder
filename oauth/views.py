@@ -15,13 +15,16 @@ def index(request):
 
     if not code:
         session.clear()
-        message = f"Failed to sign you in to {session["movie_logger"].capitalize()}"
+        message = f"Failed to sign you in to {session["movie_logger"]}"
         messages.error(request, message)
         url = reverse("sign_in")
         return redirect(url)
     movie_logger = MovieLoggerCreator(session)
-    movie_logger.obtain_token(code=code)
-    message = f"Successfully signed with {session["movie_logger"].capitalize()}!"
+    result = movie_logger.fetch_tokens(code=code)
+    session["token"] = result["token"]
+    session["refresh_token"] = result.get("refresh_token", "")
+    session["token_expires_at"] = result.get("token_expires_at", "")
+    message = f"Successfully signed with {session["movie_logger"]}!"
     messages.success(request, message)
     return redirect("/")
 
@@ -57,6 +60,7 @@ def sign_out(request):
 def selenium_sign_in(request, movie_logger):
     if not is_test():
         return redirect("/")
-    request.session["movie_logger"] = movie_logger
-    request.session["token"] = "token"
+    session = request.session
+    session["movie_logger"] = movie_logger
+    session["token"] = "token"
     return redirect("/")
