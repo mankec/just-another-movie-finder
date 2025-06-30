@@ -52,8 +52,9 @@ def find(request):
 @handle_exception
 def add_to_watchlist(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
-    movie_logger = request.session["movie_logger"].capitalize()
-    MovieLoggerCreator(request.session).add_to_watchlist(movie)
+    session = request.session
+    movie_logger = session["movie_logger"]
+    MovieLoggerCreator(session).add_to_watchlist(movie)
     return JsonResponse({
         "status": HTTPStatus.OK.value,
         "message": f"'{movie.title}' has been added to {movie_logger}'s watchlist."

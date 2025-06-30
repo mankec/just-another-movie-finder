@@ -14,15 +14,15 @@ from core.files.utils import read_json_file, create_empty_json_file, write_to_js
 class CollectMovieMetadataTest(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.fetch_token_patcher = patch('movie_metadata.services.MovieMetadata.TVDB._fetch_token', return_value="token")
-        cls.mock_fetch_token = cls.fetch_token_patcher.start()
+        cls.fetch_tokens_patcher = patch('movie_metadata.services.MovieMetadata.TVDB._fetch_tokens', return_value="token")
+        cls.mock_fetch_tokens = cls.fetch_tokens_patcher.start()
 
         cls.fetch_total_movies_patcher = patch('movie_metadata.services.MovieMetadata.TVDB._fetch_total_movies', return_value=2)
         cls.mock_fetch_total_movies = cls.fetch_total_movies_patcher.start()
 
     @classmethod
     def tearDownClass(cls):
-        cls.fetch_token_patcher.stop()
+        cls.fetch_tokens_patcher.stop()
         cls.fetch_total_movies_patcher.stop()
 
     def setUp(self):

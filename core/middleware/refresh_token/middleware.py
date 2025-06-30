@@ -9,6 +9,9 @@ class RefreshTokenMiddleware:
         session = request.session
         refresh_token = session["refresh_token"]
         if refresh_token and session["token_expires_at"] <= int(unix_time()):
-            MovieLoggerCreator(session).obtain_token(refresh_token=refresh_token)
+            result = MovieLoggerCreator(session).fetch_tokens(refresh_token=refresh_token)
+            session["token"] = result["token"]
+            session["refresh_token"] = result["refresh_token"]
+            session["token_expires_at"] = result["token_expires_at"]
         response = self.get_response(request)
         return response

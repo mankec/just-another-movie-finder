@@ -3,7 +3,6 @@ from http import HTTPMethod, HTTPStatus
 from environs import Env
 from requests.exceptions import HTTPError
 from requests import Response
-from django.contrib.sessions.models import Session
 
 from core.url.utils import build_url, build_url_with_query
 from core.requests.utils import send_request
@@ -29,8 +28,8 @@ class Trakt(AbstractMovieLogger):
     }
     PAGINATION_LIMIT = 100
 
-    def __init__(self, session: Session):
-        self.session = session
+    def __init__(self, token):
+        self.token = token
         self.name = MovieLogger.TRAKT.value
 
     @handle_exception("Something went wrong while trying to sign you in to Trakt.")
@@ -44,7 +43,7 @@ class Trakt(AbstractMovieLogger):
         return build_url_with_query(url, query)
 
     @handle_exception("Something went wrong while trying to sign you in to Trakt.")
-    def obtain_token(self, *, code=None, refresh_token=None):
+    def fetch_tokens(self, *, code=None, refresh_token=None) -> dict:
         url = build_url(self.API_URL, "oauth/token")
         payload = {
             "client_id": self.CLIENT_ID,
@@ -66,10 +65,11 @@ class Trakt(AbstractMovieLogger):
             payload=payload,
         )
         response_body = response.json()
-        self.session["token"] = response_body["access_token"]
-        self.session["refresh_token"] = response_body["refresh_token"]
-        self.session["token_expires_at"] = response_body["created_at"] + ONE_DAY_IN_SECONDS
-        return True
+        return {
+            "token": response_body["access_token"],
+            "refresh_token": response_body["refresh_token"],
+            "token_expires_at": response_body["created_at"] + ONE_DAY_IN_SECONDS,
+        }
 
     @handle_exception("Something went wrong.")
     def add_to_watchlist(self, movie: Movie) -> bool:
@@ -162,9 +162,9 @@ class Trakt(AbstractMovieLogger):
                 return response.headers["X-Upgrade-URL"]
 
     def _oauth_required_headers(self):
-        if not (token := self.session["token"]):
-            raise ValueError("Token must be present for using this action.")
+        if not self.token:
+            raise ValueError(f"{self.name} token must be present for using this action.")
         return {
             **self.REQUIRED_HEADERS,
-            "Authorization": f"Bearer {token}",
+            "Authorization": f"Bearer {self.token}",
         }

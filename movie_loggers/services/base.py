@@ -19,7 +19,7 @@ class AbstractMovieLogger(ABC):
         ...
 
     @abstractmethod
-    def obtain_token(self, *, code) -> str:
+    def fetch_tokens(self, *, code) -> str:
         ...
 
     @abstractmethod
