@@ -43,7 +43,8 @@ class MovieMetadata:
                 url= url,
                 headers=headers,
             )
-            return response["links"]["total_items"]
+            response_body = response.json()
+            return response_body["links"]["total_items"]
 
         @handle_exception
         def fetch_extended(self, movie_id):
