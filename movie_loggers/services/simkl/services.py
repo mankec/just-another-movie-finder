@@ -19,6 +19,7 @@ class Simkl(AbstractMovieLogger):
     CLIENT_ID = env.str("SIMKL_CLIENT_ID", "")
     CLIENT_SECRET = env.str("SIMKL_CLIENT_SECRET", "")
     MOVIE_STATUS_PLANTOWATCH = "plantowatch"
+    MOVIE_STATUS_COMPLETED = "completed"
     REQUIRED_HEADERS = {
         "simkl-api-key": CLIENT_ID,
     }
@@ -63,7 +64,18 @@ class Simkl(AbstractMovieLogger):
         try:
             url = build_url(self.API_URL, "sync/add-to-list")
             payload = {
-                "movies": [self._movie_data(movie)],
+                "movies": [
+                    {
+                        "to": self.MOVIE_STATUS_PLANTOWATCH,
+                        "title": movie.title,
+                        "year": movie.year,
+                        "ids": {
+                            "tvdb": movie.tvdb_id,
+                            "imdb": movie.imdb_id,
+                            "tmdb": movie.tmdb_id,
+                        }
+                    }
+                ],
             }
             response = send_request(
                 method=HTTPMethod.POST.value,
@@ -86,13 +98,22 @@ class Simkl(AbstractMovieLogger):
             raise HTTPError(message)
 
     @handle_exception
-    def fetch_movies_on_watchlist_remote_ids(self) -> list:
-        remote_ids = []
+    def fetch_movie_remote_ids(self) -> dict:
+        remote_ids = {
+            "watched": {
+                "tvdb_ids": [],
+                "imdb_ids": [],
+                "tmdb_ids": [],
+            },
+            "on_watchlist": {
+                "tvdb_ids": [],
+                "imdb_ids": [],
+                "tmdb_ids": [],
+            },
+        }
         url = build_url(self.API_URL, "sync/all-items")
         payload = {
             "type": "movies",
-            "status": self.MOVIE_STATUS_PLANTOWATCH,
-            "extended": "ids_only",
         }
         response =  send_request(
             method=HTTPMethod.GET.value,
@@ -102,28 +123,24 @@ class Simkl(AbstractMovieLogger):
         )
         response_body = response.json()
         if not response_body:
-            return []
+            return remote_ids
         movies = response_body["movies"]
-        remote_ids = [
-            [
-                d["movie"]["ids"]["imdb"],
-                d["movie"]["ids"]["tmdb"],
-            ]
-            for d in movies
-        ]
+        for d in movies:
+            if d["status"] == self.MOVIE_STATUS_COMPLETED:
+                if tvdb_id := d["movie"]["ids"].get("tvdb"):
+                    remote_ids["watched"]["tvdb_ids"].append(tvdb_id)
+                if imdb_id := d["movie"]["ids"].get("imdb"):
+                    remote_ids["watched"]["imdb_ids"].append(imdb_id)
+                if tmdb_id := d["movie"]["ids"].get("tmdb"):
+                    remote_ids["watched"]["tmdb_ids"].append(tmdb_id)
+            elif d["status"] == self.MOVIE_STATUS_PLANTOWATCH:
+                if tvdb_id := d["movie"]["ids"].get("tvdb"):
+                    remote_ids["on_watchlist"]["tvdb_ids"].append(tvdb_id)
+                if imdb_id := d["movie"]["ids"].get("imdb"):
+                    remote_ids["on_watchlist"]["imdb_ids"].append(imdb_id)
+                if tmdb_id := d["movie"]["ids"].get("tmdb"):
+                    remote_ids["on_watchlist"]["tmdb_ids"].append(tmdb_id)
         return remote_ids
-
-    def _movie_data(self, movie: Movie) -> dict:
-        return {
-            "to": self.MOVIE_STATUS_PLANTOWATCH,
-            "title": movie.title,
-            "year": movie.year,
-            "ids": {
-                "tvdb": movie.tvdb_id,
-                "imdb": movie.imdb_id,
-                "tmdb": movie.tmdb_id,
-            }
-        }
 
     def _oauth_required_headers(self):
         if not self.token:

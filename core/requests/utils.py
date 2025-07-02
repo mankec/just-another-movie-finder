@@ -6,7 +6,6 @@ from requests import get, post
 
 from core.wrappers import handle_exception
 from core.environments.utils import is_test
-from project.settings import SKIP_EXTERNAL_TESTS
 
 
 @handle_exception

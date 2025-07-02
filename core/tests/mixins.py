@@ -15,10 +15,13 @@ class CustomAssertionsMixin:
         message = messages[0].message
         self.assertEqual(message, expected_message)
 
-    def assertJsFlashMessage(self, expected_message: str, timeout=5):
+    def assertJsFlashMessage(self: TestCase, expected_message: str, timeout=5):
         flash_message = WebDriverWait(self.browser, timeout).until(
             expected_conditions.visibility_of_element_located(
                 (By.ID, "flash-message-text")
             )
         )
         self.assertEqual(expected_message, flash_message.text)
+
+    def refuteJsFlashMessage(self: TestCase):
+        self.assertFalse(self.browser.find_elements(By.ID, "flash-message-text"))

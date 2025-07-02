@@ -3,7 +3,18 @@ DEFAULT_SESSION_DATA = {
     "token": "",
     "refresh_token":  "",
     "token_expires_at": "", # type: int
-    "movie_ids": [],
-    "movies_on_watchlist_remote_ids": [],
+    "filtered_movie_ids": [],
+    "movie_remote_ids": {
+        "watched": {
+            "tvdb_ids": [],
+            "imdb_ids": [],
+            "tmdb_ids": [],
+        },
+        "on_watchlist": {
+            "tvdb_ids": [],
+            "imdb_ids": [],
+            "tmdb_ids": [],
+        },
+    },
     "movies_added_to_watchlist_ids": [],
 }

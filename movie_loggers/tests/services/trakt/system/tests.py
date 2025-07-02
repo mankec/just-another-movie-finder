@@ -8,6 +8,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from project.settings import CHROME_OPTIONS
 from core.tests.utils import (
     stub_request,
+    stub_multiple_requests,
     stub_request_exception,
     mock_response,
     selenium_sign_in_user,
@@ -24,7 +25,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
     def setUp(self):
         self.movie = Movie.objects.get(pk=1)
         self.browser = webdriver.Chrome(CHROME_OPTIONS)
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(1)
 
     def tearDown(self):
         self.browser.quit()
@@ -32,13 +33,18 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_adding_to_watchlist_success(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        mocked_response = {
-             "body": [],
-             "headers": {
-                 "X-Pagination-Page-Count": 0,
-             }
-        }
-        with stub_request(Trakt, response=mocked_response):
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [],
+                "headers": {
+                    "X-Pagination-Page-Count": 0,
+                }
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
         mocked_response = {
@@ -50,16 +56,29 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             ).click()
             message = f"'{self.movie.title}' has been added to Trakt's watchlist."
             self.assertJsFlashMessage(message)
+        self.browser.refresh()
+        text = "Added to watchlist"
+        button = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+        )
+        button.click()
+        self.refuteJsFlashMessage()
 
     def test_adding_to_watchlist_movie_not_found(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        mocked_response = {
-             "body": [],
-             "headers": {
-                 "X-Pagination-Page-Count": 0,
-             }
-        }
-        with stub_request(Trakt, response=mocked_response):
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [],
+                "headers": {
+                    "X-Pagination-Page-Count": 0,
+                }
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
         mocked_response = {
@@ -76,13 +95,18 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_account_is_locked(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        mocked_response = {
-            "body": [],
-            "headers": {
-                "X-Pagination-Page-Count": 0,
-            }
-        }
-        with stub_request(Trakt, response=mocked_response):
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [],
+                "headers": {
+                    "X-Pagination-Page-Count": 0,
+                }
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
         mocked_response = {
@@ -91,7 +115,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             "headers": {
                 "X-Account-Locked": "true",
                 "X-Account-Deactivated": "false",
-            }
+            },
         }
         exception = HTTPError(
             HTTPStatus.LOCKED.phrase,
@@ -106,13 +130,18 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_account_is_deactivated(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        mocked_response = {
-            "body": [],
-            "headers": {
-                "X-Pagination-Page-Count": 0,
-            }
-        }
-        with stub_request(Trakt, response=mocked_response):
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [],
+                "headers": {
+                    "X-Pagination-Page-Count": 0,
+                }
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
         mocked_response = {
@@ -136,13 +165,18 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def test_vip_account_reached_limit(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
-        mocked_response = {
-            "body": [],
-            "headers": {
-                "X-Pagination-Page-Count": 0,
-            }
-        }
-        with stub_request(Trakt, response=mocked_response):
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [],
+                "headers": {
+                    "X-Pagination-Page-Count": 0,
+                }
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
         mocked_response = {
@@ -161,26 +195,112 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             message = "You have reached limit for your Trakt account."
             self.assertJsFlashMessage(message)
 
-    def test_movie_is_already_on_watchlist(self):
+    def test_movie_is_marked_as_watched(self):
         selenium_sign_in_user(self, MovieLogger.TRAKT.value)
         total_pages = 1
-        mocked_response = {
-            "body": [
-                {
-                    "movie": {
-                        "ids": {
-                            "imdb": self.movie.imdb_id,
-                            "tmdb": str(self.movie.tmdb_id),
+        mocked_responses = [
+            {
+                "body": [
+                    {
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
                         }
                     }
-                }
-            ],
-            "headers": { "X-Pagination-Page-Count": total_pages }
-        }
-        with stub_request(Trakt, response=mocked_response):
+                ],
+            },
+            {
+                "body": [],
+                "headers": { "X-Pagination-Page-Count": total_pages },
+            }
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        text = "Watched"
+        span = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(span)
+
+
+    def test_movie_is_marked_as_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        total_pages = 1
+        mocked_responses = [
+            {
+                "body": [],
+            },
+            {
+                "body": [
+                    {
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    }
+                ],
+                "headers": { "X-Pagination-Page-Count": total_pages },
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
         text = "On watchlist"
         button = self.browser.find_element(
-            By.XPATH, f"//button[normalize-space(text()) = '{text}']"
+            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
         )
         self.assertTrue(button)
+        button.click()
+        self.refuteJsFlashMessage()
+
+    def test_movie_is_marked_as_watched_and_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        total_pages = 1
+        mocked_responses = [
+            {
+                "body": [
+                    {
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    }
+                ],
+            },
+            {
+                "body": [
+                    {
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    }
+                ],
+                "headers": { "X-Pagination-Page-Count": total_pages },
+            },
+        ]
+        with stub_multiple_requests(Trakt, responses=mocked_responses):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+
+        text = "Watched"
+        span = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(span)
+        # TODO: Put this into enum e.g. MovieStatus
+        text = "On watchlist"
+        button = self.browser.find_element(
+            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(button)
+        button.click()
+        self.refuteJsFlashMessage()

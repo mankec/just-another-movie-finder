@@ -61,6 +61,7 @@ def selenium_sign_in(request, movie_logger):
     if not is_test():
         return redirect("/")
     session = request.session
+    # TODO: Remove all initialize_session in tests but properly document what is happening
     session["movie_logger"] = movie_logger
     session["token"] = "token"
     return redirect("/")
