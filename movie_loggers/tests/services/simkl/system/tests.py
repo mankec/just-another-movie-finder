@@ -19,9 +19,8 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
     def setUp(self):
         self.movie = Movie.objects.get(pk=1)
-
         self.browser = webdriver.Chrome(CHROME_OPTIONS)
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(1)
 
     def tearDown(self):
         self.browser.quit()
@@ -42,6 +41,15 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             ).click()
             message = f"'{self.movie.title}' has been added to Simkl's watchlist."
             self.assertJsFlashMessage(message)
+        self.browser.refresh()
+        text = "Added to watchlist"
+        button = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+        )
+        button.click()
+        self.refuteJsFlashMessage()
+
 
     def test_adding_to_watchlist_movie_not_found(self):
         selenium_sign_in_user(self, MovieLogger.SIMKL.value)
@@ -61,12 +69,39 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             message = f"Simkl couldn't find '{self.movie.title}'."
             self.assertJsFlashMessage(message)
 
-    def test_movie_is_already_on_watchlist(self):
+    def test_movie_is_marked_as_watched(self):
         selenium_sign_in_user(self, MovieLogger.SIMKL.value)
         mocked_response = {
             "body": {
                 "movies": [
                     {
+                        "status": Simkl.MOVIE_STATUS_COMPLETED,
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    },
+                ]
+            }
+        }
+        with stub_request(Simkl, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        text = "Watched"
+        span = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(span)
+
+    def test_movie_is_marked_as_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        mocked_response = {
+            "body": {
+                "movies": [
+                    {
+                        "status": Simkl.MOVIE_STATUS_PLANTOWATCH,
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
@@ -81,6 +116,52 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
         text = "On watchlist"
         button = self.browser.find_element(
-            By.XPATH, f"//button[normalize-space(text()) = '{text}']"
+            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
         )
         self.assertTrue(button)
+        button.click()
+        self.refuteJsFlashMessage()
+
+
+    def test_movie_is_marked_as_watched_and_on_watchlist(self):
+        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        mocked_response = {
+            "body": {
+                "movies": [
+                    {
+                        "status": Simkl.MOVIE_STATUS_PLANTOWATCH,
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    },
+                    {
+                        "status": Simkl.MOVIE_STATUS_COMPLETED,
+                        "movie": {
+                            "ids": {
+                                "imdb": self.movie.imdb_id,
+                                "tmdb": str(self.movie.tmdb_id),
+                            }
+                        }
+                    },
+                ]
+            }
+        }
+        with stub_request(Simkl, response=mocked_response):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
+        text = "Watched"
+        span = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(span)
+        text = "On watchlist"
+        button = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+        )
+        self.assertTrue(button)
+        button.click()
+        self.refuteJsFlashMessage()

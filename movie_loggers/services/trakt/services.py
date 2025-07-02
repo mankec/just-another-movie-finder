@@ -76,7 +76,17 @@ class Trakt(AbstractMovieLogger):
         try:
             url = build_url(self.API_URL, "sync/watchlist")
             payload = {
-                "movies": [self._movie_data(movie)],
+                "movies": [
+                    {
+                        "title": movie.title,
+                        "year": movie.year,
+                        "ids": {
+                            "slug": movie.slug,
+                            "imdb": movie.imdb_id,
+                            "tmdb": movie.tmdb_id
+                        },
+                    }
+                ],
             }
             response = send_request(
                 method=HTTPMethod.POST.value,
@@ -101,17 +111,53 @@ class Trakt(AbstractMovieLogger):
             raise HTTPError(message)
 
     @handle_exception
-    def fetch_movies_on_watchlist_remote_ids(self) -> list:
+    def fetch_movie_remote_ids(self) -> dict:
+        watched = self._fetch_watched_movies_remote_ids()
+        on_watchlist =  self._fetch_movies_on_watchlist_remote_ids()
+        return {
+            "watched": watched,
+            "on_watchlist": on_watchlist,
+        }
+
+    @handle_exception
+    def _fetch_watched_movies_remote_ids(self) -> dict:
+        remote_ids = {
+            "tvdb_ids": [],
+            "imdb_ids": [],
+            "tmdb_ids": [],
+        }
+        url = build_url(self.API_URL, "sync/watched/movies")
+        response =  send_request(
+            method=HTTPMethod.GET.value,
+            url=url,
+            headers=self._oauth_required_headers(),
+        )
+        response_body = response.json()
+        if not response_body:
+            return remote_ids
+        for d in response_body:
+            if tvdb_id := d["movie"]["ids"].get("tvdb"):
+                remote_ids["tvdb_ids"].append(tvdb_id)
+            if imdb_id := d["movie"]["ids"].get("imdb"):
+                remote_ids["imdb_ids"].append(imdb_id)
+            if tmdb_id := d["movie"]["ids"].get("tmdb"):
+                remote_ids["tmdb_ids"].append(tmdb_id)
+        return remote_ids
+
+    @handle_exception
+    def _fetch_movies_on_watchlist_remote_ids(self) -> dict:
         page = 1
-        limit = self.PAGINATION_LIMIT
         total_pages = 1
-        remote_ids = []
+        remote_ids = {
+            "tvdb_ids": [],
+            "imdb_ids": [],
+            "tmdb_ids": [],
+        }
         while page <= total_pages:
             url = build_url(self.API_URL, "sync/watchlist/movies")
             payload = {
-                "type": "movies",
                 "page": page,
-                "limit": limit
+                "limit": self.PAGINATION_LIMIT
             }
             response =  send_request(
                 method=HTTPMethod.GET.value,
@@ -121,29 +167,17 @@ class Trakt(AbstractMovieLogger):
             )
             total_pages = int(response.headers["X-Pagination-Page-Count"])
             response_body = response.json()
-            ids = [
-                [
-                    d["movie"]["ids"]["imdb"],
-                    d["movie"]["ids"]["tmdb"],
-                ]
-                for d in response_body
-            ]
-            remote_ids.extend(ids)
+            if not response_body:
+                break
+            for d in response_body:
+                if tvdb_id := d["movie"]["ids"].get("tvdb"):
+                    remote_ids["tvdb_ids"].append(tvdb_id)
+                if imdb_id := d["movie"]["ids"].get("imdb"):
+                    remote_ids["imdb_ids"].append(imdb_id)
+                if tmdb_id := d["movie"]["ids"].get("tmdb"):
+                    remote_ids["tmdb_ids"].append(tmdb_id)
             page += 1
         return remote_ids
-
-    def _movie_data(self, movie: Movie) -> dict:
-        return {
-            "title": movie.title,
-            "year": movie.year,
-            "ids": {
-                "slug": movie.slug,
-                "imdb": movie.imdb_id,
-                "tmdb": movie.tmdb_id
-            },
-            # TODO: This could be a neat feature. It's only allowed for VIPs
-            # "notes": "One of Chritian Bale's most iconic roles."
-        }
 
     def _resolve_http_exception_message(self, response):
         if response.status_code == HTTPStatus.LOCKED.value:

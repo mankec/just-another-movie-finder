@@ -13,7 +13,7 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
     fixtures = ["movies.json", "countries.json", "genres.json"]
 
     def test_each_form_field_and_search_work_properly(self):
-        browser = webdriver.Chrome(CHROME_OPTIONS)
+        self.browser = webdriver.Chrome(CHROME_OPTIONS)
         include_countries = [DEFAULT_COUNTRY, "Ireland"]
         exclude_countries = ["Spain", "France"]
         include_languages = [DEFAULT_LANGUAGE, "Irish"]
@@ -38,9 +38,9 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
         )
         exclude_movie.save()
 
-        browser.get(self.live_server_url)
+        self.browser.get(self.live_server_url)
         fill_and_submit_movie_finder_form(
-            browser,
+            self.browser,
             countries=include_countries,
             exclude_countries=exclude_countries,
             languages=include_languages,
@@ -52,6 +52,15 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
             runtime_min=90,
             runtime_max=120,
         )
-        browser.find_element(By.ID, movie.slug)
-        self.assertFalse(browser.find_elements(By.ID, exclude_movie.slug))
-        browser.quit()
+        self.browser.find_element(By.ID, movie.slug)
+        self.assertFalse(self.browser.find_elements(By.ID, exclude_movie.slug))
+        text = "Add to watchlist"
+        title = "You must be signed in to be able to add movies to watchlist"
+        button = self.browser.find_element(
+            By.XPATH,
+            f"//div[@id='{movie.slug}']//button[@title='{title}' and normalize-space(text()) = '{text}']"
+        )
+        button.click()
+        self.refuteJsFlashMessage()
+
+        self.browser.quit()

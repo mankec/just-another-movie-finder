@@ -58,7 +58,7 @@ def stub_request(klass_or_instance, *, response):
         return_value=mock_response(response),
     )
 
-
+# TODO: This is the only method you need, stub_request and stub_request_exception are redundant
 def stub_multiple_requests(klass_or_instance, *, responses: list):
     if inspect.isclass(klass_or_instance):
         klass = klass_or_instance

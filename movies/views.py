@@ -23,14 +23,25 @@ env = Env()
 def index(request):
     session = request.session
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(session["movie_ids"], 24)
+    paginator = Paginator(session["filtered_movie_ids"], 24)
     page_obj = paginator.get_page(page_number)
     movie_ids = paginator.page(page_number).object_list
     movies = Movie.objects.filter(tvdb_id__in=movie_ids)
     results = [
         {
             "movie": m,
-            "on_watchlist": m.remote_ids() in session["movies_on_watchlist_remote_ids"],
+            "watched": (
+                m.tvdb_id in session["movie_remote_ids"]["watched"]["tvdb_ids"] or
+                m.imdb_id in session["movie_remote_ids"]["watched"]["imdb_ids"] or
+                m.tmdb_id in session["movie_remote_ids"]["watched"]["tmdb_ids"]
+                if is_signed_in(session) else False
+            ),
+            "on_watchlist": (
+                m.tvdb_id in session["movie_remote_ids"]["on_watchlist"]["tvdb_ids"] or
+                m.imdb_id in session["movie_remote_ids"]["on_watchlist"]["imdb_ids"] or
+                m.tmdb_id in session["movie_remote_ids"]["on_watchlist"]["tmdb_ids"]
+                if is_signed_in(session) else False
+            ),
             "added_to_watchlist": m.tvdb_id in session["movies_added_to_watchlist_ids"],
         }
         for m in  movies
@@ -46,16 +57,16 @@ def index(request):
     }
     return render(request, "movies/index.html", ctx)
 
-
+@handle_exception
 def find(request):
     form = MovieFinderForm(request.GET)
     if form.is_valid():
         session = request.session
-        session["movie_ids"] = MovieFinder(**form.cleaned_data).get_movie_ids()
+        session["filtered_movie_ids"] = MovieFinder(**form.cleaned_data).get_movie_ids()
         if is_signed_in(session):
-            session["movies_on_watchlist_remote_ids"] = MovieLoggerCreator(
+            session["movie_remote_ids"] = MovieLoggerCreator(
                 session
-            ).fetch_movies_on_watchlist_remote_ids()
+            ).fetch_movie_remote_ids()
         url = reverse("movies:index")
         return redirect(url)
     message = list(flatten(form.errors.values())).pop(0)

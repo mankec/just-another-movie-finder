@@ -16,23 +16,39 @@
           <div class="flex">
             <div class="w-65 p-1 border-x-4 border-b-4 border-white">
               <div class="relative">
+                {% if result.watched %}
+                  <span class="
+                  bg-[repeating-linear-gradient(45deg,rgba(106,187,90,0.50),rgba(106,187,90,0.50)_10px,rgba(85,156,75,0.50)_10px,rgba(85,156,75,0.50)_20px)] w-full h-full absolute top-0 uppercase flex justify-center items-center text-2xl font-bold">
+                    Watched
+                  </span>
+                {% endif %}
                 <img src="{{ movie.poster }}" alt="product image" />
                 <button
                   class="bg-[rgba(106,187,90,0.75)] w-full h-13 absolute bottom-0 cursor-pointer font-bold"
                   id="add-to-watchlist-{{ movie.tvdb_id }}"
                   :class="{
-                    'bg-[rgba(106,187,90,0.90)]': added || onWatchlist,
-                    'hover:cursor-default': added || onWatchlist,
-                    'hover:bg-[rgba(106,187,90,0.90)]': ! added && ! onWatchlist,
+                    'bg-[rgba(106,187,90,0.90)]': 
+                      ! signedIn ||
+                      addedToWatchlist ||
+                      onWatchlist,
+                    'hover:cursor-default':
+                      ! signedIn ||
+                      addedToWatchlist ||
+                      onWatchlist,
+                    'hover:bg-[rgba(106,187,90,0.90)]':
+                      signedIn &&
+                      ! addedToWatchlist &&
+                      ! onWatchlist,
                   }"
                   x-data="{
+                    signedIn: `{{ is_signed_in }}` === 'True',
                     onWatchlist: `{{ result.on_watchlist }}` === 'True',
-                    added: `{{ result.added_to_watchlist }}` === 'True',
+                    addedToWatchlist: `{{ result.added_to_watchlist }}` === 'True',
                     loading: false,
                     error: false,
                   }"
-                  x-on:click="
-                    if (onWatchlist || added) {
+                  @click="
+                    if (!signedIn || onWatchlist || addedToWatchlist) {
                       return;
                     }
                     loading = true;
@@ -48,7 +64,7 @@
                     .then(response => {
                       loading = false;
                       if (response.status == 200) {
-                        added = true;
+                        addedToWatchlist = true;
                         disabled = true;
                         const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
                         $showFlashMessage(flashMessageHTML, response.message);
@@ -60,10 +76,11 @@
                   "
                   x-text="
                     onWatchlist ? 'On watchlist' :
-                    added ? 'Added to watchlist' :
+                    addedToWatchlist ? 'Added to watchlist' :
                     loading ? 'Adding to watchlist...' :
                     'Add to watchlist';
                   "
+                  :title="!signedIn ? 'You must be signed in to be able to add movies to watchlist' : ''"
                 >
                 </button>
               </div>
