@@ -79,8 +79,8 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         }
         with stub_request(Simkl, response=mocked_response):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = "Already on watchlist"
+        text = "On watchlist"
         button = self.browser.find_element(
-            By.XPATH, f"//button[@disabled and normalize-space(text()) = '{text}']"
+            By.XPATH, f"//button[normalize-space(text()) = '{text}']"
         )
         self.assertTrue(button)

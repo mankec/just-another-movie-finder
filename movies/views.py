@@ -23,7 +23,7 @@ env = Env()
 def index(request):
     session = request.session
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(session["movie_ids"], 5)
+    paginator = Paginator(session["movie_ids"], 24)
     page_obj = paginator.get_page(page_number)
     movie_ids = paginator.page(page_number).object_list
     movies = Movie.objects.filter(tvdb_id__in=movie_ids)
@@ -31,6 +31,7 @@ def index(request):
         {
             "movie": m,
             "on_watchlist": m.remote_ids() in session["movies_on_watchlist_remote_ids"],
+            "added_to_watchlist": m.tvdb_id in session["movies_added_to_watchlist_ids"],
         }
         for m in  movies
     ]
@@ -68,6 +69,9 @@ def add_to_watchlist(request, movie_id):
     session = request.session
     movie_logger = session["movie_logger"]
     MovieLoggerCreator(session).add_to_watchlist(movie)
+    ids = session["movies_added_to_watchlist_ids"]
+    ids.append(movie_id)
+    session["movies_added_to_watchlist_ids"] = ids
     return JsonResponse({
         "status": HTTPStatus.OK.value,
         "message": f"'{movie.title}' has been added to {movie_logger}'s watchlist."
