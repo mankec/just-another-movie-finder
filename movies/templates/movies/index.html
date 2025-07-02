@@ -3,89 +3,91 @@
 {% load custom_tags %}
 
 {% block content %}
-  <div class="grid grid-cols-12 gap-y-12 mb-12">
+  <div class="grid grid-cols-12 gap-y-12 mb-22 ml-18">
     {% for result in results %}
       {% with result.movie as movie %}
         <div
-          class="col-span-6 flex justify-center"
+          class="w-full col-span-6 flex flex-col items-center"
           id="{{ movie.slug }}"
         >
-          <div class="w-3/4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <div>
-              <img class="p-8 rounded-t-lg hover:cursor-pointer" src="{{ movie.poster }}" alt="product image" />
-            </div>
-            <div class="flex flex-col justify-between flex-grow gap-y-6 px-5 pb-5">
-              <div>
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                  {{ movie.title }} ({{ movie.year }})
-                </h5>
+          <h3 class="text-xl w-150 border-b-4">
+            {{ movie.title }} ({{ movie.year }})
+          </h3>
+          <div class="flex">
+            <div class="w-65 p-1 border-x-4 border-b-4 border-white">
+              <div class="relative">
+                <img src="{{ movie.poster }}" alt="product image" />
+                <button
+                  class="bg-[rgba(106,187,90,0.75)] w-full h-13 absolute bottom-0 cursor-pointer font-bold"
+                  id="add-to-watchlist-{{ movie.tvdb_id }}"
+                  :class="{
+                    'bg-[rgba(106,187,90,0.90)]': added || onWatchlist,
+                    'hover:cursor-default': added || onWatchlist,
+                    'hover:bg-[rgba(106,187,90,0.90)]': ! added && ! onWatchlist,
+                  }"
+                  x-data="{
+                    onWatchlist: `{{ result.on_watchlist }}` === 'True',
+                    added: `{{ result.added_to_watchlist }}` === 'True',
+                    loading: false,
+                    error: false,
+                  }"
+                  x-on:click="
+                    if (onWatchlist || added) {
+                      return;
+                    }
+                    loading = true;
+                    fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                      },
+                    })
+                    .then(response => response.json())
+                    .then(response => {
+                      loading = false;
+                      if (response.status == 200) {
+                        added = true;
+                        disabled = true;
+                        const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
+                        $showFlashMessage(flashMessageHTML, response.message);
+                      } else {
+                        const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
+                        $showFlashMessage(flashMessageHTML, response.message);
+                      }
+                    });
+                  "
+                  x-text="
+                    onWatchlist ? 'On watchlist' :
+                    added ? 'Added to watchlist' :
+                    loading ? 'Adding to watchlist...' :
+                    'Add to watchlist';
+                  "
+                >
+                </button>
               </div>
-              <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ movie.runtime }} min</span>
-                {% if result.on_watchlist %}
-                  <button
-                    class="text-white bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-800 dark:focus:ring-green-800"
-                    disabled="true"
-                  >
-                    Already on watchlist
-                  </button>
-                {% else %}
-                  <button
-                    class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:focus:ring-green-800"
-                    id="add-to-watchlist-{{ movie.tvdb_id }}"
-                    :class="{
-                      'dark:hover:bg-green-800 cursor-pointer': !disabled,
-                      'dark:bg-green-800': disabled,
-                    }"
-                    :disabled="disabled"
-                    x-data="{
-                      loading: false,
-                      added: false,
-                      error: false,
-                      disabled: false,
-                    }"
-                    x-on:click="
-                      loading = true;
-                      fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/x-www-form-urlencoded',
-                          'Accept': 'application/json',
-                          'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                      })
-                      .then(response => response.json())
-                      .then(response => {
-                        loading = false;
-                        if (response.status == 200) {
-                          added = true;
-                          disabled = true;
-                          const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
-                          $showFlashMessage(flashMessageHTML, response.message);
-                        } else {
-                          const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
-                          $showFlashMessage(flashMessageHTML, response.message);
-                        }
-                      });
-                    "
-                    x-text="
-                      added ? 'Added to watchlist' :
-                      loading ? 'Adding to watchlist...' :
-                      'Add to watchlist';
-                    "
-                  >
-                    Add to watchlist
-                  </button>
-                {% endif %}
+            </div>
+            <div class="w-85 pt-2 pl-3 text-md">
+              <div>
+                <p>Country: {{ movie.country }}</p>
+                <p>Language: {{ movie.language }}</p>
+                <p>Runtime: {{ movie.runtime }} minutes</p>
+                <p>
+                  <span>Genres:</span>
+                  {% for genre in movie.genres.all %}
+                    {{ genre.name }}{% if not forloop.last %}, {%endif %}
+                  {% endfor %}
+                </p>
               </div>
             </div>
           </div>
-        </div>
+      </div>
       {% endwith %}
     {% endfor %}
   </div>
   <div class="flex justify-center">
-    <div class="flex items-center justify-evenly mt-2 xs:mt-0 w-1/3">
+    <div class="flex items-center justify-between mt-2 xs:mt-0 w-2/3">
       <div class="flex items-center">
         {% if page_obj.has_previous %}
           <svg

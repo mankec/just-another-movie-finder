@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 from copy import deepcopy
 
 from movies.models import Movie
@@ -15,4 +13,3 @@ def create_dummy_movie(original):
     new_movie.tmdb_id = num
     new_movie.save()
     return new_movie
->>>>>>> 54ab756 (feat: mark movies that are already on user's watchlist)
