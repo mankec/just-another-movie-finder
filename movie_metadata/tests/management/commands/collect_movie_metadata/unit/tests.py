@@ -8,7 +8,7 @@ from django.test import TestCase
 from requests.exceptions import HTTPError
 
 from movie_metadata.services import MovieMetadata
-from core.tests.utils import stub_request, stub_multiple_requests, mock_response
+from core.tests.utils import stub_requests, mock_response
 from core.files.utils import read_json_file, create_empty_json_file, write_to_json_file
 
 class CollectMovieMetadataTest(TestCase):
@@ -67,7 +67,7 @@ class CollectMovieMetadataTest(TestCase):
             self.movie_1_file_content["data"],
             self.movie_2_file_content["data"],
         ]
-        with stub_multiple_requests(self.tvdb, responses=responses):
+        with stub_requests(self.tvdb, responses=responses):
             self._collect_movie_metadata()
         data = read_json_file(self.metadata_file)
         self.assertEqual(data, expected)
@@ -81,7 +81,7 @@ class CollectMovieMetadataTest(TestCase):
             self.movie_1_file_content["data"],
             self.movie_2_file_content["data"],
         ]
-        with stub_multiple_requests(self.tvdb, responses=responses):
+        with stub_requests(self.tvdb, responses=responses):
             self._collect_movie_metadata()
         data = read_json_file(self.metadata_file)
         self.assertEqual(data, expected)
@@ -92,7 +92,11 @@ class CollectMovieMetadataTest(TestCase):
         ]
         write_to_json_file(backup_data, self.backup_file)
 
-        response = {"body": self.movie_2_file_content}
+        mocked_responses = [
+            {
+                "body": self.movie_2_file_content
+            },
+        ]
         expected = [
             self.movie_1_file_content["data"],
             self.movie_2_file_content["data"],
@@ -101,7 +105,7 @@ class CollectMovieMetadataTest(TestCase):
             "movie_metadata.management.commands.collect_movie_metadata.Command._is_file_corrupted",
             return_value=True
         ):
-            with stub_request(self.tvdb, response=response):
+            with stub_requests(self.tvdb, responses=mocked_responses):
                 self._collect_movie_metadata()
         data = read_json_file(self.metadata_file)
         self.assertEqual(data, expected)
@@ -122,7 +126,7 @@ class CollectMovieMetadataTest(TestCase):
             self.movie_1_file_content["data"],
             self.movie_2_file_content["data"],
         ]
-        with stub_multiple_requests(self.tvdb, responses=responses):
+        with stub_requests(self.tvdb, responses=responses):
             self._collect_movie_metadata()
         data = read_json_file(self.metadata_file)
         not_found_movie_ids = read_json_file(self.not_found_movie_ids_file)

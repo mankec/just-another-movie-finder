@@ -48,18 +48,7 @@ def mock_response(response):
     return mock_response
 
 
-def stub_request(klass_or_instance, *, response):
-    if inspect.isclass(klass_or_instance):
-        klass = klass_or_instance
-    else:
-        klass = klass_or_instance.__class__
-    return patch(
-        f"{klass.__module__}.send_request",
-        return_value=mock_response(response),
-    )
-
-# TODO: This is the only method you need, stub_request and stub_request_exception are redundant
-def stub_multiple_requests(klass_or_instance, *, responses: list):
+def stub_requests(klass_or_instance, *, responses: list):
     if inspect.isclass(klass_or_instance):
         klass = klass_or_instance
     else:
@@ -67,17 +56,6 @@ def stub_multiple_requests(klass_or_instance, *, responses: list):
     return patch(
         f"{klass.__module__}.send_request",
         side_effect=map(mock_response, responses)
-    )
-
-
-def stub_request_exception(klass_or_instance, *, exception):
-    if inspect.isclass(klass_or_instance):
-        klass = klass_or_instance
-    else:
-        klass = klass_or_instance.__class__
-    return patch(
-        f"{klass.__module__}.send_request",
-        side_effect=exception,
     )
 
 

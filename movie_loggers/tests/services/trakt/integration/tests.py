@@ -8,7 +8,7 @@ from django.urls import reverse
 from project.settings import SKIP_EXTERNAL_TESTS
 from core.sessions.utils import initialize_session
 from core.constants import ONE_DAY_IN_SECONDS
-from core.tests.utils import stub_request, stub_request_exception, mock_response
+from core.tests.utils import stub_requests, mock_response
 from core.tests.mixins import CustomAssertionsMixin
 from movie_loggers.services.trakt.services import Trakt
 from movies.models import Movie
@@ -32,16 +32,18 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
         token = "token"
         refresh_token = "refresh_token"
         token_expires_at = int(unix_time())
-        mocked_response = {
-            "body": {
-                "access_token": token,
-                "refresh_token":refresh_token,
-                "created_at": token_expires_at,
-            }
-        }
+        mocked_responses = [
+            {
+                "body": {
+                    "access_token": token,
+                    "refresh_token":refresh_token,
+                    "created_at": token_expires_at,
+                }
+            },
+        ]
         message = "Successfully signed with Trakt!"
         url = reverse("oauth:index")
-        with stub_request(self.trakt, response=mocked_response):
+        with stub_requests(self.trakt, responses=mocked_responses):
             response = self.client.get(url, query_params={"code": "code"}, follow=True)
             session = self.client.session
             self.assertFlashMessage(response, message)
@@ -68,7 +70,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
             }
         }
         exception = HTTPError(response=mock_response(mocked_response))
-        with stub_request_exception(self.trakt, exception=exception):
+        with stub_requests(self.trakt, responses=[exception]):
             response = self.client.post(url)
             self.assertRedirects(
                 response,
