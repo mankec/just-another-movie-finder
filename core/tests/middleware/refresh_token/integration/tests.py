@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 from django.test import TestCase, Client
 from freezegun import freeze_time
 
-from core.tests.utils import stub_request
+from core.tests.utils import stub_requests
 from core.sessions.utils import initialize_session
 from project.settings import TIME_ZONE
 from movie_loggers.tests.services.constants import DEFAULT_TEST_MOVIE_LOGGER
@@ -17,13 +17,15 @@ class RefreshTokenMiddlewareIntegrationTestCase(TestCase):
         refresh_token_2 = "refresh_token_2"
         time_zone = ZoneInfo(TIME_ZONE)
         tomorrow = datetime.now(time_zone) + timedelta(days=1)
-        mocked_response = {
-            "body": {
-                "access_token": "token",
-                "refresh_token": refresh_token_2,
-                "created_at": int(tomorrow.timestamp()),
+        mocked_responses = [
+            {
+                "body": {
+                    "access_token": "token",
+                    "refresh_token": refresh_token_2,
+                    "created_at": int(tomorrow.timestamp()),
+                }
             }
-        }
+        ]
         session = client.session
         initialize_session(session)
         session["movie_logger"] = DEFAULT_TEST_MOVIE_LOGGER
@@ -36,6 +38,6 @@ class RefreshTokenMiddlewareIntegrationTestCase(TestCase):
         self.assertEqual(session["refresh_token"], refresh_token_1)
 
         with freeze_time(tomorrow):
-            with stub_request(movie_logger, response=mocked_response):
+            with stub_requests(movie_logger, responses=mocked_responses):
                 client.get("/")
                 self.assertEqual(client.session["refresh_token"], refresh_token_2)
