@@ -10,7 +10,4 @@ def index(request):
 
 
 def error(request):
-    ctx = {
-        "headerless": True
-    }
-    return render(request, "core/error.html", ctx)
+    return render(request, "core/error.html")
