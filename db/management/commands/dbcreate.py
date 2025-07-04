@@ -7,8 +7,7 @@ from db.constants import POSTGRES_DEFAULT_DB
 env = Env()
 
 class Command(BaseCommand):
-    # TODO: This is wrong description
-    help = "Drop and then create database again. Useful when you want to migrate from a scratch."
+    help = "Create database using environment variables."
 
     def handle(self, *_args, **_options):
         conninfo = f"dbname={POSTGRES_DEFAULT_DB} user={env.str("POSTGRES_USER")} password={env.str("POSTGRES_PASSWORD")} host={env.str("POSTGRES_HOST")}"
