@@ -12,6 +12,7 @@ from core.tests.utils import (
     fill_and_submit_movie_finder_form,
 )
 from core.tests.mixins import CustomAssertionsMixin, CustomSeleniumMixin
+from core.enums import MovieStatus
 from movie_loggers.services.trakt.services import Trakt
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
@@ -228,7 +229,7 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = "Watched"
+        text = MovieStatus.WATCHED.value
         span = self.browser.find_element(
             By.XPATH,
             f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
@@ -259,7 +260,7 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = "On watchlist"
+        text = MovieStatus.ON_WATCHLIST.value
         button = self.browser.find_element(
             By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
         )
@@ -300,14 +301,13 @@ class TraktSystemTestCase(
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
 
-        text = "Watched"
+        text = MovieStatus.WATCHED.value
         span = self.browser.find_element(
             By.XPATH,
             f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
         )
         self.assertTrue(span)
-        # TODO: Put this into enum e.g. MovieStatus
-        text = "On watchlist"
+        text = MovieStatus.ON_WATCHLIST.value
         button = self.browser.find_element(
             By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
         )
