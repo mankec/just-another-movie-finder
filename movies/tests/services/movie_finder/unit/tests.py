@@ -1,9 +1,14 @@
 from django.test import TestCase
 
-from movies.models import Movie, Genre
-from movies.services.movie_finder.services import MovieFinder
 from core.tests.utils import create_dummy_movie
-from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME, MATCH_FILTERS_ALL
+from core.constants import (
+    DEFAULT_YEAR,
+    DEFAULT_LANGUAGE,
+    DEFAULT_LANGUAGE_ALPHA_3,
+    DEFAULT_COUNTRY_ALPHA_3,
+)
+from movies.models import Movie, Genre, Country
+from movies.services.movie_finder.services import MovieFinder
 
 class MovieFinderUnitTestCase(TestCase):
     fixtures = ["movies.json", "genres.json", "countries.json"]
@@ -12,77 +17,124 @@ class MovieFinderUnitTestCase(TestCase):
         self.genre_drama = Genre.objects.get(name="Drama")
         self.genre_reality = Genre.objects.get(name="Reality")
         self.genre_fantasy = Genre.objects.get(name="Fantasy")
+        self.genre_action = Genre.objects.get(name="Action")
+        self.runtime = 90
 
-        self.movie_without_genres = Movie.objects.get(pk=1)
-        self.movie_drama = create_dummy_movie(self.movie_without_genres)
-        self.movie_fantasy = create_dummy_movie(self.movie_without_genres)
-        self.movie_drama_reality = create_dummy_movie(self.movie_without_genres)
-        self.movie_drama_fantasy = create_dummy_movie(self.movie_drama)
+        self.serbian_movie_drama_reality = Movie.objects.get(pk=1)
+        self.serbian_movie_drama_reality.runtime = self.runtime
+        self.serbian_movie_drama_reality.genres.add(self.genre_drama, self.genre_reality)
+        self.serbian_movie_drama_reality.save()
 
-        self.movie_drama.genres.add(self.genre_drama)
-        self.movie_drama.save()
-        self.movie_fantasy.genres.add(self.genre_fantasy)
-        self.movie_fantasy.save()
-        self.movie_drama_reality.genres.add(self.genre_drama, self.genre_reality)
-        self.movie_drama_reality.save()
-        self.movie_drama_fantasy.genres.add(self.genre_drama, self.genre_fantasy)
-        self.movie_drama_fantasy.save()
+        self.irish_movie_drama_fantasy = create_dummy_movie(
+            self.serbian_movie_drama_reality
+        )
+        self.irish_movie_drama_fantasy.country = Country.objects.get(name="Ireland")
+        self.irish_movie_drama_fantasy.year = DEFAULT_YEAR
+        self.irish_movie_drama_fantasy.runtime = self.runtime + 10
+        self.irish_movie_drama_fantasy.genres.add(self.genre_drama, self.genre_fantasy)
+        self.irish_movie_drama_fantasy.save()
 
-        self.default_year = self.movie_without_genres.year
+        self.exclude_movie = create_dummy_movie(
+            self.serbian_movie_drama_reality
+        )
+        self.exclude_movie.country = Country.objects.get(name="Spain")
+        self.exclude_movie.genres.add(self.genre_action)
+        self.exclude_movie.save()
 
         self.params = {
-            "countries": [],
-            "languages": [],
+            "country": "",
+            "language": "",
             "genres": [],
-            "exclude_countries": [],
-            "exclude_languages": [],
             "exclude_genres": [],
             "year_from": "",
             "year_to": "",
             "runtime_min": "",
             "runtime_max": "",
-            "match_filters": MATCH_FILTERS_SOME,
         }
 
-    #TODO: Write test that covers all fields in both 'some' and 'all' cases.
-    def test_find_movies_that_match_some_filters(self):
-        self.params["year_from"] = self.default_year
-        self.params["year_to"] = self.default_year
-        movies = MovieFinder(**self.params).get_movie_ids()
-        self.assertTrue(movies)
-        self.assertEqual(len(movies), Movie.objects.count())
-
-        self.movie_without_genres.year = self.default_year - 1
-        self.movie_without_genres.save()
-        self.movie_fantasy.year = self.default_year - 1
-        self.movie_fantasy.save()
-        self.params["genres"] = [self.genre_drama.slug]
-        movie_ids = MovieFinder(**self.params).get_movie_ids()
-        self.assertIn(self.movie_drama.tvdb_id, movie_ids)
-        self.assertIn(self.movie_drama_reality.tvdb_id, movie_ids)
-        self.assertIn(self.movie_drama_fantasy.tvdb_id, movie_ids)
-        self.assertNotIn(self.movie_without_genres.tvdb_id, movie_ids)
-        self.assertNotIn(self.movie_fantasy.tvdb_id, movie_ids)
-
-    def test_find_movies_that_match_some_filters_with_excluding_filters(self):
-        self.params["year_from"] = self.default_year
-        self.params["year_to"] = self.default_year
-        movie_ids = MovieFinder(**self.params).get_movie_ids()
-        self.assertEqual(len(movie_ids), Movie.objects.count())
-
-        self.movie_fantasy.save()
-        self.params["genres"] = [self.genre_drama.slug]
-        self.params["exclude_genres"] = [self.genre_reality.slug, self.genre_fantasy.slug]
-        movie_ids = MovieFinder(**self.params).get_movie_ids()
-        self.assertIn(self.movie_drama.tvdb_id, movie_ids)
-        self.assertIn(self.movie_without_genres.tvdb_id, movie_ids)
-        self.assertNotIn(self.movie_fantasy.tvdb_id, movie_ids)
-        self.assertNotIn(self.movie_drama_fantasy.tvdb_id, movie_ids)
-        self.assertNotIn(self.movie_drama_reality.tvdb_id, movie_ids)
-
-    def test_find_movies_that_match_all_filters(self):
-        self.params["match_filters"] = MATCH_FILTERS_ALL
+    def test_find_movies_without_excluding_genres(self):
+        self.params["country"] = self.serbian_movie_drama_reality.country.id
+        self.params["language"] = DEFAULT_LANGUAGE_ALPHA_3
         self.params["genres"] = [self.genre_drama.slug, self.genre_reality.slug]
+
         movie_ids = MovieFinder(**self.params).get_movie_ids()
-        self.assertEqual(len(movie_ids), 1)
-        self.assertEqual(movie_ids[0], self.movie_drama_reality.tvdb_id)
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertNotIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_with_excluding_genres(self):
+        self.params["genres"] = [self.genre_drama.slug]
+        self.params["exclude_genres"] = [self.genre_fantasy.slug, self.genre_action.slug]
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertNotIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+        self.params["genres"] = [self.genre_drama.slug]
+        self.params["exclude_genres"] = [self.genre_action.slug]
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_only_year_from_is_present(self):
+        self.exclude_movie.year = DEFAULT_YEAR - 10
+        self.exclude_movie.save()
+        self.params["year_from"] = DEFAULT_YEAR
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_year_range(self):
+        self.exclude_movie.year = DEFAULT_YEAR + 10
+        self.exclude_movie.save()
+        self.params["year_from"] = DEFAULT_YEAR
+        self.params["year_to"] = DEFAULT_YEAR + 5
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_only_year_to_is_present(self):
+        self.exclude_movie.year = DEFAULT_YEAR + 10
+        self.exclude_movie.save()
+        self.params["year_to"] = DEFAULT_YEAR
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_only_runtime_min_is_present(self):
+        self.exclude_movie.runtime = self.runtime - 10
+        self.exclude_movie.save()
+        self.params["runtime_min"] = self.runtime
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_runtime_range(self):
+        self.exclude_movie.runtime = self.runtime - 10
+        self.exclude_movie.save()
+        self.params["runtime_min"] = self.runtime
+        self.params["runtime_max"] = self.runtime + 30
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
+
+    def test_find_movies_only_runtime_max_is_present(self):
+        self.exclude_movie.runtime = self.runtime + 10
+        self.exclude_movie.save()
+        self.params["runtime_max"] = self.runtime
+
+        movie_ids = MovieFinder(**self.params).get_movie_ids()
+        self.assertIn(self.serbian_movie_drama_reality.tvdb_id, movie_ids)
+        self.assertNotIn(self.irish_movie_drama_fantasy.tvdb_id, movie_ids)
+        self.assertNotIn(self.exclude_movie.tvdb_id, movie_ids)
