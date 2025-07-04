@@ -5,8 +5,7 @@ from django.utils.html import format_html, format_html_join
 
 class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
     def render(self, name, value, attrs=None, renderer=None):
-        if value is None:
-            value = []
+        selected = value
         html = []
         html.append(
             format_html("""
@@ -58,7 +57,7 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
                 """,
                 (
                     {
-                        "value": value,
+                        "value": value.replace("-", "_"),
                         "name": name,
                         "label": label,
                     }
@@ -71,8 +70,7 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
 
 class PrettyRadioSelect(RadioSelect):
     def render(self, name, value, attrs=None, renderer=None):
-        if value is None:
-            value = []
+        selected = value
         html = []
         html.append("<div class='flex flex-col gap-y-3'>")
         html.append(
@@ -98,10 +96,10 @@ class PrettyRadioSelect(RadioSelect):
                 """,
                 (
                     {
-                        "value": value,
+                        "value": value.replace("-", "_"),
                         "label": label,
-                        "name": self.attrs["name"], # TODO: Use 'name' from params
-                        "checked": "checked" if value == self.attrs["checked"] else "",
+                        "name": name,
+                        "checked": "checked" if value == selected else "",
                         "helper": format_html("""
                             <p 
                                 id="helper-radio-text"

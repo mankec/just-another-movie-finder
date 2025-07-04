@@ -132,7 +132,6 @@ class MovieFinderForm(forms.Form):
     match_filters = forms.ChoiceField(
         widget=PrettyRadioSelect(
             attrs={
-                "name": "match_filters",
                 "checked": MATCH_FILTERS_SOME,
                 "helpers": {
                     MATCH_FILTERS_SOME: "Exclude filters will be applied.",
@@ -144,6 +143,7 @@ class MovieFinderForm(forms.Form):
             (MATCH_FILTERS_SOME, "Match some filters"),
             (MATCH_FILTERS_ALL, "Match all filters"),
         ],
+        initial=MATCH_FILTERS_SOME,
         label="",
         required=False,
     )
