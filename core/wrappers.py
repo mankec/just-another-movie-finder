@@ -10,7 +10,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 
 from core.url.utils import is_url
-
+from core.environments.utils import is_production
 
 def handle_exception(func_or_message: FunctionType | str, message: str = None, log=True):
     func = func_or_message if callable(func_or_message) else None
@@ -46,12 +46,12 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                             return redirect(referer)
                         return redirect("/")
                     elif request.method == HTTPMethod.GET.value:
-                        # TODO: This should depend on environment. Don't show message in production and test environments.
-                        context = {
-                            "message": message,
-                            "headerless": True
-                        }
-                        return render(request, "core/error.html", context)
+                        if not is_production():
+                            ctx = {
+                                "message": message,
+                            }
+                            return render(request, "core/error.html", ctx)
+                        return render(request, "core/error.html")
                 if log:
                     tb = traceback.extract_tb(error.__traceback__, limit=-1)
                     fs: FrameSummary = tb[0]
