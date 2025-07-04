@@ -3,18 +3,18 @@ from selenium.webdriver.common.by import By
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from project.settings import CHROME_OPTIONS
-from core.tests.mixins import CustomAssertionsMixin
-from core.tests.utils import (
-    stub_requests,
-    selenium_sign_in_user,
-    fill_and_submit_movie_finder_form,
-)
+from core.tests.mixins import CustomAssertionsMixin, CustomSeleniumMixin
+from core.tests.utils import stub_requests, fill_and_submit_movie_finder_form
 from movie_loggers.services.simkl.services import Simkl
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 
 
-class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
+class SimklSystemTestCase(
+    StaticLiveServerTestCase,
+    CustomAssertionsMixin,
+    CustomSeleniumMixin,
+):
     fixtures = ["movies.json", "countries.json", "genres.json"]
 
     def setUp(self):
@@ -27,7 +27,7 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         super().tearDownClass()
 
     def test_adding_to_watchlist_success(self):
-        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        self.selenium_sign_in_user(MovieLogger.SIMKL.value)
         mocked_responses = [
             {
                 "body": []
@@ -55,7 +55,7 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
 
     def test_adding_to_watchlist_movie_not_found(self):
-        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        self.selenium_sign_in_user(MovieLogger.SIMKL.value)
         mocked_responses = [
             {
                 "body": []
@@ -84,7 +84,7 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             self.assertJsFlashMessage(message)
 
     def test_movie_is_marked_as_watched(self):
-        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        self.selenium_sign_in_user(MovieLogger.SIMKL.value)
         mocked_responses = [
             {
                 "body": {
@@ -112,7 +112,7 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         self.assertTrue(span)
 
     def test_movie_is_marked_as_on_watchlist(self):
-        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        self.selenium_sign_in_user(MovieLogger.SIMKL.value)
         mocked_responses = [
             {
                 "body": {
@@ -142,7 +142,7 @@ class SimklSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
 
     def test_movie_is_marked_as_watched_and_on_watchlist(self):
-        selenium_sign_in_user(self, MovieLogger.SIMKL.value)
+        self.selenium_sign_in_user(MovieLogger.SIMKL.value)
         mocked_responses = [
             {
                 "body": {
