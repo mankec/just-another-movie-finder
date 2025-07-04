@@ -1,4 +1,5 @@
 from http import HTTPMethod, HTTPStatus
+from enum import Enum
 
 from environs import Env
 from requests import Response
@@ -14,12 +15,15 @@ from movie_loggers.services.base import MovieLogger, AbstractMovieLogger
 env = Env()
 
 
+class SimklMovieStatus(Enum):
+    WATCHED = "completed"
+    ON_WATCHLIST = "plantowatch"
+
+
 class Simkl(AbstractMovieLogger):
     API_URL = "https://api.simkl.com"
     CLIENT_ID = env.str("SIMKL_CLIENT_ID", "")
     CLIENT_SECRET = env.str("SIMKL_CLIENT_SECRET", "")
-    MOVIE_STATUS_PLANTOWATCH = "plantowatch"
-    MOVIE_STATUS_COMPLETED = "completed"
     REQUIRED_HEADERS = {
         "simkl-api-key": CLIENT_ID,
     }
@@ -66,7 +70,7 @@ class Simkl(AbstractMovieLogger):
             payload = {
                 "movies": [
                     {
-                        "to": self.MOVIE_STATUS_PLANTOWATCH,
+                        "to": SimklMovieStatus.ON_WATCHLIST,
                         "title": movie.title,
                         "year": movie.year,
                         "ids": {
@@ -126,14 +130,14 @@ class Simkl(AbstractMovieLogger):
             return remote_ids
         movies = response_body["movies"]
         for d in movies:
-            if d["status"] == self.MOVIE_STATUS_COMPLETED:
+            if d["status"] == SimklMovieStatus.WATCHED:
                 if tvdb_id := d["movie"]["ids"].get("tvdb"):
                     remote_ids["watched"]["tvdb_ids"].append(tvdb_id)
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["watched"]["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):
                     remote_ids["watched"]["tmdb_ids"].append(tmdb_id)
-            elif d["status"] == self.MOVIE_STATUS_PLANTOWATCH:
+            elif d["status"] == SimklMovieStatus.ON_WATCHLIST:
                 if tvdb_id := d["movie"]["ids"].get("tvdb"):
                     remote_ids["on_watchlist"]["tvdb_ids"].append(tvdb_id)
                 if imdb_id := d["movie"]["ids"].get("imdb"):
