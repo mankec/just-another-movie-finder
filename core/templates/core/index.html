@@ -4,75 +4,57 @@
   <form
     action="{% url "movies:find" %}"
     method="GET"
-    class="ml-5"
+    class="ml-5 flex justify-center"
   >
     {% csrf_token %}
-    <div class="flex justify-center gap-x-5">
-      <div class="flex flex-col gap-y-5">
-        <div class="flex gap-x-5">
-          <div>
-            {{ movie_finder_form.countries.label }}
-            {{ movie_finder_form.countries }}
-          </div>
-          <div>
-            {{ movie_finder_form.languages.label }}
-            {{ movie_finder_form.languages }}
-          </div>
-          <div>
-            {{ movie_finder_form.genres.label }}
-            {{ movie_finder_form.genres }}
-          </div>
-        </div>
-        <div class="flex gap-x-5">
-          <div>
-            {{ movie_finder_form.exclude_countries.label }}
-            {{ movie_finder_form.exclude_countries }}
-          </div>
-          <div>
-            {{ movie_finder_form.exclude_languages.label }}
-            {{ movie_finder_form.exclude_languages }}
-          </div>
-          <div>
-            {{ movie_finder_form.exclude_genres.label }}
-            {{ movie_finder_form.exclude_genres }}
-          </div>
-        </div>
+    <div class="w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
+      <div class="col-span-12">
+        {{ movie_finder_form.country }}
       </div>
-      <div class="w-auto h-max grid grid-cols-12 gap-x-5 gap-y-5">
-        <div class="col-span-6">
-          {{ movie_finder_form.year_from.label }}
-          {{ movie_finder_form.year_from }}
-        </div>
-        <div class="col-span-6">
-          <span class="invisible">
-            {{ movie_finder_form.year_to.label }}
-          </span>
-          {{ movie_finder_form.year_to }}
-        </div>
+      <div class="col-span-12">
+        {{ movie_finder_form.language }}
+      </div>
+      <div class="col-span-6">
+        {{ movie_finder_form.genres.label }}
+        {{ movie_finder_form.genres }}
+      </div>
+      <div class="col-span-6">
+        {{ movie_finder_form.exclude_genres.label }}
+        {{ movie_finder_form.exclude_genres }}
+      </div>
+      <div class="col-span-6">
+        {{ movie_finder_form.year_from.label }}
+        {{ movie_finder_form.year_from }}
+      </div>
+      <div class="col-span-6">
+        <span class="invisible">
+          {{ movie_finder_form.year_to.label }}
+        </span>
+        {{ movie_finder_form.year_to }}
+      </div>
 
-        <div class="col-span-6">
-          {{ movie_finder_form.runtime_min.label }}
-          {{ movie_finder_form.runtime_min }}
-        </div>
-        <div class="col-span-6">
-          <span class="invisible">
-            {{ movie_finder_form.runtime_max.label }}
-          </span>
-          {{ movie_finder_form.runtime_max }}
-        </div>
+      <div class="col-span-6">
+        {{ movie_finder_form.runtime_min.label }}
+        {{ movie_finder_form.runtime_min }}
+      </div>
+      <div class="col-span-6">
+        <span class="invisible">
+          {{ movie_finder_form.runtime_max.label }}
+        </span>
+        {{ movie_finder_form.runtime_max }}
+      </div>
 
-        <div class="col-span-12">
-          {{ movie_finder_form.match_filters }}
-        </div>
+      <div class="col-span-12">
+        {{ movie_finder_form.match_filters }}
+      </div>
 
-        <div class="col-span-12 mt-2">
-          <button
-            type="submit"
-            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
-          >
-            Find movies
-          </button>
-        </div>
+      <div class="col-span-12 mt-2">
+        <button
+          type="submit"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
+        >
+          Find movies
+        </button>
       </div>
     </div>
   </form>

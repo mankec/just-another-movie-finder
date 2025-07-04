@@ -8,11 +8,12 @@
       "slug": "dummy-movie-1",
       "year": 2025,
       "poster": "https://artworks.thetvdb.com/banners/movies/1/posters/2170750.jpg",
-      "runtime": 90,
       "status": "Released",
       "last_updated": "2025-06-11 00:00:00",
       "keep_updated": true,
-      "country_id": 1,
+      "language": "Serbian",
+      "language_alpha_3": "srp",
+      "country_id": 205,
       "imdb_id": "imdb1",
       "tmdb_id": 1
     }

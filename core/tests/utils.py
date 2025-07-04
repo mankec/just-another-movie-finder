@@ -5,11 +5,11 @@ from typing import Literal
 from copy import deepcopy
 
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from django.contrib.sessions.models import Session
 
 from movie_loggers.tests.services.constants import DEFAULT_TEST_MOVIE_LOGGER
-from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
 from movies.models import Movie
 
 
@@ -60,17 +60,14 @@ def create_dummy_movie(original: Movie):
 def fill_and_submit_movie_finder_form(
     browser: WebDriver,
     *,
-    countries=[],
-    exclude_countries=[],
-    languages=[],
-    exclude_languages=[],
+    country="",
+    language="",
     genres=[],
     exclude_genres=[],
     year_from="",
     year_to="",
     runtime_min="",
     runtime_max="",
-    match_filters: Literal["some", "all"] = MATCH_FILTERS_SOME,
 ):
     def _search_and_click(name, text):
         search_input = browser.find_element(By.ID, f"search_{name}")
@@ -82,14 +79,12 @@ def fill_and_submit_movie_finder_form(
         input_id = label.get_attribute("for")
         browser.find_element(By.ID, input_id).click()
 
-    for country in countries:
-        _search_and_click("countries", country)
-    for country in exclude_countries:
-        _search_and_click("exclude_countries", country)
-    for language in languages:
-        _search_and_click("languages", language)
-    for language in exclude_languages:
-        _search_and_click("exclude_languages", language)
+    if country:
+        country_select = Select(browser.find_element(By.NAME, 'country'))
+        country_select.select_by_visible_text(country)
+    if language:
+        language_select = Select(browser.find_element(By.NAME, 'language'))
+        language_select.select_by_visible_text(language)
     for genre in genres:
         _search_and_click("genres", genre)
     for genre in exclude_genres:
@@ -103,7 +98,5 @@ def fill_and_submit_movie_finder_form(
     runtime_min_input.send_keys(runtime_min)
     runtime_max_input = browser.find_element(By.NAME, "runtime_max")
     runtime_max_input.send_keys(runtime_max)
-
-    browser.find_element(By.ID, f"radio_button_{match_filters}").click()
 
     browser.find_element(By.XPATH, '//button[@type="submit"]').click()

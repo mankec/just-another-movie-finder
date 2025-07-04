@@ -9,7 +9,7 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
         html = []
         html.append(
             format_html("""
-                <div class="bg-white rounded-lg shadow-sm w-60 dark:bg-gray-700">
+                <div class="bg-white rounded-lg shadow-sm dark:bg-gray-700">
                 <div class="p-3">
                     <label for="search_{name}" class="sr-only">Search</label>
                     <div class="relative">

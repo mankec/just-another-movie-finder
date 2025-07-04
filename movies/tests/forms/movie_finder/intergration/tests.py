@@ -9,7 +9,6 @@ from core.constants import (
     DEFAULT_COUNTRY_ALPHA_3,
     DEFAULT_LANGUAGE_ALPHA_3,
 )
-from movies.forms.movie_finder.forms import MATCH_FILTERS_SOME
 from movies.models import Genre
 
 
@@ -21,17 +20,14 @@ class MovieFinderFormIntegrationTestCase(TestCase, CustomAssertionsMixin):
         self.find_url = reverse("movies:find")
         self.movies_url = reverse("movies:index")
         self.params = {
-            "countries": [],
-            "languages": [],
+            "country": "",
+            "language": "",
             "genres": [],
-            "exclude_countries": [],
-            "exclude_languages": [],
             "exclude_genres": [],
             "year_from": "",
             "year_to": "",
             "runtime_min": "",
             "runtime_max": "",
-            "match_filters": MATCH_FILTERS_SOME,
         }
 
 
@@ -87,28 +83,6 @@ class MovieFinderFormIntegrationTestCase(TestCase, CustomAssertionsMixin):
         self.assertFlashMessage(response, message)
 
         self.params["year_to"] = ""
-        response = self.client.get(self.find_url, query_params=self.params, follow=True)
-        self.assertRedirects(response, self.movies_url)
-
-    def test_validation_same_country_in_include_and_exclude_filters(self):
-        message = f"You have {DEFAULT_COUNTRY} in both included and excluded countries."
-        self.params["countries"].append(DEFAULT_COUNTRY_ALPHA_3)
-        self.params["exclude_countries"].append(DEFAULT_COUNTRY_ALPHA_3)
-        response = self.client.get(self.find_url, query_params=self.params, follow=True)
-        self.assertFlashMessage(response, message)
-
-        self.params["countries"] = []
-        response = self.client.get(self.find_url, query_params=self.params, follow=True)
-        self.assertRedirects(response, self.movies_url)
-
-    def test_validation_same_language_in_include_and_exclude_filters(self):
-        message = f"You have {DEFAULT_LANGUAGE} in both included and excluded languages."
-        self.params["languages"].append(DEFAULT_LANGUAGE_ALPHA_3)
-        self.params["exclude_languages"].append(DEFAULT_LANGUAGE_ALPHA_3)
-        response = self.client.get(self.find_url, query_params=self.params, follow=True)
-        self.assertFlashMessage(response, message)
-
-        self.params["languages"] = []
         response = self.client.get(self.find_url, query_params=self.params, follow=True)
         self.assertRedirects(response, self.movies_url)
 
