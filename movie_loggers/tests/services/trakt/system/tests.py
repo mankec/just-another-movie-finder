@@ -9,15 +9,18 @@ from project.settings import CHROME_OPTIONS
 from core.tests.utils import (
     stub_requests,
     mock_response,
-    selenium_sign_in_user,
-    fill_and_submit_movie_finder_form
+    fill_and_submit_movie_finder_form,
 )
-from core.tests.mixins import CustomAssertionsMixin
+from core.tests.mixins import CustomAssertionsMixin, CustomSeleniumMixin
 from movie_loggers.services.trakt.services import Trakt
 from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 
-class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
+class TraktSystemTestCase(
+    StaticLiveServerTestCase,
+    CustomAssertionsMixin,
+    CustomSeleniumMixin,
+):
     fixtures = ["movies.json", "countries.json", "genres.json"]
 
     def setUp(self):
@@ -30,7 +33,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         super().tearDownClass()
 
     def test_adding_to_watchlist_success(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         mocked_responses = [
             {
                 "body": [],
@@ -66,7 +69,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         self.refuteJsFlashMessage()
 
     def test_adding_to_watchlist_movie_not_found(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         mocked_responses = [
             {
                 "body": [],
@@ -101,7 +104,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             self.assertJsFlashMessage(message)
 
     def test_account_is_locked(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         mocked_exception_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -136,7 +139,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             self.assertJsFlashMessage(message)
 
     def test_account_is_deactivated(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         mocked_exception_response = {
             "body": {},
             "status_code": HTTPStatus.LOCKED.value,
@@ -171,7 +174,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             self.assertJsFlashMessage(message)
 
     def test_vip_account_reached_limit(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         mocked_exception_response = {
             "body": {},
             "status_code": Trakt.HTTP_STATUS_CODE_VIP_ENHANCED,
@@ -203,7 +206,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
             self.assertJsFlashMessage(message)
 
     def test_movie_is_marked_as_watched(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         total_pages = 1
         mocked_responses = [
             {
@@ -234,7 +237,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
 
 
     def test_movie_is_marked_as_on_watchlist(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         total_pages = 1
         mocked_responses = [
             {
@@ -265,7 +268,7 @@ class TraktSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
         self.refuteJsFlashMessage()
 
     def test_movie_is_marked_as_watched_and_on_watchlist(self):
-        selenium_sign_in_user(self, MovieLogger.TRAKT.value)
+        self.selenium_sign_in_user(MovieLogger.TRAKT.value)
         total_pages = 1
         mocked_responses = [
             {

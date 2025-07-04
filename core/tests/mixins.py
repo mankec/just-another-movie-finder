@@ -5,6 +5,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from django.http import HttpResponse
 from django.contrib.messages import get_messages
+from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
+
+from core.url.utils import build_url
 
 
 class CustomAssertionsMixin:
@@ -25,3 +29,17 @@ class CustomAssertionsMixin:
 
     def refuteJsFlashMessage(self: TestCase):
         self.assertFalse(self.browser.find_elements(By.ID, "flash-message-text"))
+
+
+class CustomSeleniumMixin:
+    def selenium_sign_in_user(self: TestCase, movie_logger):
+        try:
+            url = reverse("oauth:selenium_sign_in", kwargs={
+                "movie_logger": movie_logger,
+            })
+            self.browser.get(self.selenium_url(url))
+        except NoReverseMatch:
+            self.fail("This URL is only available in test environment. Run `DJANGO_ENV=test python manage.py test` to be able to access it.")
+
+    def selenium_url(self: TestCase, url) -> str:
+        return build_url(self.live_server_url, url)
