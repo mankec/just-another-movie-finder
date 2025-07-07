@@ -9,9 +9,5 @@ class InitializeSessionMiddleware:
         session = request.session
         if not session.keys():
             initialize_session(session)
-        elif sorted(session.keys()) != sorted(DEFAULT_SESSION_DATA.keys()):
-            raise ValueError(
-                "Session keys are not the same as in DEFAULT_SESSION_DATA."
-            )
         response = self.get_response(request)
         return response

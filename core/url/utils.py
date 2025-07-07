@@ -5,7 +5,7 @@ def build_url(*path_segments):
     return "/".join(str(path_segment).strip("/") for path_segment in path_segments)
 
 
-def build_url_with_query(url, query):
+def build_url_with_query(url, query: dict):
     return f"{url}?{urlencode(query)}"
 
 

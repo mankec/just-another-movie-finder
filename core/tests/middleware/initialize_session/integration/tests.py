@@ -27,11 +27,3 @@ class InitializeSessionMiddlewareIntegrationTestCase(TestCase):
             self.client.session["movie_logger"],
             DEFAULT_TEST_MOVIE_LOGGER
         )
-
-    def test_raise_if_session_keys_are_not_the_same_as_in_default_session_data(self):
-        session = self.client.session
-        session["movie_logger"] = DEFAULT_TEST_MOVIE_LOGGER
-        session.save()
-        message = "Session keys are not the same as in DEFAULT_SESSION_DATA."
-        with self.assertRaisesMessage(ValueError, message):
-            self.client.get("/")

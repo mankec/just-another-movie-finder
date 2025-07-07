@@ -3,38 +3,24 @@ from http import HTTPMethod, HTTPStatus
 from environs import Env
 from requests.exceptions import HTTPError
 
+from project.settings import USER_AGENT
 from core.wrappers import handle_exception
-from core.url.utils import build_url
+from core.url.utils import build_url, build_url_with_query
 from core.requests.utils import send_request
 
 env = Env()
 
 class MovieMetadata:
-    class TVDB:
+    class TMDB:
         def __init__(self):
-            self.api_url = "https://api4.thetvdb.com/v4/"
-            self.api_key = env.str("TVDB_API_KEY", "")
-            self.token = env.str("TVDB_TOKEN", "") or self._fetch_tokens()
-            self.total_movies = self._fetch_total_movies()
+            self.api_url = "https://api.themoviedb.org/3/"
+            self.api_key = env.str("TMDB_KEY", "")
+            self.token = env.str("TMDB_TOKEN", "")
+            self.latest_movie_id = self._fetch_latest_movie_id()
 
         @handle_exception
-        def _fetch_tokens(self):
-            url = build_url(self.api_url, "login")
-            payload = {
-                "apikey": self.api_key,
-            }
-            response = send_request(
-                method=HTTPMethod.POST.value,
-                url= url,
-                payload=payload,
-            )
-            response_body = response.json()
-            # Save token in .envrc
-            # print(response_body["data"]["token"])
-
-        @handle_exception
-        def _fetch_total_movies(self):
-            url = build_url(self.api_url, "movies")
+        def _fetch_latest_movie_id(self):
+            url = build_url(self.api_url, "movie/latest")
             headers = {
                 "Authorization": f"Bearer {self.token}",
             }
@@ -44,17 +30,26 @@ class MovieMetadata:
                 headers=headers,
             )
             response_body = response.json()
-            return response_body["links"]["total_items"]
+            return response_body["id"]
 
         @handle_exception
-        def fetch_extended(self, movie_id):
-            url = build_url(self.api_url, "movies", movie_id, "extended")
+        def fetch_details(self, movie_id):
+            url = build_url(self.api_url, "movie", movie_id)
+            query = {
+                "append_to_response": (
+                    "credits,images,keywords,recommendations,similar"
+                ),
+                "language": "en-US",
+                "include_image_language": "en,null"
+            }
+            url_with_query = build_url_with_query(url, query)
             headers = {
+                "User-Agent": USER_AGENT,
                 "Authorization": f"Bearer {self.token}",
             }
             response = send_request(
                 method=HTTPMethod.GET.value,
-                url=url,
+                url=url_with_query,
                 headers=headers,
             )
             response_body = response.json()
