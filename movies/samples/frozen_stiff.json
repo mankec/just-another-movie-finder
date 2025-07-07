@@ -1,424 +1,1228 @@
 {
-  "data": {
-    "id": 41834,
-    "name": "Frozen Stiff",
-    "slug": "frozen-stiff",
-    "image": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834.jpg",
-    "nameTranslations": [
-      "hrv",
-      "tur",
-      "eng",
-      "srp"
-    ],
-    "overviewTranslations": [
-      "hrv",
-      "tur",
-      "eng",
-      "srp",
-      "srp"
-    ],
-    "aliases": [],
-    "score": 549,
-    "runtime": 90,
-    "status": {
-      "id": 5,
-      "name": "Released",
-      "recordType": "movie",
-      "keepUpdated": true
+  "adult": false,
+  "backdrop_path": "/jtr93LYk6EITJzXH4RpTMOUtDU6.jpg",
+  "belongs_to_collection": null,
+  "budget": 0,
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
     },
-    "lastUpdated": "2024-04-15 23:26:57",
-    "year": "2002",
-    "trailers": null,
-    "genres": [
-      {
-        "id": 12,
-        "name": "Drama",
-        "slug": "drama"
-      },
-      {
-        "id": 15,
-        "name": "Comedy",
-        "slug": "comedy"
-      }
-    ],
-    "releases": [
-      {
-        "country": "global",
-        "date": "2002-01-01",
-        "detail": null
-      }
-    ],
-    "artworks": [
-      {
-        "id": 2563038,
-        "image": "https://artworks.thetvdb.com/banners/movies/41834/backgrounds/41834.jpg",
-        "thumbnail": "https://artworks.thetvdb.com/banners/movies/41834/backgrounds/41834_t.jpg",
-        "language": null,
-        "type": 15,
-        "score": 100000,
-        "width": 1920,
-        "height": 1080,
-        "includesText": false
-      },
-      {
-        "id": 2457523,
-        "image": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834.jpg",
-        "thumbnail": "https://artworks.thetvdb.com/banners/movies/41834/posters/41834_t.jpg",
-        "language": "eng",
-        "type": 14,
-        "score": 100000,
-        "width": 680,
-        "height": 1000,
-        "includesText": true
-      }
-    ],
-    "remoteIds": [
-      {
-        "id": "tt0301634",
-        "type": 2,
-        "sourceName": "IMDB"
-      },
-      {
-        "id": "15303",
-        "type": 10,
-        "sourceName": "TheMovieDB.com"
-      }
-    ],
-    "characters": [
-      {
-        "id": 12584880,
-        "name": "Limeni",
-        "peopleId": 492389,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 4,
-        "isFeatured": true,
-        "url": "492389-nikola-đuricko",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Nikola Đuričko",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584881,
-        "name": "Maja",
-        "peopleId": 611295,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 5,
-        "isFeatured": true,
-        "url": "611295-sonja-kolacarić",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Sonja Kolačarić",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584882,
-        "name": "Kiza",
-        "peopleId": 492390,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 2,
-        "isFeatured": true,
-        "url": "492390-srđan-todorović",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Srđan Todorović",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584883,
-        "name": "Lemi",
-        "peopleId": 474031,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 3,
-        "isFeatured": true,
-        "url": "474031-nenad-jezdić",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Nenad Jezdić",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584884,
-        "name": "Radovan",
-        "peopleId": 662257,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 6,
-        "isFeatured": true,
-        "url": "662257-milorad-mandić",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Milorad Mandić",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584885,
-        "name": "Otac",
-        "peopleId": 506622,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 7,
-        "isFeatured": true,
-        "url": "506622-miodrag-krstović",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Miodrag Krstović",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584886,
-        "name": null,
-        "peopleId": 609460,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 1,
-        "image": "",
-        "sort": 4,
-        "isFeatured": false,
-        "url": "609460-milorad-milinković",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Director",
-        "personName": "Milorad Milinković",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 12584887,
-        "name": null,
-        "peopleId": 609460,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 2,
-        "image": "",
-        "sort": 4,
-        "isFeatured": false,
-        "url": "609460-milorad-milinković",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Writer",
-        "personName": "Milorad Milinković",
-        "tagOptions": null,
-        "personImgURL": ""
-      },
-      {
-        "id": 69068369,
-        "name": "Deda",
-        "peopleId": 8358098,
-        "seriesId": null,
-        "series": null,
-        "movie": null,
-        "movieId": 41834,
-        "episodeId": null,
-        "type": 3,
-        "image": "",
-        "sort": 1,
-        "isFeatured": true,
-        "url": "8358098-mihajlo-bata-paskaljevic",
-        "nameTranslations": null,
-        "overviewTranslations": null,
-        "aliases": null,
-        "peopleType": "Actor",
-        "personName": "Mihajlo 'Bata' Paskaljevic",
-        "tagOptions": null,
-        "personImgURL": ""
-      }
-    ],
-    "budget": null,
-    "boxOffice": null,
-    "boxOfficeUS": "",
-    "originalCountry": "yug",
-    "originalLanguage": "eng",
-    "audioLanguages": null,
-    "subtitleLanguages": null,
-    "studios": null,
-    "awards": null,
-    "tagOptions": null,
-    "lists": [],
-    "contentRatings": null,
-    "companies": {
-      "studio": [],
-      "network": [],
-      "production": [
-        {
-          "id": 28102,
-          "name": "Media Film",
-          "slug": "media-film",
-          "nameTranslations": null,
-          "overviewTranslations": null,
-          "aliases": null,
-          "country": null,
-          "primaryCompanyType": 3,
-          "activeDate": null,
-          "inactiveDate": null,
-          "companyType": {
-            "companyTypeId": 3,
-            "companyTypeName": "Production Company"
-          },
-          "parentCompany": {
-            "id": null,
-            "name": null,
-            "relation": {
-              "id": null,
-              "typeName": null
-            }
-          },
-          "tagOptions": null
-        },
-        {
-          "id": 35207,
-          "name": "Radio Televizija Srbije (RTS)",
-          "slug": "radio-televizija-srbije-rts",
-          "nameTranslations": null,
-          "overviewTranslations": null,
-          "aliases": null,
-          "country": null,
-          "primaryCompanyType": 3,
-          "activeDate": null,
-          "inactiveDate": null,
-          "companyType": {
-            "companyTypeId": 3,
-            "companyTypeName": "Production Company"
-          },
-          "parentCompany": {
-            "id": null,
-            "name": null,
-            "relation": {
-              "id": null,
-              "typeName": null
-            }
-          },
-          "tagOptions": null
-        },
-        {
-          "id": 35223,
-          "name": "Radović Company",
-          "slug": "radović-company",
-          "nameTranslations": null,
-          "overviewTranslations": null,
-          "aliases": null,
-          "country": null,
-          "primaryCompanyType": 3,
-          "activeDate": null,
-          "inactiveDate": null,
-          "companyType": {
-            "companyTypeId": 3,
-            "companyTypeName": "Production Company"
-          },
-          "parentCompany": {
-            "id": null,
-            "name": null,
-            "relation": {
-              "id": null,
-              "typeName": null
-            }
-          },
-          "tagOptions": null
-        },
-        {
-          "id": 45323,
-          "name": "Viktorija Film",
-          "slug": "viktorija-film",
-          "nameTranslations": null,
-          "overviewTranslations": null,
-          "aliases": null,
-          "country": null,
-          "primaryCompanyType": 3,
-          "activeDate": null,
-          "inactiveDate": null,
-          "companyType": {
-            "companyTypeId": 3,
-            "companyTypeName": "Production Company"
-          },
-          "parentCompany": {
-            "id": null,
-            "name": null,
-            "relation": {
-              "id": null,
-              "typeName": null
-            }
-          },
-          "tagOptions": null
-        }
-      ],
-      "distributor": [],
-      "special_effects": []
-    },
-    "production_countries": [
-      {
-        "id": 47423,
-        "country": "srb",
-        "name": "Serbia"
-      }
-    ],
-    "inspirations": [],
-    "spoken_languages": [
-      "srp"
-    ],
-    "first_release": {
-      "country": "global",
-      "date": "2002-01-01",
-      "detail": null
+    {
+      "id": 35,
+      "name": "Comedy"
     }
+  ],
+  "homepage": "",
+  "id": 1,
+  "imdb_id": "tt0301634",
+  "origin_country": [
+    "RS"
+  ],
+  "original_language": "sr",
+  "original_title": "Mrtav 'ladan",
+  "overview": "The basic plot revolves around drug dealer Limeni and two men, Lemi and Kiza, who are trying to transport their dead grandfather for burial, until their car breaks down and they end up struggling to get him home onboard a train. This is when these two plots intersect and all hell breaks loose.",
+  "popularity": 0.9569,
+  "poster_path": "/hXbGz9XJy9HqxdJyursXIv4669x.jpg",
+  "production_companies": [
+    {
+      "id": 44455,
+      "logo_path": null,
+      "name": "Viktorija Film",
+      "origin_country": "RS"
+    },
+    {
+      "id": 81029,
+      "logo_path": null,
+      "name": "Radović Company",
+      "origin_country": "RS"
+    },
+    {
+      "id": 81030,
+      "logo_path": null,
+      "name": "Media Film",
+      "origin_country": ""
+    },
+    {
+      "id": 25204,
+      "logo_path": "/gFf9pISFzsNKkoDuWVnLwmRF5V0.png",
+      "name": "RTS",
+      "origin_country": "RS"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "YU",
+      "name": "Yugoslavia"
+    }
+  ],
+  "release_date": "2002-03-15",
+  "revenue": 0,
+  "runtime": 90,
+  "spoken_languages": [
+    {
+      "english_name": "Serbian",
+      "iso_639_1": "sr",
+      "name": "Srpski"
+    }
+  ],
+  "status": "Released",
+  "tagline": "",
+  "title": "Frozen Stiff",
+  "video": false,
+  "vote_average": 7.3,
+  "vote_count": 52,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 111058,
+        "known_for_department": "Acting",
+        "name": "Nikola Đuričko",
+        "original_name": "Nikola Đuričko",
+        "popularity": 0.5634,
+        "profile_path": "/l4DVpaIFJDJ6SJRXEPeFCz0KTCh.jpg",
+        "cast_id": 1,
+        "character": "Limeni",
+        "credit_id": "52fe464c9251416c75073ddb",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 80505,
+        "known_for_department": "Acting",
+        "name": "Sonja Kolačarić",
+        "original_name": "Sonja Kolačarić",
+        "popularity": 0.2057,
+        "profile_path": "/UbfkfUgKaMFanv6l7MXCpIyw37.jpg",
+        "cast_id": 2,
+        "character": "Maja",
+        "credit_id": "52fe464c9251416c75073ddf",
+        "order": 1
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 111060,
+        "known_for_department": "Acting",
+        "name": "Tara Manić",
+        "original_name": "Tara Manić",
+        "popularity": 0.0368,
+        "profile_path": "/2EjTtaFMtE80Y2rXDht1bmSwM1b.jpg",
+        "cast_id": 3,
+        "character": "Ana",
+        "credit_id": "52fe464c9251416c75073de3",
+        "order": 2
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 15265,
+        "known_for_department": "Acting",
+        "name": "Srđan 'Žika' Todorović",
+        "original_name": "Srđan 'Žika' Todorović",
+        "popularity": 0.7574,
+        "profile_path": "/drsYd3lcoq60vWSeteU3bKtpSOP.jpg",
+        "cast_id": 4,
+        "character": "Kiza",
+        "credit_id": "52fe464c9251416c75073de7",
+        "order": 3
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 80506,
+        "known_for_department": "Acting",
+        "name": "Nenad Jezdić",
+        "original_name": "Nenad Jezdić",
+        "popularity": 0.2832,
+        "profile_path": "/20pICBQwfrYUwfvSRs570oNZGzA.jpg",
+        "cast_id": 5,
+        "character": "Lemi",
+        "credit_id": "52fe464c9251416c75073deb",
+        "order": 4
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 110969,
+        "known_for_department": "Acting",
+        "name": "Slobodan 'Boda' Ninković",
+        "original_name": "Slobodan 'Boda' Ninković",
+        "popularity": 0.2629,
+        "profile_path": "/5wafA04pYquf4T2wDYAIDs7FWzg.jpg",
+        "cast_id": 6,
+        "character": "Mića 'Shaft'",
+        "credit_id": "52fe464c9251416c75073def",
+        "order": 5
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 110996,
+        "known_for_department": "Acting",
+        "name": "Nikola Pejaković",
+        "original_name": "Nikola Pejaković",
+        "popularity": 0.1618,
+        "profile_path": "/hqVG1DKBDxGaJbbi1rTQIA3LVkv.jpg",
+        "cast_id": 7,
+        "character": "Kole 'Kok Nikol",
+        "credit_id": "52fe464c9251416c75073df3",
+        "order": 6
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 111055,
+        "known_for_department": "Acting",
+        "name": "Milorad Mandić",
+        "original_name": "Milorad Mandić",
+        "popularity": 0.0807,
+        "profile_path": "/x9pLMso7BQAgRMyoDcDqVcAcmG2.jpg",
+        "cast_id": 8,
+        "character": "Radovan",
+        "credit_id": "52fe464c9251416c75073df7",
+        "order": 7
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 38130,
+        "known_for_department": "Acting",
+        "name": "Velimir Živojinović",
+        "original_name": "Velimir Živojinović",
+        "popularity": 0.2308,
+        "profile_path": "/wCxHQSt4xiGToR3FKgo1H2X9XA0.jpg",
+        "cast_id": 9,
+        "character": "Stanislav",
+        "credit_id": "52fe464c9251416c75073dfb",
+        "order": 8
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 111061,
+        "known_for_department": "Acting",
+        "name": "Olivera Marković",
+        "original_name": "Olivera Marković",
+        "popularity": 0.2809,
+        "profile_path": "/Ah4dY9k5fPLtHB8rXY9bIZOqXyV.jpg",
+        "cast_id": 10,
+        "character": "Baba u vozu",
+        "credit_id": "52fe464c9251416c75073dff",
+        "order": 9
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 111062,
+        "known_for_department": "Acting",
+        "name": "Milica Mihajlović",
+        "original_name": "Milica Mihajlović",
+        "popularity": 0.2431,
+        "profile_path": "/3goS8dvXiKjdpZoNfBxSfg58CNa.jpg",
+        "cast_id": 11,
+        "character": "Narkomanka",
+        "credit_id": "52fe464c9251416c75073e03",
+        "order": 10
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 111063,
+        "known_for_department": "Acting",
+        "name": "Branislav Zeremski",
+        "original_name": "Branislav Zeremski",
+        "popularity": 0.172,
+        "profile_path": "/iqJ0OO9SajF1mEwxAfIqGrHxQef.jpg",
+        "cast_id": 12,
+        "character": "Đura",
+        "credit_id": "52fe464c9251416c75073e07",
+        "order": 11
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 102385,
+        "known_for_department": "Acting",
+        "name": "Miodrag 'Miki' Krstović",
+        "original_name": "Miodrag 'Miki' Krstović",
+        "popularity": 0.2499,
+        "profile_path": "/jq4qulORVUDadbz3Lb7uepObtJG.jpg",
+        "cast_id": 13,
+        "character": "Otac",
+        "credit_id": "52fe464c9251416c75073e0b",
+        "order": 12
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 111064,
+        "known_for_department": "Acting",
+        "name": "Radmila Živković",
+        "original_name": "Radmila Živković",
+        "popularity": 0.1403,
+        "profile_path": null,
+        "cast_id": 14,
+        "character": "Majka",
+        "credit_id": "52fe464c9251416c75073e0f",
+        "order": 13
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 111068,
+        "known_for_department": "Acting",
+        "name": "Mihajlo 'Bata' Paskaljević",
+        "original_name": "Mihajlo 'Bata' Paskaljević",
+        "popularity": 0.2116,
+        "profile_path": "/iE3rTYHnmrDVC6J9p0B8zmbOQIf.jpg",
+        "cast_id": 15,
+        "character": "Mrtvac (deda)",
+        "credit_id": "52fe464c9251416c75073e13",
+        "order": 14
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 213380,
+        "known_for_department": "Directing",
+        "name": "Milorad Milinković",
+        "original_name": "Milorad Milinković",
+        "popularity": 0.0689,
+        "profile_path": "/a3TdOI6crA6H70OAxqhHZqFRHNQ.jpg",
+        "credit_id": "54055cd30e0a2658d800bca7",
+        "department": "Directing",
+        "job": "Director"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 213380,
+        "known_for_department": "Directing",
+        "name": "Milorad Milinković",
+        "original_name": "Milorad Milinković",
+        "popularity": 0.0689,
+        "profile_path": "/a3TdOI6crA6H70OAxqhHZqFRHNQ.jpg",
+        "credit_id": "54055cde0e0a2649e5000fe8",
+        "department": "Writing",
+        "job": "Writer"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 5329440,
+        "known_for_department": "Editing",
+        "name": "Vera Jocić",
+        "original_name": "Vera Jocić",
+        "popularity": 0,
+        "profile_path": null,
+        "credit_id": "67e4242ad4052f4793dcb6a0",
+        "department": "Editing",
+        "job": "Editor"
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 1331827,
+        "known_for_department": "Crew",
+        "name": "Dimitrije Joković",
+        "original_name": "Dimitrije Joković",
+        "popularity": 0.0286,
+        "profile_path": null,
+        "credit_id": "67e42447e28af41cfc7656a7",
+        "department": "Crew",
+        "job": "Cinematography"
+      }
+    ]
+  },
+  "external_ids": {
+    "imdb_id": "tt0301634",
+    "wikidata_id": "Q574224",
+    "facebook_id": null,
+    "instagram_id": null,
+    "twitter_id": null
+  },
+  "images": {
+    "backdrops": [
+      {
+        "aspect_ratio": 1.778,
+        "height": 720,
+        "iso_639_1": null,
+        "file_path": "/jtr93LYk6EITJzXH4RpTMOUtDU6.jpg",
+        "vote_average": 3.334,
+        "vote_count": 1,
+        "width": 1280
+      },
+      {
+        "aspect_ratio": 1.778,
+        "height": 720,
+        "iso_639_1": null,
+        "file_path": "/dUIH87qj3VqgJltsPDT6Pwd7G2G.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 1280
+      },
+      {
+        "aspect_ratio": 1.778,
+        "height": 720,
+        "iso_639_1": null,
+        "file_path": "/tkuxH8naQA8H0idxcMPQI58yW9D.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 1280
+      }
+    ],
+    "logos": [],
+    "posters": [
+      {
+        "aspect_ratio": 0.667,
+        "height": 750,
+        "iso_639_1": null,
+        "file_path": "/su7UPOuz97iz0AM7Ba9rhnR590U.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 500
+      }
+    ]
+  },
+  "keywords": {
+    "keywords": [
+      {
+        "id": 9276,
+        "name": "truck"
+      },
+      {
+        "id": 10877,
+        "name": "dead body"
+      },
+      {
+        "id": 18524,
+        "name": "refrigerator"
+      }
+    ]
+  },
+  "recommendations": {
+    "page": 1,
+    "results": [
+      {
+        "adult": false,
+        "backdrop_path": "/rTf1rucbSn8IaW4AU11lvBk3JmX.jpg",
+        "id": 12219,
+        "title": "12 Angry Men",
+        "original_title": "12 Angry Men",
+        "overview": "During the trial of a man accused of his father's murder, a lone juror takes a stand against the guilty verdict handed down by the others as a result of their preconceptions and prejudices.",
+        "poster_path": "/whDdYx3lh1LHTN0VlPFt51fX29g.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          18,
+          10770
+        ],
+        "popularity": 2.4471,
+        "release_date": "1997-08-17",
+        "video": false,
+        "vote_average": 7.649,
+        "vote_count": 395
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/x1nMCG0XdgezVwtneD4y4gk7obd.jpg",
+        "id": 575102,
+        "title": "Taxi Blues",
+        "original_title": "Taksi bluz",
+        "overview": "The key character in the story story is Marko, a failed scriptwriter, who has been working as a taxi driver for years and follows his adventures during one hilarious night.",
+        "poster_path": "/p9NeltwgkZxJQRrplZCPl3ZXdYr.jpg",
+        "media_type": "movie",
+        "original_language": "sr",
+        "genre_ids": [
+          35,
+          10749
+        ],
+        "popularity": 0.0834,
+        "release_date": "2019-01-17",
+        "video": false,
+        "vote_average": 5.9,
+        "vote_count": 12
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/3rrJcnc3kk1b7bWjWnHFZinAuzh.jpg",
+        "id": 55130,
+        "title": "The Professional",
+        "original_title": "Profesionalac",
+        "overview": "Till recently a University professor, a bohemian writer, a member of Belgrade's intellectual circles and a passionate opponent of the Milosevic's regime meets the man, unknown to him, but who knows every tiny detail of his life. Man tells him a story and plot unfolds unimaginably.",
+        "poster_path": "/smfrkCYH3LTZaWV1qJiQwZ5piVE.jpg",
+        "media_type": "movie",
+        "original_language": "sr",
+        "genre_ids": [
+          35,
+          18
+        ],
+        "popularity": 0.2668,
+        "release_date": "2003-05-21",
+        "video": false,
+        "vote_average": 7.5,
+        "vote_count": 39
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/aOcw6WxifTgSeQEzzx4xs6kQdke.jpg",
+        "id": 110501,
+        "title": "Seven and a Half",
+        "original_title": "Седам и по",
+        "overview": "Seven stories from the hood that connects to the seven deadly sins.",
+        "poster_path": "/nIT7TLLRg3GYFdgVwMQiKKLlgfS.jpg",
+        "media_type": "movie",
+        "original_language": "sr",
+        "genre_ids": [
+          35,
+          18
+        ],
+        "popularity": 0.2265,
+        "release_date": "2006-06-21",
+        "video": false,
+        "vote_average": 6.583,
+        "vote_count": 24
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/csII6cyp9ATED64IzYljnst3OTZ.jpg",
+        "id": 44183,
+        "title": "Absolute Hundred",
+        "original_title": "Apsolutnih sto",
+        "overview": "Igor Gordić was an Olympic champion in shooting, but now he is a junky without money and in debts to mafia. Saša is his younger brother and he is getting ready for the next World Championship. Since he's not getting enough terms to practice indoors, he has decided to go out and find himself a target to practice on.",
+        "poster_path": "/2fNZCWAZPfnrTuKmg4OL3zckSqI.jpg",
+        "media_type": "movie",
+        "original_language": "sr",
+        "genre_ids": [
+          18,
+          28,
+          80
+        ],
+        "popularity": 0.2615,
+        "release_date": "2001-05-10",
+        "video": false,
+        "vote_average": 6.6,
+        "vote_count": 15
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/iDXC10NwvaRMsfjdlDP3kwjOlZT.jpg",
+        "id": 51128,
+        "title": "The Knife",
+        "original_title": "Нож",
+        "overview": "In attempt to find out who he is and where his roots lie, Alija Osmanović discovers something far deeper and more important. He slowly discovers an evil that follows him as his destiny regardless of what his ancestors were called. Trying to find the reasons for this evil, he finds himself in a vicious circle. Running away from an irrational fear within him, he eventually finds the road to his faith.",
+        "poster_path": "/m0Cdbn7asKIFp0ajFxQvYN3Bi5V.jpg",
+        "media_type": "movie",
+        "original_language": "sr",
+        "genre_ids": [
+          18
+        ],
+        "popularity": 0.2043,
+        "release_date": "1999-03-19",
+        "video": false,
+        "vote_average": 6.5,
+        "vote_count": 13
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/8ohWBqEn3Zh9ro0JulFKPfk0XDE.jpg",
+        "id": 13531,
+        "title": "Empire Records",
+        "original_title": "Empire Records",
+        "overview": "The employees of an independent music store learn about each other as they try to stop the store from being absorbed by a large chain.",
+        "poster_path": "/gQu0jeUNqVYICSHHJwT9k4Rcxz7.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          10402,
+          35,
+          18,
+          10749
+        ],
+        "popularity": 2.8507,
+        "release_date": "1995-09-22",
+        "video": false,
+        "vote_average": 6.635,
+        "vote_count": 735
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/4fj9pWyIA3I2TxXXfXFRfIPbX0a.jpg",
+        "id": 330947,
+        "title": "Song to Song",
+        "original_title": "Song to Song",
+        "overview": "In this modern love story set against the Austin, Texas music scene, two entangled couples — struggling songwriters Faye and BV, and music mogul Cook and the waitress whom he ensnares — chase success through a rock ‘n’ roll landscape of seduction and betrayal.",
+        "poster_path": "/itmaNi14GyWguTOywZ0mMzyScW9.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          10749,
+          18,
+          10402
+        ],
+        "popularity": 1.7729,
+        "release_date": "2017-03-17",
+        "video": false,
+        "vote_average": 5.5,
+        "vote_count": 880
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/txXPooNu7fr4YhLwx7AlXkU0PnN.jpg",
+        "id": 11202,
+        "title": "Patton",
+        "original_title": "Patton",
+        "overview": "\"Patton\" tells the tale of General George S. Patton, famous tank commander of World War II. The film begins with Patton's career in North Africa and progresses through the invasion of Germany and the fall of the Third Reich. Side plots also speak of Patton's numerous faults such his temper and habit towards insubordination.",
+        "poster_path": "/8IRufbzhMJSdlmD0cnTWERCtTN2.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          10752,
+          18,
+          36
+        ],
+        "popularity": 2.4119,
+        "release_date": "1970-01-25",
+        "video": false,
+        "vote_average": 7.484,
+        "vote_count": 1131
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/nmGgqRzbb0OHJloknzlorUzUVQo.jpg",
+        "id": 2330,
+        "title": "Taxi",
+        "original_title": "Taxi",
+        "overview": "In Marseilles a skilled pizza delivery boy Daniel who drives a scooter finally has his dreams come true. He gets a taxi license. Caught by the police for a huge speed infraction, he will help Emilien, a loser inspector who can't drive, on the track of German bank robbers, so he doesn't lose his license and his dream job.",
+        "poster_path": "/egBxj3ude84theXc3cLbBHrWOkQ.jpg",
+        "media_type": "movie",
+        "original_language": "fr",
+        "genre_ids": [
+          28,
+          35,
+          80,
+          12
+        ],
+        "popularity": 5.6411,
+        "release_date": "1998-04-08",
+        "video": false,
+        "vote_average": 6.709,
+        "vote_count": 2554
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/5d6m8CIBQcHeiwr6R5ou4wxO9Vn.jpg",
+        "id": 340666,
+        "title": "Nocturnal Animals",
+        "original_title": "Nocturnal Animals",
+        "overview": "Susan Morrow receives a book manuscript from her ex-husband – a man she left 20 years earlier – asking for her opinion of his writing. As she reads, she is drawn into the fictional life of Tony Hastings, a mathematics professor whose family vacation turns violent.",
+        "poster_path": "/mdLDgQBD0va09npSQX5Zgo2evXM.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          18,
+          53
+        ],
+        "popularity": 3.8629,
+        "release_date": "2016-11-04",
+        "video": false,
+        "vote_average": 7.4,
+        "vote_count": 7964
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/bguFhzIGpQdGQ6uizm07oMKbgHi.jpg",
+        "id": 101,
+        "title": "Léon: The Professional",
+        "original_title": "Léon",
+        "overview": "Léon, the top hit man in New York, has earned a rep as an effective \"cleaner\". But when his next-door neighbors are wiped out by a loose-cannon DEA agent, he becomes the unwilling custodian of 12-year-old Mathilda. Before long, Mathilda's thoughts turn to revenge, and she considers following in Léon's footsteps.",
+        "poster_path": "/bxB2q91nKYp8JNzqE7t7TWBVupB.jpg",
+        "media_type": "movie",
+        "original_language": "fr",
+        "genre_ids": [
+          80,
+          18,
+          28
+        ],
+        "popularity": 12.2525,
+        "release_date": "1994-09-14",
+        "video": false,
+        "vote_average": 8.301,
+        "vote_count": 15293
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/x2RS3uTcsJJ9IfjNPcgDmukoEcQ.jpg",
+        "id": 120,
+        "title": "The Lord of the Rings: The Fellowship of the Ring",
+        "original_title": "The Lord of the Rings: The Fellowship of the Ring",
+        "overview": "Young hobbit Frodo Baggins, after inheriting a mysterious ring from his uncle Bilbo, must leave his home in order to keep it from falling into the hands of its evil creator. Along the way, a fellowship is formed to protect the ringbearer and make sure that the ring arrives at its final destination: Mt. Doom, the only place where it can be destroyed.",
+        "poster_path": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          12,
+          14,
+          28
+        ],
+        "popularity": 25.8365,
+        "release_date": "2001-12-18",
+        "video": false,
+        "vote_average": 8.423,
+        "vote_count": 26113
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/tlEFuIlaxRPXIYVHXbOSAMCfWqk.jpg",
+        "id": 13,
+        "title": "Forrest Gump",
+        "original_title": "Forrest Gump",
+        "overview": "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+        "poster_path": "/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          35,
+          18,
+          10749
+        ],
+        "popularity": 22.3856,
+        "release_date": "1994-06-23",
+        "video": false,
+        "vote_average": 8.468,
+        "vote_count": 28353
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/w5IDXtifKntw0ajv2co7jFlTQDM.jpg",
+        "id": 62,
+        "title": "2001: A Space Odyssey",
+        "original_title": "2001: A Space Odyssey",
+        "overview": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+        "poster_path": "/ve72VxNqjGM69Uky4WTo2bK6rfq.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          878,
+          9648,
+          12
+        ],
+        "popularity": 10.5491,
+        "release_date": "1968-04-02",
+        "video": false,
+        "vote_average": 8.1,
+        "vote_count": 11912
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/hpzQHv8cA7j2Dn2CphOFYmllXzj.jpg",
+        "id": 207,
+        "title": "Dead Poets Society",
+        "original_title": "Dead Poets Society",
+        "overview": "At an elite, old-fashioned boarding school in New England, a passionate English teacher inspires his students to rebel against convention and seize the potential of every day, courting the disdain of the stern headmaster.",
+        "poster_path": "/erzbMlcNHOdx24AXOcn2ZKA7R1q.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          18
+        ],
+        "popularity": 10.9821,
+        "release_date": "1989-06-02",
+        "video": false,
+        "vote_average": 8.301,
+        "vote_count": 11719
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
+        "id": 680,
+        "title": "Pulp Fiction",
+        "original_title": "Pulp Fiction",
+        "overview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80,
+          35
+        ],
+        "popularity": 17.9018,
+        "release_date": "1994-09-10",
+        "video": false,
+        "vote_average": 8.488,
+        "vote_count": 28822
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/sCzcYW9h55WcesOqA12cgEr9Exw.jpg",
+        "id": 597,
+        "title": "Titanic",
+        "original_title": "Titanic",
+        "overview": "101-year-old Rose DeWitt Bukater tells the story of her life aboard the Titanic, 84 years later. A young Rose boards the ship with her mother and fiancé. Meanwhile, Jack Dawson and Fabrizio De Rossi win third-class tickets aboard the ship. Rose tells the whole story from Titanic's departure through to its death—on its first and last voyage—on April 15, 1912.",
+        "poster_path": "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "popularity": 30.7477,
+        "release_date": "1997-11-18",
+        "video": false,
+        "vote_average": 7.906,
+        "vote_count": 26116
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/pYw10zrqfkdm3yD9JTO6vEGQhKy.jpg",
+        "id": 8844,
+        "title": "Jumanji",
+        "original_title": "Jumanji",
+        "overview": "When siblings Judy and Peter discover an enchanted board game that opens the door to a magical world, they unwittingly invite Alan -- an adult who's been trapped inside the game for 26 years -- into their living room. Alan's only hope for freedom is to finish the game, which proves risky as all three find themselves running from giant rhinoceroses, evil monkeys and other terrifying creatures.",
+        "poster_path": "/p67m5dzwyxWd46a6of2c9IVfQz7.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          12,
+          14,
+          10751
+        ],
+        "popularity": 3.6752,
+        "release_date": "1995-12-15",
+        "video": false,
+        "vote_average": 7.2,
+        "vote_count": 10804
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/nlPCdZlHtRNcF6C9hzUH4ebmV1w.jpg",
+        "id": 313369,
+        "title": "La La Land",
+        "original_title": "La La Land",
+        "overview": "Mia, an aspiring actress, serves lattes to movie stars in between auditions and Sebastian, a jazz musician, scrapes by playing cocktail party gigs in dingy bars, but as success mounts they are faced with decisions that begin to fray the fragile fabric of their love affair, and the dreams they worked so hard to maintain in each other threaten to rip them apart.",
+        "poster_path": "/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          35,
+          18,
+          10749,
+          10402
+        ],
+        "popularity": 12.0723,
+        "release_date": "2016-12-01",
+        "video": false,
+        "vote_average": 7.9,
+        "vote_count": 17352
+      }
+    ],
+    "total_pages": 2,
+    "total_results": 40
+  },
+  "similar": {
+    "page": 1,
+    "results": [
+      {
+        "adult": false,
+        "backdrop_path": "/8EywoWuOy8TYBvSNpkrMVR5T9W3.jpg",
+        "genre_ids": [
+          53,
+          28,
+          18
+        ],
+        "id": 27737,
+        "original_language": "en",
+        "original_title": "Rolling Vengeance",
+        "overview": "A truck driver builds a special, eight-ton monster truck to help get revenge against the rednecks who killed his family.",
+        "popularity": 0.5131,
+        "poster_path": "/llq9qxz3HQS8sSwB0Z0N6bpPzGE.jpg",
+        "release_date": "1987-10-02",
+        "title": "Rolling Vengeance",
+        "video": false,
+        "vote_average": 5.7,
+        "vote_count": 26
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          18,
+          10402,
+          9648,
+          53
+        ],
+        "id": 29123,
+        "original_language": "en",
+        "original_title": "Gift",
+        "overview": "What would you do if you came home and found your wife dead? Do you call the cops? Her parents? That's where the true nightmare begins. A story of love and addiction. An experimental docudrama made by Perry Farrell",
+        "popularity": 0.81,
+        "poster_path": "/phGHfi0Y38ahRKPBEyZ4Q5yBy3r.jpg",
+        "release_date": "1993-11-01",
+        "title": "Gift",
+        "video": false,
+        "vote_average": 5.9,
+        "vote_count": 4
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/efro4duB7agkA2Xl5LmkD3HeCim.jpg",
+        "genre_ids": [
+          28,
+          53,
+          18
+        ],
+        "id": 818511,
+        "original_language": "pt",
+        "original_title": "Carga Máxima",
+        "overview": "When truck racer Roger loses everything, he receives a tempting but dangerous offer: to work as the getaway driver for a gang of thieves.",
+        "popularity": 1.4117,
+        "poster_path": "/6yx14lSACNJ2zRoYyXqecf3QNgr.jpg",
+        "release_date": "2023-08-28",
+        "title": "Overhaul",
+        "video": false,
+        "vote_average": 6.8,
+        "vote_count": 132
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/8rOpJuby0HBjaphddR8CAF3i35.jpg",
+        "genre_ids": [
+          12,
+          27,
+          35,
+          14
+        ],
+        "id": 26661,
+        "original_language": "en",
+        "original_title": "Abbott and Costello Meet the Mummy",
+        "overview": "Stranded in Egypt, Bud and Lou find themselves in the buried tomb of a living mummy.",
+        "popularity": 0.7268,
+        "poster_path": "/aHKjPVnDwE6iiz3pVj7MGwXo8B.jpg",
+        "release_date": "1955-06-23",
+        "title": "Abbott and Costello Meet the Mummy",
+        "video": false,
+        "vote_average": 6,
+        "vote_count": 115
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/A4nFhxBKmT2Zlyojmq6VUhlTPJG.jpg",
+        "genre_ids": [
+          80,
+          18,
+          53
+        ],
+        "id": 21309,
+        "original_language": "en",
+        "original_title": "River's Edge",
+        "overview": "A group of high-school friends must come to terms with the fact that one of them, Samson, killed another, Jamie. Faced with the brutality of death, each must decide whether to turn their friend in to the police, or to help him escape the consequences of his dreadful deed.",
+        "popularity": 1.5098,
+        "poster_path": "/bT68aKa9d7zDF7Z8MaskbWBRqzb.jpg",
+        "release_date": "1986-10-10",
+        "title": "River's Edge",
+        "video": false,
+        "vote_average": 6.5,
+        "vote_count": 290
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/WQdxfSioBfSK6fHZxkE8feciMl.jpg",
+        "genre_ids": [
+          18
+        ],
+        "id": 14832,
+        "original_language": "en",
+        "original_title": "The Cement Garden",
+        "overview": "After the death of her husband, the mother of Julie, Jack, Sue and Tom begins to suffer from a mysterious illness. Aware that she is going to have to go into hospital she opens a bank account for the children, so that they can be financially self-sufficient and will be able to avoid being taken into care by the authorities. Unfortunately she also dies and Julie and Jack (the older, teenage children) decide to hide her body in the basement so that they can have free reign of their household. Soon Tom has taken to dressing as a girl whilst Sue has become increasingly reticent, confiding only to her diary, meanwhile Jack and Julie sense an attraction developing for each other. However Julie's new beau, Derek, threatens to unearth the many dark secrets within this family as he becomes increasingly suspicious of Jack.",
+        "popularity": 0.8196,
+        "poster_path": "/vtaZ8nJ46UKkqlHOgcdeMoYr9N0.jpg",
+        "release_date": "1993-02-20",
+        "title": "The Cement Garden",
+        "video": false,
+        "vote_average": 6.782,
+        "vote_count": 101
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/8JaU1ez5TSrRSmncB0Xh2YQavXP.jpg",
+        "genre_ids": [
+          18,
+          53,
+          12
+        ],
+        "id": 204,
+        "original_language": "fr",
+        "original_title": "Le Salaire de la peur",
+        "overview": "In a run-down South American town, four men are paid to drive trucks loaded with nitroglycerin into the jungle through to the oil field. Friendships are tested and rivalries develop as they embark upon the perilous journey.",
+        "popularity": 2.0714,
+        "poster_path": "/dZyZSosIlWcpQkV0f7pXcrV2TQV.jpg",
+        "release_date": "1953-04-22",
+        "title": "The Wages of Fear",
+        "video": false,
+        "vote_average": 8.026,
+        "vote_count": 998
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/jkvvXaN7FPVKGlk8oj9PL0FHNtj.jpg",
+        "genre_ids": [
+          18,
+          36,
+          10752
+        ],
+        "id": 205,
+        "original_language": "en",
+        "original_title": "Hotel Rwanda",
+        "overview": "Inspired by true events, this film takes place in Rwanda in the 1990s when more than a million Tutsis were killed in a genocide that went mostly unnoticed by the rest of the world. Hotel owner Paul Rusesabagina houses over a thousand refuges in his hotel in attempt to save their lives.",
+        "popularity": 2.9731,
+        "poster_path": "/p3pHw85UMZPegfMZBA6dZ06yarm.jpg",
+        "release_date": "2004-12-22",
+        "title": "Hotel Rwanda",
+        "video": false,
+        "vote_average": 7.7,
+        "vote_count": 2945
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          35,
+          18
+        ],
+        "id": 25489,
+        "original_language": "en",
+        "original_title": "Barstool Cowboy",
+        "overview": "An unemployed Cowboy who can't find love vows to stay on a barstool for three months. Shortly thereafter, he meets a young female art student and quickly forgets his misery. The pair begin to transform each other's worlds while spending time drinking, dancing and examining the mysteries of life. Will the Cowboy finally find love or should he have just stayed on his barstool?",
+        "popularity": 0.1762,
+        "poster_path": null,
+        "release_date": "2009-06-26",
+        "title": "Barstool Cowboy",
+        "video": false,
+        "vote_average": 2,
+        "vote_count": 1
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/cQfGdk1TCE8f6hE5hChlG8cFZbH.jpg",
+        "genre_ids": [
+          28,
+          12,
+          35,
+          37
+        ],
+        "id": 11496,
+        "original_language": "en",
+        "original_title": "Renegade",
+        "overview": "While on his travel across the Southwestern United States, with his Jeep CJ Renegade and his chestnut colt named Joe Brown, Luke meets Matt, son of a friend of his, Moose, who is in jail. Moose asks Luke to take care of Matt, and to help him to take possession of a piece of land. So starts their travel, full of adventures...",
+        "popularity": 0.6876,
+        "poster_path": "/zgwKoRfTaOgA3uWAEGhN3gsO7c0.jpg",
+        "release_date": "1987-10-30",
+        "title": "They Call Me Renegade",
+        "video": false,
+        "vote_average": 6.073,
+        "vote_count": 171
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/ahaPgkVmHIVMVVMtqhcvRT8QAXT.jpg",
+        "genre_ids": [
+          28,
+          35
+        ],
+        "id": 12705,
+        "original_language": "en",
+        "original_title": "Smokey and the Bandit II",
+        "overview": "The Bandit goes on another cross-country run, transporting an elephant from Florida to Texas. And, once again, Sheriff Buford T. Justice is on his tail.",
+        "popularity": 1.5268,
+        "poster_path": "/cYNZM1xdhOH6NybMcX9E1LPOl3l.jpg",
+        "release_date": "1980-08-15",
+        "title": "Smokey and the Bandit II",
+        "video": false,
+        "vote_average": 5.54,
+        "vote_count": 299
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/vyKQBRnjPh0ePLFpJyCBJ8Hd7JV.jpg",
+        "genre_ids": [
+          12,
+          28,
+          35,
+          18
+        ],
+        "id": 279896,
+        "original_language": "en",
+        "original_title": "The Big Gamble",
+        "overview": "Irish seaman Vic Brennan persuades his Dublin family to finance a truck-hauling business in the remote African town of Jebanda. The only stipulation is that his cousin Samuel, a timid bank clerk, accompany Vic and his Corsican bride, Marie, to Africa and protect the family fortune.",
+        "popularity": 0.1567,
+        "poster_path": "/gpkFTADd5kpY8KG0l7h9z5izizm.jpg",
+        "release_date": "1961-07-25",
+        "title": "The Big Gamble",
+        "video": false,
+        "vote_average": 5.7,
+        "vote_count": 6
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/970o9Snv0Nttpr15DaZVZYYr2LH.jpg",
+        "genre_ids": [
+          9648,
+          53,
+          80,
+          18
+        ],
+        "id": 24936,
+        "original_language": "en",
+        "original_title": "The Deep End",
+        "overview": "With her husband Jack perpetually away at work, Margaret Hall raises her children virtually alone. Her teenage son is testing the waters of the adult world, and early one morning she wakes to find the dead body of his gay lover on the beach of their rural lakeside home. What would you do? What is rational and what do you do to protect your child? How far do you go and when do you stop?",
+        "popularity": 0.9796,
+        "poster_path": "/sWRTQpTb65Itp4bdNas3W4a1QHy.jpg",
+        "release_date": "2001-01-21",
+        "title": "The Deep End",
+        "video": false,
+        "vote_average": 6.173,
+        "vote_count": 147
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/c8P7vv4m4sFi5ul6Zppu9irnUVF.jpg",
+        "genre_ids": [
+          28,
+          12,
+          35
+        ],
+        "id": 11006,
+        "original_language": "en",
+        "original_title": "Smokey and the Bandit",
+        "overview": "A race car driver tries to transport an illegal beer shipment from Texas to Atlanta in under 28 hours, picking up a reluctant bride-to-be on the way.",
+        "popularity": 3.1017,
+        "poster_path": "/w4RqNZtVHB5Uzlnl6zQlMHft7QI.jpg",
+        "release_date": "1977-05-26",
+        "title": "Smokey and the Bandit",
+        "video": false,
+        "vote_average": 7,
+        "vote_count": 746
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/32srArTWOkrRIAwEXm3vlVRK46G.jpg",
+        "genre_ids": [
+          37,
+          18
+        ],
+        "id": 5927,
+        "original_language": "en",
+        "original_title": "Junior Bonner",
+        "overview": "With his bronco-busting career on its last legs, Junior Bonner heads to his hometown to try his luck in the annual rodeo. But his fond childhood memories are shattered when he finds his family torn apart by his greedy brother and hard-drinking father.",
+        "popularity": 0.6788,
+        "poster_path": "/qA85YYjQob3gPAFiafuIXFhSZSG.jpg",
+        "release_date": "1972-07-21",
+        "title": "Junior Bonner",
+        "video": false,
+        "vote_average": 6.1,
+        "vote_count": 109
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          18
+        ],
+        "id": 440248,
+        "original_language": "mk",
+        "original_title": "Кога денот немаше име",
+        "overview": "On the day before Easter 2012, the bodies of four teenagers were found by the edge of a lake just outside Skopje. The bodies had been lined up, each with a bullet hole in their head. The boys had been on a fishing trip. The nation was shocked. Rumours run wild. It is a film about a country where life can come to a sudden end without cause or explanation.",
+        "popularity": 0.1056,
+        "poster_path": "/aKw3GgwpmewhCA8fxT3UFMiUqkH.jpg",
+        "release_date": "2017-02-14",
+        "title": "When the Day Had No Name",
+        "video": false,
+        "vote_average": 6,
+        "vote_count": 2
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/ngmoSZlu4Wrv6807rlU6kCclWp3.jpg",
+        "genre_ids": [
+          18
+        ],
+        "id": 799480,
+        "original_language": "en",
+        "original_title": "Quiet Crossing",
+        "overview": "45,000 sections of reinforced concrete - three tons each. Nearly 300 watchtowers., over 250 dog runs, twenty bunkers. Sixty-five​ miles of anti-vehicle trenches—signal wire, barbed wire, beds of nails. Over 11,000 armed guards. A death strip of sand, well-raked to reveal footprints. 200 ordinary people shot dead following attempts to escape the communist regime.  96 miles of concrete wall. Families divided, loved ones lost…",
+        "popularity": 0.1909,
+        "poster_path": "/kQXt6kseRJOlObc1EPmm6ijfDBd.jpg",
+        "release_date": "2019-01-01",
+        "title": "Quiet Crossing",
+        "video": false,
+        "vote_average": 10,
+        "vote_count": 1
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/1AvdIZYSzPXgiDWIPldnja4awla.jpg",
+        "genre_ids": [
+          28,
+          35,
+          18
+        ],
+        "id": 9584,
+        "original_language": "en",
+        "original_title": "Convoy",
+        "overview": "Trucker Rubber Duck and his buddies Pig Pen, Widow Woman and Spider Mike use their CB radios to warn one another of the presence of cops. But conniving Sheriff Wallace is hip to the truckers' tactics, and begins tricking the drivers through his own CB broadcasts. Facing constant harassment from the law, Rubber Duck and his pals use their radios to coordinate a vast convoy and rule the road.",
+        "popularity": 3.24,
+        "poster_path": "/xjowoBInlikSlvfAYDRN9ubaODB.jpg",
+        "release_date": "1978-06-27",
+        "title": "Convoy",
+        "video": false,
+        "vote_average": 6.318,
+        "vote_count": 390
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          18
+        ],
+        "id": 266025,
+        "original_language": "sh",
+        "original_title": "Šta radiš večeras?",
+        "overview": "A three-part anthology film. 1) AMSTERDAM: Jovke and his two friends try to make some quick cash before going off to army. At the same time, he tries to establish communication both with his catatonic father and the girl he likes. 2) TIE REQUIRED: While drudging at the docks with two inseparable friends of his, Neša is waiting for a waiter's job at the bar where his mother works. After not being allowed to a birthday party, the trio decides to look for fun somewhere else. 3) ABSOLUTE PITCH: An unemployed paleonthologist spends his nights sewing dresses for his beloved one. When she sets off to countryside for work and doesn't call back, he becomes suspicious and decides to solve this sudden departure on his own.  The movie was nominated for a Student Academy Award in 1991.",
+        "popularity": 0.2005,
+        "poster_path": "/tOXz0LbgROOPtl1RpTgx7Vl0knQ.jpg",
+        "release_date": "1988-06-29",
+        "title": "What Are You Doing Tonight?",
+        "video": false,
+        "vote_average": 4.5,
+        "vote_count": 1
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          35
+        ],
+        "id": 263964,
+        "original_language": "sh",
+        "original_title": "Kamiondžije ponovo voze",
+        "overview": "New adventures of truck drivers Jare and Paja, long-time fellow associates and close friends. Jare is forced to pay off his debt for the loans he was raising to build a house for his numerous family. He must find heaps of money as soon as possible, or let tax gatherers to take everything. Paja tries to help him in this impossible task, but on their way they face bunch of obstacles, losses and misfortunes, encountering all sorts of people, only to end up in serious problems.",
+        "popularity": 0.1097,
+        "poster_path": "/oRHUMAXuVFofLLHKQvFuN5UVgWY.jpg",
+        "release_date": "1984-04-05",
+        "title": "Truckers Ride Again",
+        "video": false,
+        "vote_average": 6.5,
+        "vote_count": 11
+      }
+    ],
+    "total_pages": 19259,
+    "total_results": 385176
   }
 }
