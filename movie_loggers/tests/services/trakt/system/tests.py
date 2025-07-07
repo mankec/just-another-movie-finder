@@ -250,6 +250,7 @@ class TraktSystemTestCase(
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
+                                # TODO: This is wrong approach, don't convert to string
                                 "tmdb": str(self.movie.tmdb_id),
                             }
                         }
