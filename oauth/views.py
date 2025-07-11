@@ -11,7 +11,7 @@ from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 @handle_exception
 def index(request):
     session = request.session
-    code = request.GET["code"]
+    code = request.GET.get("code") or request.GET.get("request_token")
 
     if not code:
         session.clear()
@@ -32,8 +32,15 @@ def index(request):
 @handle_exception
 def authorize_application(request, movie_logger):
     session = request.session
+    # TODO: Perhaps change to movie_logger_name. And change token back to access_token?
     session["movie_logger"] = movie_logger
-    url = MovieLoggerCreator(session).authorize_application_url()
+    fetch_request_token = getattr(MovieLoggerCreator(session), "fetch_request_token", None)
+    if callable(fetch_request_token):
+        session["request_token"] = fetch_request_token()
+    url = (
+        MovieLoggerCreator(session)
+            .authorize_application_url(session["request_token"])
+    )
     return redirect(url)
 
 
@@ -45,6 +52,7 @@ def sign_in(request):
     ctx = {
         "simkl": MovieLogger.SIMKL.value,
         "trakt": MovieLogger.TRAKT.value,
+        "tmdb": MovieLogger.TMDB.value,
     }
     return render(request, "oauth/sign_in.html", ctx)
 

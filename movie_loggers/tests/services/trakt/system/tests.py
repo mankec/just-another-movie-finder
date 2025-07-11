@@ -125,6 +125,7 @@ class TraktSystemTestCase(
             {
                 "body": [],
                 "headers": {
+                    # TODO: Perhaps change to 1 instead of 0 since it's never 0
                     "X-Pagination-Page-Count": 0,
                 }
             },

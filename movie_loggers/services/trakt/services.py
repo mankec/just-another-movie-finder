@@ -33,7 +33,7 @@ class Trakt(AbstractMovieLogger):
         self.name = MovieLogger.TRAKT.value
 
     @handle_exception("Something went wrong while trying to sign you in to Trakt.")
-    def authorize_application_url(self):
+    def authorize_application_url(self, request_token=None):
         url = "https://trakt.tv/oauth/authorize"
         query = {
             "response_type": "code",

@@ -33,7 +33,7 @@ class Simkl(AbstractMovieLogger):
         self.name = MovieLogger.SIMKL.value
 
     @handle_exception("Something went wrong while trying to sign you in to Simkl.")
-    def authorize_application_url(self) -> str:
+    def authorize_application_url(self, request_token=None) -> str:
         url = "https://simkl.com/oauth/authorize"
         query = {
             "response_type": "code",
