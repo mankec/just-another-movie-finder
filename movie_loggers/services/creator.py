@@ -3,6 +3,7 @@ from django.contrib.sessions.models import Session
 from movie_loggers.services.base import MovieLogger
 from movie_loggers.services.simkl.services import Simkl
 from movie_loggers.services.trakt.services import Trakt
+from movie_loggers.services.tmdb.services import TMDB
 
 
 class MovieLoggerCreator:
@@ -13,5 +14,7 @@ class MovieLoggerCreator:
                 return Simkl(token)
             case MovieLogger.TRAKT.value:
                 return Trakt(token)
+            case MovieLogger.TMDB.value:
+                return TMDB(token)
             case _:
                 raise ValueError("Unknown movie logger.")
