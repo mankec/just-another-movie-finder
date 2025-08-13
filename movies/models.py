@@ -58,3 +58,13 @@ class Movie(models.Model):
 
     def remote_ids(self):
         return [self.tvdb_id, self.imdb_id, str(self.tmdb_id)]
+
+
+class Cast(models.Model):
+    class Meta:
+        db_table = "cast"
+
+    person_id = ...
+    character = models.CharField(max_length=255, blank=True)
+    profile_image_path = models.CharField(max_length=255, blank=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
