@@ -60,14 +60,26 @@ class Movie(models.Model):
         return [self.tvdb_id, self.imdb_id, str(self.tmdb_id)]
 
 
+class Person(models.Model):
+    class Meta:
+        db_table = "person"
+
+    # Assign person's ID from TMDB
+    id = models.PositiveIntegerField(primary_key=True)
+    known_for_department = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=255, blank=True)
+    original_name = models.CharField(max_length=255, blank=True)
+    profile_image_path = models.CharField(max_length=255, blank=True)
+
+
 class Cast(models.Model):
     class Meta:
         db_table = "cast"
 
     credit_id = models.CharField(max_length=255, blank=True)
     character = models.CharField(max_length=255, blank=True)
-    profile_image_path = models.CharField(max_length=255, blank=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
 
 
 class Crew(models.Model):
@@ -75,7 +87,7 @@ class Crew(models.Model):
         db_table = "crew"
 
     credit_id = models.CharField(max_length=255, blank=True)
-    profile_image_path = models.CharField(max_length=255, blank=True)
     department = models.CharField(max_length=255, blank=True)
     job = models.CharField(max_length=255, blank=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
