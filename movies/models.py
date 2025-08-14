@@ -64,7 +64,18 @@ class Cast(models.Model):
     class Meta:
         db_table = "cast"
 
-    person_id = ...
+    credit_id = models.CharField(max_length=255, blank=True)
     character = models.CharField(max_length=255, blank=True)
     profile_image_path = models.CharField(max_length=255, blank=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
+class Crew(models.Model):
+    class Meta:
+        db_table = "crew"
+
+    credit_id = models.CharField(max_length=255, blank=True)
+    profile_image_path = models.CharField(max_length=255, blank=True)
+    department = models.CharField(max_length=255, blank=True)
+    job = models.CharField(max_length=255, blank=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
