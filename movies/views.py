@@ -26,23 +26,21 @@ def index(request):
     paginator = Paginator(session["filtered_movie_ids"], 24)
     page_obj = paginator.get_page(page_number)
     movie_ids = paginator.page(page_number).object_list
-    movies = Movie.objects.filter(tvdb_id__in=movie_ids)
+    movies = Movie.objects.filter(id__in=movie_ids)
     results = [
         {
             "movie": m,
             "watched": (
-                m.tvdb_id in session["movie_remote_ids"]["watched"]["tvdb_ids"] or
                 m.imdb_id in session["movie_remote_ids"]["watched"]["imdb_ids"] or
-                m.tmdb_id in session["movie_remote_ids"]["watched"]["tmdb_ids"]
+                m.id in session["movie_remote_ids"]["watched"]["tmdb_ids"]
                 if is_signed_in(session) else False
             ),
             "on_watchlist": (
-                m.tvdb_id in session["movie_remote_ids"]["on_watchlist"]["tvdb_ids"] or
                 m.imdb_id in session["movie_remote_ids"]["on_watchlist"]["imdb_ids"] or
-                m.tmdb_id in session["movie_remote_ids"]["on_watchlist"]["tmdb_ids"]
+                m.id in session["movie_remote_ids"]["on_watchlist"]["tmdb_ids"]
                 if is_signed_in(session) else False
             ),
-            "added_to_watchlist": m.tvdb_id in session["movies_added_to_watchlist_ids"],
+            "added_to_watchlist": m.id in session["movies_added_to_watchlist_ids"],
         }
         for m in  movies
     ]

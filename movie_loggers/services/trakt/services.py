@@ -82,8 +82,8 @@ class Trakt(AbstractMovieLogger):
                         "year": movie.year,
                         "ids": {
                             "slug": movie.slug,
+                            "tmdb": movie.id,
                             "imdb": movie.imdb_id,
-                            "tmdb": movie.tmdb_id
                         },
                     }
                 ],
@@ -122,7 +122,6 @@ class Trakt(AbstractMovieLogger):
     @handle_exception
     def _fetch_watched_movies_remote_ids(self) -> dict:
         remote_ids = {
-            "tvdb_ids": [],
             "imdb_ids": [],
             "tmdb_ids": [],
         }
@@ -136,8 +135,6 @@ class Trakt(AbstractMovieLogger):
         if not response_body:
             return remote_ids
         for d in response_body:
-            if tvdb_id := d["movie"]["ids"].get("tvdb"):
-                remote_ids["tvdb_ids"].append(tvdb_id)
             if imdb_id := d["movie"]["ids"].get("imdb"):
                 remote_ids["imdb_ids"].append(imdb_id)
             if tmdb_id := d["movie"]["ids"].get("tmdb"):
@@ -149,7 +146,6 @@ class Trakt(AbstractMovieLogger):
         page = 1
         total_pages = 1
         remote_ids = {
-            "tvdb_ids": [],
             "imdb_ids": [],
             "tmdb_ids": [],
         }
@@ -170,8 +166,6 @@ class Trakt(AbstractMovieLogger):
             if not response_body:
                 break
             for d in response_body:
-                if tvdb_id := d["movie"]["ids"].get("tvdb"):
-                    remote_ids["tvdb_ids"].append(tvdb_id)
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):

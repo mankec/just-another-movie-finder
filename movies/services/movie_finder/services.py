@@ -5,10 +5,10 @@ from movies.models import Movie
 
 class MovieFinder():
     def __init__(self, **kwargs):
-        self.country_id = kwargs["country"]
-        self.language_alpha_3 = kwargs["language"]
-        self.genre_slugs = kwargs["genres"]
-        self.exclude_genre_slugs = kwargs["exclude_genres"]
+        self.country = kwargs["country"]
+        self.language = kwargs["language"]
+        self.genres = kwargs["genres"]
+        self.exclude_genres = kwargs["exclude_genres"]
         self.year_from = kwargs["year_from"]
         self.year_to = kwargs["year_to"]
         self.runtime_min = kwargs["runtime_min"]
@@ -17,11 +17,12 @@ class MovieFinder():
     @handle_exception
     def get_movie_ids(self) -> list:
         filter_query = Q()
-        if self.country_id:
-            filter_query &= Q(country=self.country_id)
+        exclude_filter_query = Q()
+        if self.country:
+            filter_query &= Q(origin_country__contains=[self.country])
 
-        if self.language_alpha_3:
-            filter_query &= Q(language_alpha_3=self.language_alpha_3)
+        if self.language:
+            filter_query &= Q(original_language=self.language)
 
         if self.year_from and self.year_to:
             filter_query &= Q(year__range=(self.year_from, self.year_to))
@@ -37,17 +38,16 @@ class MovieFinder():
         elif self.runtime_max:
             filter_query &= Q(runtime__lte=self.runtime_max)
 
-        exclude_filter_query = Q()
-        if self.exclude_genre_slugs:
-            exclude_filter_query = Q(genres__slug__in=self.exclude_genre_slugs)
+        if self.exclude_genres:
+            exclude_filter_query = Q(genres__id__in=self.exclude_genres)
 
-        if self.genre_slugs:
-            filter_query &= Q(matched_genres=len(self.genre_slugs))
+        if self.genres:
+            filter_query &= Q(matched_genres=len(self.genres))
             movies = (
                 Movie.objects.annotate(
                     matched_genres=Count(
                         "genres",
-                        filter=Q(genres__slug__in=self.genre_slugs),
+                        filter=Q(genres__id__in=self.genres),
                         distinct=True
                     )
                 )
@@ -61,4 +61,4 @@ class MovieFinder():
             )
             .exclude(exclude_filter_query)
         )
-        return list(movies.values_list("tvdb_id", flat=True))
+        return list(movies.values_list("id", flat=True))

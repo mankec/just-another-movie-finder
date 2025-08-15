@@ -41,7 +41,6 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "languages.apps.LanguagesConfig",
     "movie_metadata.apps.MovieMetadataConfig",
     "movie_loggers.apps.MovieLoggersConfig",
     "movies.apps.MoviesConfig",

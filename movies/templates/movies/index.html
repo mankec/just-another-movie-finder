@@ -8,10 +8,11 @@
       {% with result.movie as movie %}
         <div
           class="w-full col-span-6 flex flex-col items-center"
+          {% comment %} TODO: slugify this {% endcomment %}
           id="{{ movie.slug }}"
         >
           <h3 class="text-xl w-150 border-b-4">
-            {{ movie.title }} ({{ movie.year }})
+            {{ movie }}
           </h3>
           <div class="flex">
             <div class="w-65 p-1 border-x-4 border-b-4 border-white">
@@ -25,7 +26,7 @@
                 <img src="{{ movie.poster }}" alt="product image" />
                 <button
                   class="bg-[rgba(106,187,90,0.75)] w-full h-13 absolute bottom-0 cursor-pointer font-bold"
-                  id="add-to-watchlist-{{ movie.tvdb_id }}"
+                  id="add-to-watchlist-{{ movie.id }}"
                   :class="{
                     'bg-[rgba(106,187,90,0.90)]': 
                       ! signedIn ||
@@ -52,7 +53,7 @@
                       return;
                     }
                     loading = true;
-                    fetch('/movies/{{ movie.tvdb_id }}/add-to-watchlist', {
+                    fetch('/movies/{{ movie.id }}/add-to-watchlist', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -87,8 +88,12 @@
             </div>
             <div class="w-85 pt-2 pl-3 text-md">
               <div>
-                <p>Country: {{ movie.country }}</p>
-                <p>Language: {{ movie.language }}</p>
+                <p>Country: {{ movie.origin_country }}
+                  {% for country in movie.origin_country %}
+                    {{ country }}{% if not forloop.last %}, {%endif %}
+                  {% endfor %}
+                </p>
+                <p>Language: {{ movie.original_language }}</p>
                 <p>Runtime: {{ movie.runtime }} minutes</p>
                 <p>
                   <span>Genres:</span>

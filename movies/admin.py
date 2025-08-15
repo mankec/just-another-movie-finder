@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.db.models import Count, Q, F
-from django.db.models.expressions import RawSQL
+from django.db.models import Count, Q
 
-from movies.models import Movie, Genre, Country
+from movies.models import Movie, Genre
 
 
 class MoviesMissingFieldFilter(admin.SimpleListFilter):
@@ -49,38 +48,13 @@ class MoviesMissingFieldFilter(admin.SimpleListFilter):
         return queryset
 
 
-class MoviesWithMismatchingCountryAndLanguageFilter(admin.SimpleListFilter):
-    title = "mismatching fields"
-    parameter_name="mismatch"
-
-    def lookups(self, _request, _model_admin):
-        return [
-            ("country_and_language", "Country and language"),
-        ]
-
-    def queryset(self, _request, queryset):
-        if self.value() == "country_and_language":
-            return queryset.filter(
-                tvdb_id__in=RawSQL("""
-                    SELECT movie.tvdb_id
-                    FROM movie
-                    INNER JOIN country
-                    ON movie.country_id = country.id
-                    WHERE movie.language <> ALL(country.official_languages)
-                """, [])
-            )
-        return queryset
-
-
 class MovieAdmin(admin.ModelAdmin):
     search_fields = ["title"]
     filter_horizontal = ('genres',)
     list_filter = [
         MoviesMissingFieldFilter,
-        MoviesWithMismatchingCountryAndLanguageFilter,
     ]
 
 
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre)
-admin.site.register(Country)

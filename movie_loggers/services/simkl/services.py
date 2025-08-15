@@ -74,9 +74,8 @@ class Simkl(AbstractMovieLogger):
                         "title": movie.title,
                         "year": movie.year,
                         "ids": {
-                            "tvdb": movie.tvdb_id,
+                            "tmdb": movie.id,
                             "imdb": movie.imdb_id,
-                            "tmdb": movie.tmdb_id,
                         }
                     }
                 ],
@@ -105,12 +104,10 @@ class Simkl(AbstractMovieLogger):
     def fetch_movie_remote_ids(self) -> dict:
         remote_ids = {
             "watched": {
-                "tvdb_ids": [],
                 "imdb_ids": [],
                 "tmdb_ids": [],
             },
             "on_watchlist": {
-                "tvdb_ids": [],
                 "imdb_ids": [],
                 "tmdb_ids": [],
             },
@@ -131,15 +128,11 @@ class Simkl(AbstractMovieLogger):
         movies = response_body["movies"]
         for d in movies:
             if d["status"] == SimklMovieStatus.WATCHED:
-                if tvdb_id := d["movie"]["ids"].get("tvdb"):
-                    remote_ids["watched"]["tvdb_ids"].append(tvdb_id)
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["watched"]["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):
                     remote_ids["watched"]["tmdb_ids"].append(tmdb_id)
             elif d["status"] == SimklMovieStatus.ON_WATCHLIST:
-                if tvdb_id := d["movie"]["ids"].get("tvdb"):
-                    remote_ids["on_watchlist"]["tvdb_ids"].append(tvdb_id)
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["on_watchlist"]["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):

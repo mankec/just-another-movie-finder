@@ -71,7 +71,7 @@ class TMDB(AbstractMovieLogger):
             url = build_url(self.API_URL, "account/null/watchlist")
             payload = {
                 "media_type": "movie",
-                "media_id": movie.tmdb_id,
+                "media_id": movie.id,
                 "watchlist": True
             }
             headers = {
@@ -94,12 +94,10 @@ class TMDB(AbstractMovieLogger):
         total_pages = 1
         remote_ids = {
             "watched": {
-                "tvdb_ids": [],
                 "imdb_ids": [],
                 "tmdb_ids": [],
             },
             "on_watchlist": {
-                "tvdb_ids": [],
                 "imdb_ids": [],
                 "tmdb_ids": [],
             },

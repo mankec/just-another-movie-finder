@@ -3,18 +3,21 @@ from django.core.exceptions import ValidationError
 
 from core.forms.widgets import PrettyCheckboxSelectMultiple, PrettyRadioSelect
 from core.utils import intersection
-from movies.models import Country, Genre
-from languages.constants import TVDB_SUPPORTED_LANGUAGES
+from movies.models import Genre
+from movies.countries.constants import COUNTRIES
+from movies.languages.constants import LANGUAGES
 
 
 class MovieFinderForm(forms.Form):
+    country_choices = [("", "Choose a country")]
+    country_choices += [
+        (k, v["english_name"]) for k, v
+        in COUNTRIES.items()
+    ]
     language_choices = [("", "Choose a language")]
     language_choices += [
-        (k, v["name"]) for k, v
-        in dict(sorted(
-            TVDB_SUPPORTED_LANGUAGES.items(),
-            key=lambda x: x[1]["name"],
-        )).items()
+        (k, v["english_name"]) for k, v
+        in LANGUAGES.items()
     ]
     country = forms.ChoiceField(
         widget=forms.Select(
@@ -24,6 +27,7 @@ class MovieFinderForm(forms.Form):
                 """
             }
         ),
+        choices=country_choices,
         required=False,
     )
     language = forms.ChoiceField(
@@ -109,16 +113,10 @@ class MovieFinderForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        country_choices = [("", "Choose a country")]
-        country_choices += [
-            (c.id, c.name) for c
-            in Country.objects.order_by("name")
-        ]
         genre_choices = [
-            (g.slug, g.name) for g
+            (g.id, g.name) for g
             in Genre.objects.order_by("name")
         ]
-        self.fields["country"].choices = country_choices
         self.fields["genres"].choices = genre_choices
         self.fields["exclude_genres"].choices = genre_choices
 
@@ -142,7 +140,7 @@ class MovieFinderForm(forms.Form):
         exclude_genres = cleaned_data["exclude_genres"]
 
         if intersected_genres := intersection(genres, exclude_genres):
-            genre = Genre.objects.get(slug=intersected_genres[0])
+            genre = Genre.objects.get(pk=intersected_genres[0])
             raise ValidationError(
                 f"You have {genre.name} in both included and excluded genres."
             )
