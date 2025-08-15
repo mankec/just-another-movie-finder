@@ -2,18 +2,12 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from core.tests.mixins import CustomAssertionsMixin
-from core.constants import (
-    DEFAULT_YEAR,
-    DEFAULT_COUNTRY,
-    DEFAULT_LANGUAGE,
-    DEFAULT_COUNTRY_ALPHA_3,
-    DEFAULT_LANGUAGE_ALPHA_3,
-)
+from core.constants import DEFAULT_YEAR
 from movies.models import Genre
 
 
 class MovieFinderFormIntegrationTestCase(TestCase, CustomAssertionsMixin):
-    fixtures = ["countries.json", "genres.json"]
+    fixtures = ["genres.json"]
 
     def setUp(self):
         self.client = Client()
@@ -89,8 +83,8 @@ class MovieFinderFormIntegrationTestCase(TestCase, CustomAssertionsMixin):
     def test_validation_same_genre_in_include_and_exclude_filters(self):
         genre = Genre.objects.get(name="Drama")
         message = f"You have {genre.name} in both included and excluded genres."
-        self.params["genres"].append(genre.slug)
-        self.params["exclude_genres"].append(genre.slug)
+        self.params["genres"].append(genre.id)
+        self.params["exclude_genres"].append(genre.id)
         response = self.client.get(self.find_url, query_params=self.params, follow=True)
         self.assertFlashMessage(response, message)
 

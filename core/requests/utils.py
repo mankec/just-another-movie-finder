@@ -14,7 +14,7 @@ def send_request(*, method, url, headers={}, payload={}):
         stack = traceback.extract_stack()
         fs: FrameSummary = stack[-3]
         raise RuntimeError(f"""
-        Attempted to send a real request in test environment.
+        Attempted to send a real request to {url} in test environment.
         {fs.filename}
         Called by `{fs.name}`.
         """

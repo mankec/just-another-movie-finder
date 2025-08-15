@@ -22,7 +22,7 @@ class TraktSystemTestCase(
     CustomAssertionsMixin,
     CustomSeleniumMixin,
 ):
-    fixtures = ["movies.json", "countries.json", "genres.json"]
+    fixtures = ["movies.json", "genres.json"]
 
     def setUp(self):
         self.movie = Movie.objects.get(pk=1)
@@ -45,29 +45,25 @@ class TraktSystemTestCase(
                     "X-Pagination-Page-Count": 0,
                 }
             },
-        ]
-        with stub_requests(Trakt, responses=mocked_responses):
-            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
-        mocked_response = [
             {
                 "body": {"not_found": {"movies": []}},
             },
         ]
-        with stub_requests(Trakt, responses=mocked_response):
+        with stub_requests(Trakt, responses=mocked_responses):
+            fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = f"'{self.movie.title}' has been added to Trakt's watchlist."
             self.assertJsFlashMessage(message)
-        self.browser.refresh()
-        text = "Added to watchlist"
-        button = self.browser.find_element(
-            By.XPATH,
-            f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
-        )
-        button.click()
-        self.refuteJsFlashMessage()
+            self.browser.refresh()
+            text = "Added to watchlist"
+            button = self.browser.find_element(
+                By.XPATH,
+                f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+            )
+            button.click()
+            self.refuteJsFlashMessage()
 
     def test_adding_to_watchlist_movie_not_found(self):
         self.selenium_sign_in_user(MovieLogger.TRAKT.value)
@@ -97,9 +93,8 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = f"Trakt couldn't find '{self.movie.title}'."
             self.assertJsFlashMessage(message)
@@ -133,9 +128,8 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = "Your Trakt account is locked. Please contact their support at support@trakt.tv."
             self.assertJsFlashMessage(message)
@@ -168,9 +162,8 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = "Your Trakt account is deactivated. Please contact their support at support@trakt.tv."
             self.assertJsFlashMessage(message)
@@ -200,15 +193,15 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = "You have reached limit for your Trakt account."
             self.assertJsFlashMessage(message)
 
     def test_movie_is_marked_as_watched(self):
         self.selenium_sign_in_user(MovieLogger.TRAKT.value)
+
         total_pages = 1
         mocked_responses = [
             {
@@ -217,7 +210,7 @@ class TraktSystemTestCase(
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
-                                "tmdb": str(self.movie.tmdb_id),
+                                "tmdb": self.movie.id,
                             }
                         }
                     }
@@ -230,12 +223,12 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = MovieStatus.WATCHED.value
-        span = self.browser.find_element(
-            By.XPATH,
-            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
-        )
-        self.assertTrue(span)
+            text = MovieStatus.WATCHED.value
+            span = self.browser.find_element(
+                By.XPATH,
+                f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+            )
+            self.assertTrue(span)
 
 
     def test_movie_is_marked_as_on_watchlist(self):
@@ -251,8 +244,7 @@ class TraktSystemTestCase(
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
-                                # TODO: This is wrong approach, don't convert to string
-                                "tmdb": str(self.movie.tmdb_id),
+                                "tmdb": self.movie.id,
                             }
                         }
                     }
@@ -262,13 +254,13 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = MovieStatus.ON_WATCHLIST.value
-        button = self.browser.find_element(
-            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
-        )
-        self.assertTrue(button)
-        button.click()
-        self.refuteJsFlashMessage()
+            text = MovieStatus.ON_WATCHLIST.value
+            button = self.browser.find_element(
+                By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+            )
+            self.assertTrue(button)
+            button.click()
+            self.refuteJsFlashMessage()
 
     def test_movie_is_marked_as_watched_and_on_watchlist(self):
         self.selenium_sign_in_user(MovieLogger.TRAKT.value)
@@ -280,7 +272,7 @@ class TraktSystemTestCase(
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
-                                "tmdb": str(self.movie.tmdb_id),
+                                "tmdb": self.movie.id,
                             }
                         }
                     }
@@ -292,7 +284,7 @@ class TraktSystemTestCase(
                         "movie": {
                             "ids": {
                                 "imdb": self.movie.imdb_id,
-                                "tmdb": str(self.movie.tmdb_id),
+                                "tmdb": self.movie.id,
                             }
                         }
                     }
@@ -302,17 +294,16 @@ class TraktSystemTestCase(
         ]
         with stub_requests(Trakt, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
-        text = MovieStatus.WATCHED.value
-        span = self.browser.find_element(
-            By.XPATH,
-            f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
-        )
-        self.assertTrue(span)
-        text = MovieStatus.ON_WATCHLIST.value
-        button = self.browser.find_element(
-            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
-        )
-        self.assertTrue(button)
-        button.click()
-        self.refuteJsFlashMessage()
+            text = MovieStatus.WATCHED.value
+            span = self.browser.find_element(
+                By.XPATH,
+                f"//div[@id='{self.movie.slug}']//span[normalize-space(text()) = '{text}']"
+            )
+            self.assertTrue(span)
+            text = MovieStatus.ON_WATCHLIST.value
+            button = self.browser.find_element(
+                By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+            )
+            self.assertTrue(button)
+            button.click()
+            self.refuteJsFlashMessage()

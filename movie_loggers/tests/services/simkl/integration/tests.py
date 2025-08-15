@@ -9,7 +9,7 @@ from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 
 class SimklIntegrationTestCase(TestCase, CustomAssertionsMixin):
-    fixtures = ["movies.json", "countries.json"]
+    fixtures = ["movies.json"]
 
     def test_signing_in(self):
         client = Client()

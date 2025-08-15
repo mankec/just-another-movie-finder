@@ -5,27 +5,25 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from project.settings import CHROME_OPTIONS
 from core.tests.mixins import CustomAssertionsMixin
 from core.tests.utils import fill_and_submit_movie_finder_form
-from core.constants import (
-    DEFAULT_COUNTRY,
-    DEFAULT_LANGUAGE,
-    DEFAULT_LANGUAGE_ALPHA_3,
-    DEFAULT_YEAR,
-)
-from movies.models import Movie, Country, Genre
+from core.constants import DEFAULT_YEAR
+from movies.languages.constants import DEFAULT_LANGUAGE, DEFAULT_LANGUAGE_ISO_639_1
+from movies.countries.constants import DEFAULT_COUNTRY, DEFAULT_COUNTRY_ISO_3166_1
+from movies.models import Movie, Genre
 from core.tests.utils import create_dummy_movie
 
 class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin):
-    fixtures = ["movies.json", "countries.json", "genres.json"]
+    fixtures = ["movies.json", "genres.json"]
 
-    def test_each_form_field_and_search_work_properly(self):
+    def test_not_signed_in_each_form_field_and_search_work_properly(self):
         self.browser = webdriver.Chrome(CHROME_OPTIONS)
-        include_genres = ["Reality", "Drama"]
+        self.browser.implicitly_wait(1)
+        include_genres = ["Comedy", "Drama"]
         exclude_genres = ["Action", "Fantasy"]
         runtime = 90
 
         movie = Movie.objects.get(pk=1)
-        movie.country = Country.objects.get(name=DEFAULT_COUNTRY)
-        movie.language = DEFAULT_LANGUAGE
+        movie.origin_country = [DEFAULT_COUNTRY_ISO_3166_1]
+        movie.original_language = DEFAULT_LANGUAGE_ISO_639_1
         movie.runtime = runtime
         movie.genres.add(
             Genre.objects.get(name=include_genres[0]),
@@ -33,8 +31,8 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
         )
         movie.save()
         exclude_movie = create_dummy_movie(movie)
-        exclude_movie.country = Country.objects.get(name="Ireland")
-        exclude_movie.language = "Irish"
+        exclude_movie.origin_country = ["Ireland"]
+        exclude_movie.original_language = "Irish"
         exclude_movie.runtime = runtime + 100
         exclude_movie.genres.add(
             Genre.objects.get(name=exclude_genres[0]),
@@ -45,7 +43,7 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
         self.browser.get(self.live_server_url)
         fill_and_submit_movie_finder_form(
             self.browser,
-            country=movie.country.name,
+            country=DEFAULT_COUNTRY,
             language=DEFAULT_LANGUAGE,
             genres=include_genres,
             exclude_genres=exclude_genres,

@@ -48,15 +48,16 @@ def stub_requests(klass_or_instance, *, responses: list):
 def create_dummy_movie(original: Movie):
     num = Movie.objects.count() + 1
     new_movie = deepcopy(original)
-    new_movie.tvdb_id = num
+    new_movie.id = num
+    new_movie.original_title = f"Dummy Movie {num}"
     new_movie.title = f"Dummy Movie {num}"
     new_movie.slug = f"dummy-movie-{num}"
     new_movie.imdb_id = f"imdb{num}"
-    new_movie.tmdb_id = num
     new_movie.save()
     return new_movie
 
 
+# TODO: Perhaps move to core/tests/system/utils.py
 def fill_and_submit_movie_finder_form(
     browser: WebDriver,
     *,

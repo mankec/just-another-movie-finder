@@ -15,7 +15,7 @@ from movies.models import Movie
 from movie_loggers.services.base import MovieLogger
 
 class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
-    fixtures = ["movies.json", "countries.json"]
+    fixtures = ["movies.json"]
 
     def setUp(self):
         self.client = Client()
@@ -60,7 +60,7 @@ class TraktIntegrationTestCase(TestCase, CustomAssertionsMixin):
         session["movie_logger"] =MovieLogger.TRAKT.value
         session["token"] = "token"
         session.save()
-        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.tvdb_id})
+        url = reverse("movies:add_to_watchlist", kwargs={"movie_id": self.movie.id})
         mocked_response = {
             "body": {},
             "status_code": self.trakt.HTTP_STATUS_CODE_VIP_ENHANCED,

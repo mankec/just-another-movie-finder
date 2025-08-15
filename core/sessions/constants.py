@@ -7,12 +7,10 @@ DEFAULT_SESSION_DATA = {
     "filtered_movie_ids": [],
     "movie_remote_ids": {
         "watched": {
-            "tvdb_ids": [],
             "imdb_ids": [],
             "tmdb_ids": [],
         },
         "on_watchlist": {
-            "tvdb_ids": [],
             "imdb_ids": [],
             "tmdb_ids": [],
         },

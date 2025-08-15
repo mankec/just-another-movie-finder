@@ -22,7 +22,7 @@ class TMDBSystemTestCase(
     CustomAssertionsMixin,
     CustomSeleniumMixin,
 ):
-    fixtures = ["movies.json", "countries.json", "genres.json"]
+    fixtures = ["movies.json", "genres.json"]
 
     def setUp(self):
         self.movie = Movie.objects.get(pk=1)
@@ -49,20 +49,19 @@ class TMDBSystemTestCase(
         ]
         with stub_requests(TMDB, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = f"'{self.movie.title}' has been added to TMDB's watchlist."
             self.assertJsFlashMessage(message)
-        self.browser.refresh()
-        text = "Added to watchlist"
-        button = self.browser.find_element(
-            By.XPATH,
-            f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
-        )
-        button.click()
-        self.refuteJsFlashMessage()
+            self.browser.refresh()
+            text = "Added to watchlist"
+            button = self.browser.find_element(
+                By.XPATH,
+                f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+            )
+            button.click()
+            self.refuteJsFlashMessage()
 
     def test_adding_to_watchlist_fail(self):
         self.selenium_sign_in_user(MovieLogger.TMDB.value)
@@ -85,9 +84,8 @@ class TMDBSystemTestCase(
         ]
         with stub_requests(TMDB, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-
             self.browser.find_element(
-                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.tvdb_id}']"
+                By.XPATH, f"//button[@id='add-to-watchlist-{self.movie.id}']"
             ).click()
             message = f"Something went wrong while trying to add {self.movie.title} to your TMDB's watchlist."
             self.assertJsFlashMessage(message)
@@ -100,19 +98,19 @@ class TMDBSystemTestCase(
                 "body": {
                     "results": [
                         {
-                            "id": self.movie.tmdb_id,
+                            "id": self.movie.id,
                         },
                     ],
-                    "total_pages": 1,
+                    "total_pages": total_pages,
                 }
             },
         ]
         with stub_requests(TMDB, responses=mocked_responses):
             fill_and_submit_movie_finder_form(self.browser, year_from=self.movie.year)
-        text = MovieStatus.ON_WATCHLIST.value
-        button = self.browser.find_element(
-            By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
-        )
-        self.assertTrue(button)
-        button.click()
-        self.refuteJsFlashMessage()
+            text = MovieStatus.ON_WATCHLIST.value
+            button = self.browser.find_element(
+                By.XPATH, f"//div[@id='{self.movie.slug}']//button[normalize-space(text()) = '{text}']"
+            )
+            self.assertTrue(button)
+            button.click()
+            self.refuteJsFlashMessage()

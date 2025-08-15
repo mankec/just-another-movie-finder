@@ -57,11 +57,12 @@ class PrettyCheckboxSelectMultiple(CheckboxSelectMultiple):
                 """,
                 (
                     {
-                        "value": value.replace("-", "_"),
+                        "value": value if isinstance(value, int) else value.replace("-", "_"),
                         "name": name,
                         "label": label,
                     }
-                    for value, label in self.choices),
+                    for value, label in self.choices
+                ),
             )
         )
         html.append("</ul></div>")
