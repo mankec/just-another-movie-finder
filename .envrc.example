@@ -1,5 +1,13 @@
-export PG_HOST=localhost
-export PG_PORT=5432
-export PG_DBNAME=dbname
-export PG_USER=admin
-export PG_PASSWORD=password
+export POSTGRES_HOST="localhost"
+export POSTGRES_PORT=5432
+export POSTGRES_DB="dbname"
+export POSTGRES_USER="admin"
+export POSTGRES_PASSWORD="password"
+
+export TMDB_TOKEN=""
+
+export SIMKL_CLIENT_ID=""
+export SIMKL_CLIENT_SECRET=""
+
+export TRAKT_CLIENT_ID=""
+export TRAKT_CLIENT_SECRET=""
