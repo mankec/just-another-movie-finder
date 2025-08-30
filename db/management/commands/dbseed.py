@@ -33,7 +33,6 @@ class Command(BaseCommand):
 
         Genre.objects.bulk_create(genre_objs, batch_size=self.BATCH_SIZE)
 
-        import sys; sys.exit(1)
         print("Done.")
 
         print("Creating movies...")
@@ -43,8 +42,8 @@ class Command(BaseCommand):
         cast_objs = []
         crew_objs = []
         for m in movies:
-            if m["adult"]:
-                breakpoint()
+            release_date = m["release_date"]
+            year = datetime.strptime(release_date, "%Y-%m-%d").year
             movie_obj = Movie(
                 id=m["id"],
                 backdrop_path=m["backdrop_path"],
