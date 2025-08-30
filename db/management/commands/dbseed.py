@@ -16,15 +16,6 @@ class Command(BaseCommand):
     }
     BATCH_SIZE = 1000
 
-    def _remote_id(self, remote_ids, *, source_name):
-        return next(
-            (
-                remote_id["id"] for remote_id in remote_ids
-                if remote_id["sourceName"] == source_name
-            ),
-            None
-        )
-
     def handle(self, *_args, **_options):
         seeds_dir = Path("db/seeds")
         fixtures_dir = Path("db/fixtures")
@@ -41,6 +32,8 @@ class Command(BaseCommand):
             genre_objs.append(genre_obj)
 
         Genre.objects.bulk_create(genre_objs, batch_size=self.BATCH_SIZE)
+
+        import sys; sys.exit(1)
         print("Done.")
 
         print("Creating movies...")
@@ -50,6 +43,8 @@ class Command(BaseCommand):
         cast_objs = []
         crew_objs = []
         for m in movies:
+            if m["adult"]:
+                breakpoint()
             movie_obj = Movie(
                 id=m["id"],
                 backdrop_path=m["backdrop_path"],
@@ -60,8 +55,8 @@ class Command(BaseCommand):
                 original_title=m["original_title"],
                 overview=m["overview"],
                 poster_path=m["poster_path"],
-                release_date=m["release_date"],
-                year=datetime.strptime(m["release_date"], "%Y-%m-%d").year,
+                release_date=release_date,
+                year=year,
                 revenue=m["runtime"],
                 runtime=m["runtime"],
                 spoken_languages=m["spoken_languages"],
@@ -71,18 +66,19 @@ class Command(BaseCommand):
                 slug=slugify(m["title"]),
                 vote_average=m["vote_average"],
                 vote_count=m["vote_count"],
-                backdrops=m["images"]["backdrops"],
-                logos=m["images"]["logos"],
-                posters=m["images"]["posters"],
-                keywords=m["keywords"]["keywords"],
-                recommendations=m["recommendations"]["results"],
-                similar=m["similar"]["results"],
+                backdrops=m["images"]["backdrops"] if m.get("images") else [],
+                logos=m["images"]["logos"] if m.get("images") else [],
+                posters=m["images"]["posters"] if m.get("images") else [],
+                keywords=m["keywords"]["keywords"] if m.get("keywords") else [],
+                recommendations=m["recommendations"]["results"] if m.get("recommendations") else [],
+                similar=m["similar"]["results"] if m.get("similar") else [],
             )
             if genres := m["genres"]:
                 genre_ids = [g["id"] for g in genres]
 
                 movie_genre_ids[movie_obj.id] = genre_ids
-            if cast := m["credits"]["cast"]:
+            cast = m["credits"]["cast"] if m.get("credits") else []
+            if cast:
                 for c in cast:
                     person_ids[c["id"]] = {k: c[k] for k in Person.DEFAULTS}
                     cast_obj = Cast(
@@ -92,7 +88,8 @@ class Command(BaseCommand):
                         person_id=c["id"],
                     )
                     cast_objs.append(cast_obj)
-            if crew := m["credits"]["crew"]:
+            crew = m["credits"]["crew"] if m.get("credits") else []
+            if crew:
                 for c in crew:
                     person_ids[c["id"]] = {k: c[k] for k in Person.DEFAULTS}
                     crew_obj = Crew(
