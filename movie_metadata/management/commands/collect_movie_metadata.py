@@ -31,9 +31,9 @@ class Command(BaseCommand):
     help = "Fetch movie metadata from TMDB and store it in JSON Lines."
 
     def add_arguments(self, parser):
-        parser.add_argument('--metadata-dir-path', type=str, required=False, help='Directory you will save your metadata to.')
-        parser.add_argument('--backup-dir-path', type=str, required=False, help='Directory that will act as a backup for you metadata directory.')
-        parser.add_argument("--not-found-movie-ids-file-path", type=str, required=False, help="File that will be used to store ids of movies that haven't been found.")
+        parser.add_argument('--metadata-dir', type=str, required=False, help='Directory you will save your metadata to.')
+        parser.add_argument('--backup-dir', type=str, required=False, help='Directory that will act as a backup for you metadata directory.')
+        parser.add_argument("--not-found-movie-ids-file", type=str, required=False, help="File that will be used to store ids of movies that haven't been found.")
         parser.add_argument('--max-movies-per-file', type=int, required=False, help='Max movies per file. Default is 500.')
         parser.add_argument('--max-movies-per-bundled-file', type=int, required=False, help='Max movies per bundled file. Default is 10 000.')
 
@@ -158,23 +158,25 @@ class Command(BaseCommand):
             append_to_jsonl_file(sliced_data, append_to_file)
 
             data = data[self.max_movies_per_bundled_file:]
-        mf = list(self.metadata_dir.iterdir())
-        bf = list(self.backup_dir.iterdir())
         self._sync_dirs(self.metadata_dir, self.backup_dir)
 
     def _setUp(self, options):
-        if options["metadata_dir_path"]:
-            self.metadata_dir = Path(options["metadata_dir_path"])
-        else:
-            self.metadata_dir = Path("movie_metadata/metadata")
-        if options["backup_dir_path"]:
-            self.backup_dir = Path(options["backup_dir_path"])
-        else:
-            self.backup_dir = Path("movie_metadata/backup")
-        if options["not_found_movie_ids_file_path"]:
-            self.not_found_movie_ids_file = Path(options["not_found_movie_ids_file_path"])
-        else:
-            self.not_found_movie_ids_file = Path("movie_metadata/not_found_movie_ids.json")
+        self.metadata_dir = (Path(options["metadata_dir"])
+            if options.get("metadata_dir")
+            else Path("movie_metadata/metadata")
+        )
+        self.metadata_dir = (Path(options["metadata_dir"])
+            if options.get("metadata_dir")
+            else Path("movie_metadata/metadata")
+        )
+        self.backup_dir = (Path(options["backup_dir"])
+            if options.get("backup_dir")
+            else Path("movie_metadata/backup")
+        )
+        self.not_found_movie_ids_file = (Path(options["not_found_movie_ids_file"])
+            if options.get("not_found_movie_ids_file")
+            else Path("movie_metadata/not_found_movie_ids.json")
+        )
         self.max_movies_per_file = (
             options["max_movies_per_file"] or
             self.__class__.DEFAULT_MAX_MOVIES_PER_FILE

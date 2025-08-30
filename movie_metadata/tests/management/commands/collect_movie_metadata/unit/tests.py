@@ -58,9 +58,9 @@ class CollectMovieMetadataTest(TestCase):
     def _collect_movie_metadata(self, max_movies_per_file=2, max_movies_per_bundled_file=1):
         call_command(
             "collect_movie_metadata",
-            metadata_dir_path=self.tmp_metadata_dir,
-            backup_dir_path=self.tmp_backup_dir,
-            not_found_movie_ids_file_path = self.not_found_movie_ids_file,
+            metadata_dir=self.tmp_metadata_dir,
+            backup_dir=self.tmp_backup_dir,
+            not_found_movie_ids_file = self.not_found_movie_ids_file,
             max_movies_per_file=max_movies_per_file,
             max_movies_per_bundled_file=max_movies_per_bundled_file,
         )
