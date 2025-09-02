@@ -12,6 +12,7 @@ pillow = "*"
 freezegun = "*"
 beautifulsoup4 = "*"
 selenium = "*"
+gunicorn = "*"
 
 [dev-packages]
 
