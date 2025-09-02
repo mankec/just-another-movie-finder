@@ -22,6 +22,11 @@ import os
 
 env = Env()
 
+DJANGO_ENV = env.str("DJANGO_ENV", "development")
+IS_DEVELOPMENT = DJANGO_ENV == "development"
+IS_TEST = DJANGO_ENV == "test"
+IS_PRODUCTION = DJANGO_ENV == "production"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -94,7 +99,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 DATABASES = {
     'default': {
         "ENGINE": 'django.db.backends.postgresql',
@@ -105,7 +109,6 @@ DATABASES = {
         "PORT": env.str("POSTGRES_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -169,5 +172,3 @@ SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
 
 # Set to DEFAULT if you want to temporarily see UI
 CHROME_OPTIONS = ChromeMode.HEADLESS.options
-
-DJANGO_ENV = env.str("DJANGO_ENV", "development")

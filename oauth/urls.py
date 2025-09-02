@@ -1,6 +1,6 @@
 from django.urls import path
 
-from core.environments.utils import is_test
+from project.settings import IS_TEST
 from . import views
 
 app_name = "oauth"
@@ -12,7 +12,7 @@ urlpatterns = [
     ),
 ]
 
-if is_test():
+if IS_TEST:
     urlpatterns += [
         path("<str:movie_logger>/selenium-sign-in",
             views.selenium_sign_in,

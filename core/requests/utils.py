@@ -5,12 +5,11 @@ from http import HTTPMethod
 from requests import get, post
 
 from core.wrappers import handle_exception
-from core.environments.utils import is_test
-
+from project.settings import IS_TEST
 
 @handle_exception
 def send_request(*, method, url, headers={}, payload={}):
-    if is_test():
+    if IS_TEST:
         stack = traceback.extract_stack()
         fs: FrameSummary = stack[-3]
         raise RuntimeError(f"""

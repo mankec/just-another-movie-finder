@@ -1,5 +1,5 @@
 from core.sessions.utils import is_signed_in
-from core.environments.utils import is_development, is_test, is_production
+from project.settings import IS_DEVELOPMENT, IS_TEST, IS_PRODUCTION
 
 
 def is_signed_in_cp(request):
@@ -10,17 +10,17 @@ def is_signed_in_cp(request):
 
 def is_development_cp(_request):
     return {
-        "is_development": is_development()
+        "is_development": IS_DEVELOPMENT,
     }
 
 
 def is_test_cp(_request):
     return {
-        "is_test": is_test()
+        "is_test": IS_TEST,
     }
 
 
 def is_production_cp(_request):
     return {
-        "is_production": is_production()
+        "is_production": IS_PRODUCTION,
     }

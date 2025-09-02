@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from core.wrappers import handle_exception
-from core.environments.utils import is_test
+from project.settings import IS_TEST
 from core.sessions.utils import is_signed_in
 from movie_loggers.services.creator import MovieLogger, MovieLoggerCreator
 
@@ -67,7 +67,7 @@ def sign_out(request):
 @handle_exception
 def selenium_sign_in(request, movie_logger):
     # Session is already initialized here because of initialize_session middleware
-    if not is_test():
+    if not IS_TEST:
         return redirect("/")
     session = request.session
     session["movie_logger"] = movie_logger
