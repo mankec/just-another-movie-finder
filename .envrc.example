@@ -11,3 +11,6 @@ export SIMKL_CLIENT_SECRET=""
 
 export TRAKT_CLIENT_ID=""
 export TRAKT_CLIENT_SECRET=""
+
+
+export DJANGO_SECRET_KEY=""
