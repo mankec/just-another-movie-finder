@@ -14,6 +14,7 @@ from pathlib import Path
 
 from environs import Env
 from django.contrib.messages import constants as message_constants
+import dj_database_url
 
 from core.enums import SkipExternalTests, ChromeMode
 
@@ -112,6 +113,12 @@ DATABASES = {
         "PORT": env.str("POSTGRES_PORT"),
     }
 }
+
+if env.str("DATABASE_URL", ""):
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=500,
+        conn_health_checks=True,
+    )
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

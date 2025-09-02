@@ -13,6 +13,7 @@ freezegun = "*"
 beautifulsoup4 = "*"
 selenium = "*"
 gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
