@@ -10,7 +10,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 
 from core.url.utils import is_url
-from core.environments.utils import is_production
+from project.settings import IS_PRODUCTION
 
 def handle_exception(func_or_message: FunctionType | str, message: str = None, log=True):
     func = func_or_message if callable(func_or_message) else None
@@ -46,7 +46,7 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                             return redirect(referer)
                         return redirect("/")
                     elif request.method == HTTPMethod.GET.value:
-                        if not is_production():
+                        if not IS_PRODUCTION:
                             ctx = {
                                 "message": message,
                             }
