@@ -23,7 +23,16 @@
                     Watched
                   </span>
                 {% endif %}
-                <img src="{{ movie.poster }}" alt="product image" />
+                <div class="h-[23.63rem]">
+                  {% if movie.poster_path %}
+                    <img
+                      class=""
+                      src="https://image.tmdb.org/t/p/w1280/{{ movie.poster_path }}" alt="'{{ movie }}' movie poster"
+                    />
+                  {% else %}
+                    <span class="h-full flex justify-center items-center text-lg font-medium">No poster</span>
+                  {% endif %}
+                </div>
                 <button
                   class="bg-[rgba(106,187,90,0.75)] w-full h-13 absolute bottom-0 cursor-pointer font-bold"
                   id="add-to-watchlist-{{ movie.id }}"
@@ -88,7 +97,7 @@
             </div>
             <div class="w-85 pt-2 pl-3 text-md">
               <div>
-                <p>Country: {{ movie.origin_country }}
+                <p>Country:
                   {% for country in movie.origin_country %}
                     {{ country }}{% if not forloop.last %}, {%endif %}
                   {% endfor %}
