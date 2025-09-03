@@ -22,7 +22,7 @@ class TMDB(AbstractMovieLogger):
         self.token = token
         self.name = MovieLogger.TMDB.value
 
-    @handle_exception("Something went wrong while trying to sign you in to Simkl.")
+    @handle_exception("Something went wrong while trying to sign you in to TMDB.")
     def fetch_request_token(self):
         url = build_url(self.API_URL, "authentication/token/new")
         headers = {
@@ -36,7 +36,7 @@ class TMDB(AbstractMovieLogger):
         response_body = response.json()
         return response_body["request_token"]
 
-    @handle_exception("Something went wrong while trying to sign you in to Simkl.")
+    @handle_exception("Something went wrong while trying to sign you in to TMDB.")
     def authorize_application_url(self, request_token) -> str:
         url = build_url("https://www.themoviedb.org/authenticate/", request_token)
         query = {
@@ -44,7 +44,7 @@ class TMDB(AbstractMovieLogger):
         }
         return build_url_with_query(url, query)
 
-    @handle_exception("Something went wrong while trying to sign you in to Simkl.")
+    @handle_exception("Something went wrong while trying to sign you in to TMDB.")
     def fetch_tokens(self, *, code) -> dict:
         url = "https://api.themoviedb.org/3/authentication/session/new"
         headers = {
