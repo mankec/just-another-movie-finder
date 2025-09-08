@@ -10,10 +10,13 @@ from movies.languages.constants import LANGUAGES
 
 class MovieFinderForm(forms.Form):
     country_choices = [("", "Choose a country")]
-    country_choices += [
-        (k, v["english_name"]) for k, v
-        in COUNTRIES.items()
-    ]
+    country_choices += sorted(
+        [
+            (k, v["english_name"]) for k, v
+            in COUNTRIES.items()
+        ],
+        key=lambda country: country[1],
+    )
     language_choices = [("", "Choose a language")]
     language_choices += [
         (k, v["english_name"]) for k, v
