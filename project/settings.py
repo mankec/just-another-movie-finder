@@ -187,3 +187,7 @@ SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
 
 # Set to DEFAULT if you want to temporarily see UI
 CHROME_OPTIONS = ChromeMode.HEADLESS.options
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://just-another-movie-finder-production.up.railway.app",
+]
