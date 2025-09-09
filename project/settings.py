@@ -180,7 +180,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USER_AGENT = "JustAnotherMovieFinder/1.0.0 (justanothermoviefinder@gmail.com)"
 
-API_REDIRECT_URL = "http://localhost:8000/oauth/"
+PRODUCTION_URL = "https://just-another-movie-finder-production.up.railway.app"
+
+API_REDIRECT_URL = f"{PRODUCTION_URL}/oauth" if IS_PRODUCTION else "http://localhost:8000/oauth"
 
 # Set to NO if you want to temporarily disable
 SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
@@ -189,5 +191,5 @@ SKIP_EXTERNAL_TESTS = SkipExternalTests.YES
 CHROME_OPTIONS = ChromeMode.HEADLESS.options
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://just-another-movie-finder-production.up.railway.app",
+    PRODUCTION_URL,
 ]
