@@ -125,7 +125,7 @@ class MovieFinderForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        values = [v for k, v in cleaned_data.items() if k != "match_filters"]
+        values = [v for _, v in cleaned_data.items()]
         if not any(values):
             raise ValidationError("You must use at least one filter.")
 

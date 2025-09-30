@@ -15,6 +15,7 @@ selenium = "*"
 gunicorn = "*"
 dj-database-url = "*"
 whitenoise = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

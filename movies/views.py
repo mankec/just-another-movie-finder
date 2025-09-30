@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from environs import Env
+from rest_framework.decorators import api_view, renderer_classes
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -12,7 +13,7 @@ from core.wrappers import handle_exception
 from core.utils import flatten
 from movie_loggers.services.creator import MovieLoggerCreator
 from movies.models import Movie
-from movies.forms.movie_finder.forms import MovieFinderForm
+from movies.serializers.movie_finder.serializers import MovieFinderFormSerializer
 from movies.services.movie_finder.services import MovieFinder
 from core.sessions.utils import is_signed_in
 
@@ -56,18 +57,19 @@ def index(request):
     return render(request, "movies/index.html", ctx)
 
 @handle_exception
+@api_view()
 def find(request):
-    form = MovieFinderForm(request.GET)
-    if form.is_valid():
+    serializer = MovieFinderFormSerializer(data=request.GET)
+    if serializer.is_valid():
         session = request.session
-        session["filtered_movie_ids"] = MovieFinder(**form.cleaned_data).get_movie_ids()
+        session["filtered_movie_ids"] = MovieFinder(**serializer.validated_data).get_movie_ids()
         if is_signed_in(session):
             session["movie_remote_ids"] = MovieLoggerCreator(
                 session
             ).fetch_movie_remote_ids()
         url = reverse("movies:index")
         return redirect(url)
-    message = list(flatten(form.errors.values())).pop(0)
+    message = list(flatten(serializer.errors.values())).pop(0)
     messages.error(request, message)
     return redirect("/")
 

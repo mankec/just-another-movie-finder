@@ -9,43 +9,164 @@
     {% csrf_token %}
     <div class="w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
       <div class="col-span-12">
-        {{ movie_finder_form.country }}
+        <select
+          name="country" 
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          id="select_country"
+        >
+          {% for value, label in serializer.fields.country.choices.items %}
+            <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div class="col-span-12">
-        {{ movie_finder_form.language }}
+        <select
+          name="language" 
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          id="select_language"
+        >
+          {% for value, label in serializer.fields.language.choices.items %}
+            <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div class="col-span-6">
-        {{ movie_finder_form.genres.label }}
-        {{ movie_finder_form.genres }}
+        <div class="bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <div class="p-3">
+            <label for="search_genres" class="sr-only">Search</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="search_genres"
+                value=""
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search"
+                x-data
+                @input="$searchSelectMultiple($event, 'genres');"
+              >
+            </div>
+          </div>
+          <ul
+            class="h-38 px-3 pb-3 overflow-y-scroll text-sm text-gray-700 dark:text-gray-200"
+            id="genres_list"
+          >
+            {% for value, label in serializer.fields.genres.choices.items %}
+              <li>
+                <div class="flex items-center p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <input
+                      id="genre_{{ value }}"
+                      type="checkbox"
+                      value="{{ value }}"
+                      name="genres"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                    >
+                    <label for="genre_{{ value }}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{{ label }}</label>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="col-span-6">
-        {{ movie_finder_form.exclude_genres.label }}
-        {{ movie_finder_form.exclude_genres }}
+        <div class="bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <div class="p-3">
+            <label for="search_genres" class="sr-only">Search</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="search_exclude_genres"
+                value=""
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search"
+                x-data
+                @input="$searchSelectMultiple($event, 'exclude_genres');"
+              >
+            </div>
+          </div>
+          <ul
+            class="h-38 px-3 pb-3 overflow-y-scroll text-sm text-gray-700 dark:text-gray-200"
+            id="exclude_genres_list"
+          >
+            {% for value, label in serializer.fields.genres.choices.items %}
+              <li>
+                <div class="flex items-center p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <input
+                      id="exclude_genre_{{ value }}"
+                      type="checkbox"
+                      value="{{ value }}"
+                      name="exclude_genres"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                    >
+                    <label for="exclude_genre_{{ value }}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{{ label }}</label>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="col-span-6">
-        {{ movie_finder_form.year_from.label }}
-        {{ movie_finder_form.year_from }}
+        <input
+          type="text"
+          name="year_from"
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          placeholder="From"
+          maxlength="4"
+          id="id_year_from"
+        >
       </div>
       <div class="col-span-6">
-        <span class="invisible">
-          {{ movie_finder_form.year_to.label }}
-        </span>
-        {{ movie_finder_form.year_to }}
+        <input
+          type="text"
+          name="year_to"
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          placeholder="To"
+          maxlength="4"
+          id="id_year_to"
+        >
       </div>
 
       <div class="col-span-6">
-        {{ movie_finder_form.runtime_min.label }}
-        {{ movie_finder_form.runtime_min }}
-      </div>
-      <div class="col-span-6">
-        <span class="invisible">
-          {{ movie_finder_form.runtime_max.label }}
-        </span>
-        {{ movie_finder_form.runtime_max }}
+        <input
+          type="text"
+          name="runtime_min"
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          placeholder="Min"
+          maxlength="6"
+          id="id_runtime_min"
+        >
       </div>
 
-      <div class="col-span-12">
-        {{ movie_finder_form.match_filters }}
+      <div class="col-span-6">
+        <input
+          type="text"
+          name="runtime_max"
+          class="
+          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+          "
+          placeholder="Max"
+          maxlength="6"
+          id="id_runtime_max"
+        >
       </div>
 
       <div class="col-span-12 mt-2">

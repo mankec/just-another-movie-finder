@@ -5,14 +5,14 @@ from movies.models import Movie
 
 class MovieFinder():
     def __init__(self, **kwargs):
-        self.country = kwargs["country"]
-        self.language = kwargs["language"]
-        self.genres = kwargs["genres"]
-        self.exclude_genres = kwargs["exclude_genres"]
-        self.year_from = kwargs["year_from"]
-        self.year_to = kwargs["year_to"]
-        self.runtime_min = kwargs["runtime_min"]
-        self.runtime_max = kwargs["runtime_max"]
+        self.country = kwargs.get("country")
+        self.language = kwargs.get("language")
+        self.genres = kwargs.get("genres")
+        self.exclude_genres = kwargs.get("exclude_genres")
+        self.year_from = kwargs.get("year_from")
+        self.year_to = kwargs.get("year_to")
+        self.runtime_min = kwargs.get("runtime_min")
+        self.runtime_max = kwargs.get("runtime_max")
 
     @handle_exception
     def get_movie_ids(self) -> list:
