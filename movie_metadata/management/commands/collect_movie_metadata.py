@@ -11,6 +11,7 @@ from requests.exceptions import HTTPError
 from django.core.management.base import BaseCommand
 
 from movie_metadata.services import MovieMetadata
+from core.constants import TIMEOUT_BEFORE_NEXT_REQUEST_SECONDS
 from core.utils import flatten
 from core.files.utils import (
     append_to_json_file,
@@ -26,7 +27,6 @@ from project.settings import TIME_ZONE
 class Command(BaseCommand):
     DEFAULT_MAX_MOVIES_PER_FILE = 500
     DEFAULT_MAX_MOVIES_PER_BUNDLED_FILE = 10_000
-    TIMEOUT_BEFORE_NEXT_REQUEST = 0.5
 
     help = "Fetch movie metadata from TMDB and store it in JSON Lines."
 
@@ -204,13 +204,13 @@ class Command(BaseCommand):
 
     def handle(self, *_args, **options):
         try:
-            self.tmdb = MovieMetadata.TMDB()
+            tmdb = MovieMetadata.TMDB()
             self._setUp(options)
 
             movie_id = max(self.movie_ids_in_metadata, default=0) + 1
             movie_count_at_start = self.movie_count
             now = datetime.now(ZoneInfo(TIME_ZONE)).strftime("%D %H:%M")
-            while movie_id <= self.tmdb.latest_movie_id:
+            while movie_id <= tmdb.latest_movie_id:
                 if (
                     movie_id in self.movie_ids_in_metadata or
                     movie_id in self.not_found_movie_ids
@@ -224,11 +224,11 @@ class Command(BaseCommand):
                     self._resolve_files()
                     print("--------------------------------------")
                     print(f"Started at {now}")
-                    print(f"Latest movie ID: {self.tmdb.latest_movie_id}")
+                    print(f"Latest movie ID: {tmdb.latest_movie_id}")
                     print(f"Movie ID: {movie_id}")
                     print(f"Fetching...")
 
-                    data = self.tmdb.fetch_details(movie_id)
+                    data = tmdb.fetch_details(movie_id)
 
                     print(f"Fetched {data["title"]}")
                     print(f"Collected in this session: {(self.movie_count + 1) - movie_count_at_start}")
@@ -242,24 +242,24 @@ class Command(BaseCommand):
                     print("Copied.")
                     self.movie_count += 1
                     movie_id += 1
-                    time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)
+                    time.sleep(TIMEOUT_BEFORE_NEXT_REQUEST_SECONDS)
                 except HTTPError as error:
                     response = error.response
                     if response.status_code == HTTPStatus.NOT_FOUND.value:
                         if movie_id not in self.not_found_movie_ids:
                             append_to_json_file(movie_id, self.not_found_movie_ids_file)
                         movie_id += 1
-                        time.sleep(self.__class__.TIMEOUT_BEFORE_NEXT_REQUEST)
+                        time.sleep(TIMEOUT_BEFORE_NEXT_REQUEST_SECONDS)
                         continue
                     else:
                         self._styled_output(message, level="ERROR")
                         sys.exit(1)
+                except KeyboardInterrupt:
+                    print("Gracefully stopping...")
+                    sys.exit(1)
                 except Exception as error:
                     message = str(error)
                     self._styled_output(message, level="ERROR")
-                    sys.exit(1)
-                except KeyboardInterrupt:
-                    print("Gracefully stopping...")
                     sys.exit(1)
             print(f"Finished at {datetime.now(ZoneInfo(TIME_ZONE)).strftime("%D %H:%M")}.")
         except Exception as error:

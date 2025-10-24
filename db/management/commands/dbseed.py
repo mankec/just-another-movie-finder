@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
 from core.files.utils import read_json_file, read_jsonl_file
+from core.constants import BULK_CREATE_BATCH_SIZE
 from movies.models import Genre, Movie, Cast, Crew, Person
 
 class Command(BaseCommand):
@@ -14,7 +15,6 @@ class Command(BaseCommand):
         "imdb": "IMDB",
         "tmdb": "TheMovieDB.com"
     }
-    BATCH_SIZE = 1000
 
     def handle(self, *_args, **_options):
         seeds_dir = Path("db/seeds")
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             )
             genre_objs.append(genre_obj)
 
-        Genre.objects.bulk_create(genre_objs, batch_size=self.BATCH_SIZE)
+        Genre.objects.bulk_create(genre_objs, batch_size=BULK_CREATE_BATCH_SIZE)
 
         print("Done.")
 
@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     crew_objs.append(crew_obj)
             movie_objs.append(movie_obj)
 
-        Movie.objects.bulk_create(movie_objs, batch_size=self.BATCH_SIZE)
+        Movie.objects.bulk_create(movie_objs, batch_size=BULK_CREATE_BATCH_SIZE)
         print("Done.")
 
         print("Adding genres to movies...")
@@ -122,13 +122,13 @@ class Command(BaseCommand):
             for k, v in person_ids.items()
             if k not in existing_person_ids
         ]
-        Person.objects.bulk_create(person_objs, batch_size=self.BATCH_SIZE)
+        Person.objects.bulk_create(person_objs, batch_size=BULK_CREATE_BATCH_SIZE)
         print("Done.")
 
         print("Creating cast...")
-        Cast.objects.bulk_create(cast_objs, batch_size=self.BATCH_SIZE)
+        Cast.objects.bulk_create(cast_objs, batch_size=BULK_CREATE_BATCH_SIZE)
         print("Done.")
 
         print("Creating crew...")
-        Crew.objects.bulk_create(crew_objs, batch_size=self.BATCH_SIZE)
+        Crew.objects.bulk_create(crew_objs, batch_size=BULK_CREATE_BATCH_SIZE)
         print("Done.")
