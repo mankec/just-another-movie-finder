@@ -14,7 +14,6 @@ class MovieMetadata:
     class TMDB:
         def __init__(self):
             self.api_url = "https://api.themoviedb.org/3/"
-            self.api_key = env.str("TMDB_KEY", "")
             self.token = env.str("TMDB_TOKEN", "")
             self.latest_movie_id = self._fetch_latest_movie_id()
 
