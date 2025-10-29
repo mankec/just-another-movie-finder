@@ -1,4 +1,5 @@
 from pathlib import Path
+import ast
 
 from django import template
 from django.templatetags.static import static
@@ -52,6 +53,14 @@ def flash_message_html(tags):
           </span>
         </div>
     """)
+
+
+@register.filter
+def to_dict(value):
+    try:
+        return ast.literal_eval(value)
+    except Exception:
+        return {}
 
 
 def _xmark_icon_color(tags):
