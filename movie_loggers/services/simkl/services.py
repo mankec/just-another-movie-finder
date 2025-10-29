@@ -70,7 +70,7 @@ class Simkl(AbstractMovieLogger):
             payload = {
                 "movies": [
                     {
-                        "to": SimklMovieStatus.ON_WATCHLIST,
+                        "to": SimklMovieStatus.ON_WATCHLIST.value,
                         "title": movie.title,
                         "year": movie.year,
                         "ids": {
@@ -127,12 +127,12 @@ class Simkl(AbstractMovieLogger):
             return remote_ids
         movies = response_body["movies"]
         for d in movies:
-            if d["status"] == SimklMovieStatus.WATCHED:
+            if d["status"] == SimklMovieStatus.WATCHED.value:
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["watched"]["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):
                     remote_ids["watched"]["tmdb_ids"].append(tmdb_id)
-            elif d["status"] == SimklMovieStatus.ON_WATCHLIST:
+            elif d["status"] == SimklMovieStatus.ON_WATCHLIST.value:
                 if imdb_id := d["movie"]["ids"].get("imdb"):
                     remote_ids["on_watchlist"]["imdb_ids"].append(imdb_id)
                 if tmdb_id := d["movie"]["ids"].get("tmdb"):

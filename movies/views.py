@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from environs import Env
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
@@ -23,7 +23,7 @@ env = Env()
 def index(request):
     session = request.session
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(session["filtered_movie_ids"], 24)
+    paginator = Paginator(session["filtered_movie_ids"], 2)
     page_obj = paginator.get_page(page_number)
     movie_ids = paginator.page(page_number).object_list
     movies = Movie.objects.filter(id__in=movie_ids)
@@ -85,3 +85,11 @@ def add_to_watchlist(request, movie_id):
         "status": HTTPStatus.OK.value,
         "message": f"'{movie.title}' has been added to {movie_logger}'s watchlist."
     })
+
+@handle_exception
+def detail(request, movie_id):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    ctx = {
+        "movie": movie,
+    }
+    return render(request, "movies/detail.html", ctx)
