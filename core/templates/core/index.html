@@ -4,22 +4,26 @@
   <form
     action="{% url "movies:find" %}"
     method="GET"
-    class="ml-5 flex justify-center"
+    class="mx-5 flex justify-center"
   >
     {% csrf_token %}
-    <div class="w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
+    <div class="md:w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
       <div class="col-span-12">
         {{ movie_finder_form.country }}
       </div>
       <div class="col-span-12">
         {{ movie_finder_form.language }}
       </div>
-      <div class="col-span-6">
-        {{ movie_finder_form.genres.label }}
+      <div class="col-span-12 md:col-span-6">
+        <div class="mb-1">
+          {{ movie_finder_form.genres.label }}
+        </div>
         {{ movie_finder_form.genres }}
       </div>
-      <div class="col-span-6">
-        {{ movie_finder_form.exclude_genres.label }}
+      <div class="col-span-12 md:col-span-6">
+        <div class="mb-1">
+          {{ movie_finder_form.exclude_genres.label }}
+        </div>
         {{ movie_finder_form.exclude_genres }}
       </div>
       <div class="col-span-6">
@@ -58,4 +62,13 @@
       </div>
     </div>
   </form>
+
+  <footer class="w-full mt-16">
+    <div class="flex justify-center items-center mx-0 p-[15px] bg-[#0d253f] min-h-[80px] text-[13px]">
+      <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg" class="h-[45px] mx-4 mr-6">
+      <p class="text-lg">
+        Metadata provided by <a class="text-[#01b4e4]" href="https://www.themoviedb.org/">TMDB</a>.
+      </p>
+    </div>
+  </footer>
 {% endblock %}

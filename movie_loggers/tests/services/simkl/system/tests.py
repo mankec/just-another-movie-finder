@@ -90,7 +90,7 @@ class SimklSystemTestCase(
                 "body": {
                     "movies": [
                         {
-                            "status": SimklMovieStatus.WATCHED,
+                            "status": SimklMovieStatus.WATCHED.value,
                             "movie": {
                                 "ids": {
                                     "imdb": self.movie.imdb_id,
@@ -118,7 +118,7 @@ class SimklSystemTestCase(
                 "body": {
                     "movies": [
                         {
-                            "status": SimklMovieStatus.ON_WATCHLIST,
+                            "status": SimklMovieStatus.ON_WATCHLIST.value,
                             "movie": {
                                 "ids": {
                                     "imdb": self.movie.imdb_id,
@@ -147,7 +147,7 @@ class SimklSystemTestCase(
                 "body": {
                     "movies": [
                         {
-                            "status": SimklMovieStatus.ON_WATCHLIST,
+                            "status": SimklMovieStatus.ON_WATCHLIST.value,
                             "movie": {
                                 "ids": {
                                     "imdb": self.movie.imdb_id,
@@ -156,7 +156,7 @@ class SimklSystemTestCase(
                             }
                         },
                         {
-                            "status": SimklMovieStatus.WATCHED,
+                            "status": SimklMovieStatus.WATCHED.value,
                             "movie": {
                                 "ids": {
                                     "imdb": self.movie.imdb_id,
