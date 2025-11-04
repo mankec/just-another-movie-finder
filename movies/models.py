@@ -89,6 +89,14 @@ class Movie(models.Model):
         else:
             return f"{self.title} ({self.year}), '{self.original_title}'"
 
+    def directors(self):
+        return (
+            self.crew_set
+            .all()
+            .filter(job="Director")
+            .values_list("person__name", flat=True)
+        )
+
 
 class Person(models.Model):
     DEFAULTS = ["known_for_department", "name", "original_name", "profile_path"]
