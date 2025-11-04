@@ -4,22 +4,26 @@
   <form
     action="{% url "movies:find" %}"
     method="GET"
-    class="ml-5 flex justify-center"
+    class="mx-5 flex justify-center"
   >
     {% csrf_token %}
-    <div class="w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
+    <div class="md:w-1/3 h-max grid grid-cols-12 gap-x-5 gap-y-5">
       <div class="col-span-12">
         {{ movie_finder_form.country }}
       </div>
       <div class="col-span-12">
         {{ movie_finder_form.language }}
       </div>
-      <div class="col-span-6">
-        {{ movie_finder_form.genres.label }}
+      <div class="col-span-12 md:col-span-6">
+        <div class="mb-1">
+          {{ movie_finder_form.genres.label }}
+        </div>
         {{ movie_finder_form.genres }}
       </div>
-      <div class="col-span-6">
-        {{ movie_finder_form.exclude_genres.label }}
+      <div class="col-span-12 md:col-span-6">
+        <div class="mb-1">
+          {{ movie_finder_form.exclude_genres.label }}
+        </div>
         {{ movie_finder_form.exclude_genres }}
       </div>
       <div class="col-span-6">

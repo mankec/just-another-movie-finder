@@ -8,13 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   {% if is_development %}
-    <link rel="stylesheet" href="http://localhost:5173/core/static/src/styles/main.css">
+    {% comment %} <link rel="stylesheet" href="http://localhost:5173/core/static/src/styles/main.css"> {% endcomment %}
+    <link rel="stylesheet" href="{% vite_asset_path "core/static/src/styles/main.css" %}">
   {% else %}
     <link rel="stylesheet" href="{% vite_asset_path "core/static/src/styles/main.css" %}">
   {% endif %}
 </head>
 <body class="h-full flex flex-col justify-between m-0 text-white bg-black">
-  <div class="grid grid-cols-12">
+  <div class="grid md:grid-cols-12">
     <div
       class="fixed z-[9999] top-0 left-1/2 transform -translate-x-1/2 w-1/2"
       id="flash-message-container"
@@ -27,25 +28,25 @@
         {% endfor %}
       {% endif %}
     </div>
-    <div class="col-span-10"></div>
-    <nav class="h-full col-span-2 flex items-center p-8">
-      <ul class="w-full flex justify-evenly uppercase">
-        <li class="mr-5">
-          <a href="{% url "index" %}">Find movies</a>
-        </li>
-        <li>
-          {% if is_signed_in %}
-            <form method="POST" action="{% url "sign_out" %}">
-              {% csrf_token %}
-              <input type="submit" value="Sign out" class="uppercase cursor-pointer"/>
-            </form>
-          {% else %}
-            <a href="{% url "sign_in" %}">Sign in</a>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-  </div>
+    <div class="invisible md:col-span-10"></div>
+      <nav class="h-full col-span-12 md:col-span-2 flex items-center p-4 pb-8 md:pt-8">
+        <ul class="w-full flex justify-between md:justify-evenly uppercase">
+          <li class="mr-5">
+            <a href="{% url "index" %}">Find movies</a>
+          </li>
+          <li>
+            {% if is_signed_in %}
+              <form method="POST" action="{% url "sign_out" %}">
+                {% csrf_token %}
+                <input type="submit" value="Sign out" class="uppercase cursor-pointer"/>
+              </form>
+            {% else %}
+              <a href="{% url "sign_in" %}">Sign in</a>
+            {% endif %}
+          </li>
+        </ul>
+      </nav>
+    </div>
 
   <main class="flex-grow">
     {% block content %}
@@ -62,7 +63,12 @@
   </footer>
 
   {% if is_development %}
-    <script type="module" src="http://localhost:5173/core/static/src/js/main.js"></script>
+    {% comment %} <script type="module" src="http://localhost:5173/core/static/src/js/main.js"></script> {% endcomment %}
+    <script
+      type="module"
+      src="{% vite_asset_path "core/static/src/js/main.js" %}"
+    >
+    </script>
   {% else %}
     <script
       type="module"

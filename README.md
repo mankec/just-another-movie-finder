@@ -90,6 +90,24 @@ python manage.py runserver
 npx vite
 ```
 
+## Ngrok
+
+Perhaps you want to test some feature on a phone? Download [ngrok](https://ngrok.com/download/linux) and then run `ngrok http 8000`. In `base.html` use built assets instead of ones served from `localhost:5173`. In order to do this comment out line that looks like this
+
+```
+<link rel="stylesheet" href="http://localhost:5173/core/static/src/styles/main.css">
+```
+
+And use this one instead
+
+```
+<link rel="stylesheet" href="{% vite_asset_path "core/static/src/styles/main.css" %}">
+```
+
+Don't forget to do the same for JS.
+
+You will need to run `npx vite build` in order for changes to reflect in your web browser. I was too lazy of finding a better solution since it's not front-end heavy app but PR for this is greatly appreciated!
+
 ## Running tests
 
 ```

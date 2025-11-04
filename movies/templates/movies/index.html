@@ -3,145 +3,222 @@
 {% load custom_tags %}
 
 {% block content %}
-  <div class="grid grid-cols-12 gap-y-12 mb-22 ml-18">
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:mx-10 gap-10 mb-22 items-stretch min-h-screen">
     {% for result in results %}
       {% with result.movie as movie %}
-        <div
-          class="w-full col-span-6 flex flex-col items-center"
-          {% comment %} TODO: slugify this {% endcomment %}
-          id="{{ movie.slug }}"
-        >
-          <h3 class="text-xl w-150 border-b-4">
-            {{ movie }}
-          </h3>
-          <div class="flex">
-            <div class="w-65 p-1 border-x-4 border-b-4 border-white">
-              <div class="relative">
-                {% if result.watched %}
-                  <span class="
-                  bg-[repeating-linear-gradient(45deg,rgba(106,187,90,0.50),rgba(106,187,90,0.50)_10px,rgba(85,156,75,0.50)_10px,rgba(85,156,75,0.50)_20px)] w-full h-full absolute top-0 uppercase flex justify-center items-center text-2xl font-bold">
-                    Watched
-                  </span>
-                {% endif %}
-                <div class="h-[23.63rem]">
-                  {% if movie.poster_path %}
-                    <img
-                      class=""
-                      src="https://image.tmdb.org/t/p/w1280/{{ movie.poster_path }}" alt="'{{ movie }}' movie poster"
-                    />
-                  {% else %}
-                    <span class="h-full flex justify-center items-center text-lg font-medium">No poster</span>
-                  {% endif %}
-                </div>
-                <button
-                  class="bg-[rgba(106,187,90,0.75)] w-full h-13 absolute bottom-0 cursor-pointer font-bold"
-                  id="add-to-watchlist-{{ movie.id }}"
-                  :class="{
-                    'bg-[rgba(106,187,90,0.90)]': 
-                      ! signedIn ||
-                      addedToWatchlist ||
-                      onWatchlist,
-                    'hover:cursor-default':
-                      ! signedIn ||
-                      addedToWatchlist ||
-                      onWatchlist,
-                    'hover:bg-[rgba(106,187,90,0.90)]':
-                      signedIn &&
-                      ! addedToWatchlist &&
-                      ! onWatchlist,
-                  }"
-                  x-data="{
-                    signedIn: `{{ is_signed_in }}` === 'True',
-                    onWatchlist: `{{ result.on_watchlist }}` === 'True',
-                    addedToWatchlist: `{{ result.added_to_watchlist }}` === 'True',
-                    loading: false,
-                    error: false,
-                  }"
-                  @click="
-                    if (!signedIn || onWatchlist || addedToWatchlist) {
-                      return;
-                    }
-                    loading = true;
-                    fetch('/movies/{{ movie.id }}/add-to-watchlist', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                      },
-                    })
-                    .then(response => response.json())
-                    .then(response => {
-                      loading = false;
-                      if (response.status == 200) {
-                        addedToWatchlist = true;
-                        disabled = true;
-                        const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
-                        $showFlashMessage(flashMessageHTML, response.message);
-                      } else {
-                        const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
-                        $showFlashMessage(flashMessageHTML, response.message);
-                      }
-                    });
-                  "
-                  x-text="
-                    onWatchlist ? 'On watchlist' :
-                    addedToWatchlist ? 'Added to watchlist' :
-                    loading ? 'Adding to watchlist...' :
-                    'Add to watchlist';
-                  "
-                  :title="!signedIn ? 'You must be signed in to be able to add movies to watchlist' : ''"
-                >
-                </button>
+      <div
+        id="{{ movie.slug }}"
+        class="rounded-xl shadow-lg mx-4 transition-all duration-300 flex flex-col justify-between bg-gray-900"
+      >
+        <div class="px-4">
+          <div class="relative rounded-lg overflow-hidden aspect-[2/3] shadow-md bg-gray-900 flex items-center justify-center">
+            {% if result.watched %}
+              <span class="absolute inset-0 bg-[rgba(106,187,90,0.40)] backdrop-blur-xs flex items-center justify-center text-3xl font-bold uppercase tracking-wide">
+                Watched
+              </span>
+            {% endif %}
+            {% if movie.poster_path %}
+              <img
+                src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}"
+                alt="'{{ movie }}' movie poster"
+                class="w-full h-full object-contain p-3"
+              />
+            {% else %}
+              <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg">
+                No poster available
               </div>
-            </div>
-            <div class="w-85 pt-2 pl-3 text-md">
-              <div>
-                <p>Country:
-                  {% for country in movie.origin_country %}
-                    {{ country }}{% if not forloop.last %}, {%endif %}
-                  {% endfor %}
-                </p>
-                <p>Language: {{ movie.original_language }}</p>
-                <p>Runtime: {{ movie.runtime }} minutes</p>
-                <p>
-                  <span>Genres:</span>
-                  {% for genre in movie.genres.all %}
-                    {{ genre.name }}{% if not forloop.last %}, {%endif %}
-                  {% endfor %}
-                </p>
-              </div>
-            </div>
+            {% endif %}
           </div>
-      </div>
+          <div class="text-sm leading-relaxed mt-4 px-1 text-gray-300 space-y-2">
+            <h4 class="text-xl font-semibold text-white text-center">
+              {{ movie.title }}
+            </h4>
+            <div class="min-h-[24px]">
+              {% if movie.original_title and movie.original_title != movie.title %}
+                <p class="text-center text-gray-400 italic">
+                  {{ movie.original_title }}
+                </p>
+                <p class="text-center text-gray-400">
+                  ({{ movie.year }})
+                </p>
+              {% else %}
+                <p class="text-center text-gray-400">
+                  ({{ movie.year }})
+                </p>
+                <div class="min-h-[24px]">
+                </div>
+              {% endif %}
+            </div>
+            <hr class="border-gray-700 my-2" />
+            <p>
+              <span class="text-gray-400">Director:</span>
+              {% if movie.director %}
+                {{ movie.director }}
+              {% else %}
+                Unknown
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">Runtime:</span>
+              {% if movie.runtime %}
+                {{ movie.runtime }} min
+              {% else %}
+                —
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">Country:</span>
+              {% if movie.origin_country and movie.origin_country|length > 0 %}
+                {{ movie.origin_country|join:", " }}
+              {% else %}
+                Unknown
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">Language:</span>
+              {% if movie.original_language %}
+                {{ movie.original_language|upper }}
+              {% else %}
+                —
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">Genres:</span>
+              {% if movie.genres.all %}
+                {% for genre in movie.genres.all %}
+                  {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                  —
+                {% endfor %}
+              {% else %}
+                —
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">User score:</span>
+              {% if movie.vote_average %}
+                ⭐ {{ movie.vote_average|floatformat:1 }}
+              {% else %}
+                —
+              {% endif %}
+            </p>
+
+            <p>
+              <span class="text-gray-400">Similar movies</span>
+              {% if movie.similar %}
+                <ul class="h-[18rem] flex overflow-scroll overflow-y-hidden">
+                  {% for sm in movie.similar %}
+                    {% with sm|to_dict as similar_movie %}
+                      <li class="flex-shrink-0 w-1/2 h-full">
+                        {% if similar_movie.poster_path %}
+                          <a href="{% url "movies:detail" movie.id %}">
+                            <img
+                              src="https://image.tmdb.org/t/p/w780/{{ similar_movie.poster_path }}"
+                              alt="'{{ similar_movie.title }}' movie poster"
+                              class="w-full h-full object-contain cursor-pointer p-2"
+                              title="{{ similar_movie.title }} ({{ similar_movie.release_date|slice:":4" }})"
+                              target="_blank"
+                            />
+                          </a>
+                        {% else %}
+                          <a href="{% url "movies:detail" similar_movie.id %}">
+                            <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg">
+                              No poster available
+                            </div>
+                          </a>
+                        {% endif %}
+                      </li>
+                    {% endwith %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+        <button
+          id="add-to-watchlist-{{ movie.id }}"
+          class="py-3 font-semibold text-sm  text-white transition mt-8 rounded-b-xl"
+          x-data="{
+            signedIn: `{{ is_signed_in }}` === 'True',
+            onWatchlist: `{{ result.on_watchlist }}` === 'True',
+            addedToWatchlist: `{{ result.added_to_watchlist }}` === 'True',
+            loading: false
+          }"
+          :class="{
+            'bg-gray-600 cursor-not-allowed opacity-60': !signedIn,
+            'bg-green-900 cursor-not-allowed': onWatchlist,
+            'bg-green-800 cursor-not-allowed': addedToWatchlist,
+            'bg-green-600 hover:bg-green-500 cursor-pointer': signedIn && !onWatchlist && !addedToWatchlist
+          }"
+          @click="
+            if (!signedIn || onWatchlist || addedToWatchlist) return;
+            loading = true;
+            fetch('/movies/{{ movie.id }}/add-to-watchlist', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+              }
+            })
+            .then(response => response.json())
+            .then(response => {
+              loading = false;
+              if (response.status === 200) {
+                addedToWatchlist = true;
+                disabled = true;
+                const flashMessageHTML = `{% flash_message_html message_tags.success %}`;
+                $showFlashMessage(flashMessageHTML, response.message);
+              } else {
+                const flashMessageHTML = `{% flash_message_html message_tags.error %}`;
+                $showFlashMessage(flashMessageHTML, response.message);
+              }
+            });
+          "
+          x-text="
+            onWatchlist ? 'On watchlist' :
+            addedToWatchlist ? 'Added to watchlist' :
+            loading ? 'Adding to watchlist...' :
+            'Add to watchlist';
+          "
+          :title="!signedIn ? 'You must be signed in to be able to add movies to watchlist' : ''"
+        >
+        </button>
+    </div>
+    
       {% endwith %}
     {% endfor %}
   </div>
-  <div class="flex justify-center">
-    <div class="flex items-center justify-between mt-2 xs:mt-0 w-2/3">
-      <div class="flex items-center">
-        {% if page_obj.has_previous %}
-          <svg
-            class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"
-          >
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-          </svg>
-          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
-      </div>
-      <span>
-        {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
-      <div class="flex items-center">
-        {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">Next</a>
-          <svg
-            class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"
-          >
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-          </svg>
-        {% endif %}
+
+  {% if page_obj %}
+    <div class="flex justify-center">
+      <div class="flex items-center justify-between mt-2 xs:mt-0 w-2/3">
+        <div class="flex items-center">
+          {% if page_obj.has_previous %}
+            <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          {% endif %}
+        </div>
+        <span>
+          {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+        <div class="flex items-center">
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}
