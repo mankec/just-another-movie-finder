@@ -8,5 +8,6 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("<int:movie_id>/add-to-watchlist", views.add_to_watchlist, name="add_to_watchlist"),
     path("find", views.find, name="find"),
-    path("<int:movie_id>", views.detail, name="detail")
+    path("<int:movie_id>", views.detail, name="detail"),
+    path("sort-by", views.sort_by, name="sort_by"),
 ]

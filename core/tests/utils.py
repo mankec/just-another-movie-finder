@@ -1,7 +1,6 @@
 import inspect
 from unittest.mock import Mock, patch
 from http import HTTPStatus
-from typing import Literal
 from copy import deepcopy
 
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -45,7 +44,8 @@ def stub_requests(klass_or_instance, *, responses: list):
     )
 
 
-def create_dummy_movie(original: Movie):
+def create_dummy_movie():
+    original = Movie.objects.get(id=1)
     num = Movie.objects.count() + 1
     new_movie = deepcopy(original)
     new_movie.id = num

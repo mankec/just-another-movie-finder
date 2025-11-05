@@ -10,8 +10,10 @@ from django.core.paginator import Paginator
 from project.settings import MESSAGE_TAGS
 from core.wrappers import handle_exception
 from core.utils import flatten
+from core.url.utils import build_url_with_query
 from movie_loggers.services.creator import MovieLoggerCreator
 from movies.models import Movie
+from movies.forms.movie_sort.forms import MovieSortForm
 from movies.forms.movie_finder.forms import MovieFinderForm
 from movies.services.movie_finder.services import MovieFinder
 from core.sessions.utils import is_signed_in
@@ -23,37 +25,64 @@ env = Env()
 def index(request):
     session = request.session
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(session["filtered_movie_ids"], 2)
+    sorting_key = request.GET.get("sorting_key")
+    if sorting_key and sorting_key != session["current_sorting_key"]:
+        session["current_sorting_key"] = sorting_key
+        session["filtered_movie_ids"] = (
+            list(Movie.objects
+                .filter(id__in=session["filtered_movie_ids"])
+                .order_by(Movie.ORDER_BY_MAP[sorting_key])
+                .values_list("id", flat=True)
+            )
+        )
+    elif not sorting_key:
+        sorting_key = Movie.DEFAULT_SORTING_KEY
+        session["current_sorting_key"] = Movie.DEFAULT_SORTING_KEY
+    paginator = Paginator(session["filtered_movie_ids"], Movie.PER_PAGE)
     page_obj = paginator.get_page(page_number)
-    movie_ids = paginator.page(page_number).object_list
-    movies = Movie.objects.filter(id__in=movie_ids)
+    movie_ids = page_obj.object_list
+    movie_sort_form = MovieSortForm()
+    movie_sort_form.initial["sorting_key"] = sorting_key
+    movies = (
+        Movie.objects
+            .filter(id__in=movie_ids)
+            .order_by(Movie.ORDER_BY_MAP[sorting_key])
+    )
+    watched_tmdb_ids = set(session["movie_remote_ids"]["watched"]["tmdb_ids"])
+    watched_imdb_ids = set(session["movie_remote_ids"]["watched"]["imdb_ids"])
+    on_watchlist_tmdb_ids = set(session["movie_remote_ids"]["on_watchlist"]["tmdb_ids"])
+    on_watchlist_imdb_ids = set(session["movie_remote_ids"]["on_watchlist"]["imdb_ids"])
+    movies_added_to_watchlist_ids = set(session["movies_added_to_watchlist_ids"])
     results = [
         {
             "movie": m,
             "watched": (
-                m.imdb_id in session["movie_remote_ids"]["watched"]["imdb_ids"] or
-                m.id in session["movie_remote_ids"]["watched"]["tmdb_ids"]
+                m.id in watched_tmdb_ids or
+                m.imdb_id in watched_imdb_ids
                 if is_signed_in(session) else False
             ),
             "on_watchlist": (
-                m.imdb_id in session["movie_remote_ids"]["on_watchlist"]["imdb_ids"] or
-                m.id in session["movie_remote_ids"]["on_watchlist"]["tmdb_ids"]
+                m.id in on_watchlist_tmdb_ids or
+                m.imdb_id in on_watchlist_imdb_ids
                 if is_signed_in(session) else False
             ),
-            "added_to_watchlist": m.id in session["movies_added_to_watchlist_ids"],
+            "added_to_watchlist": m.id in movies_added_to_watchlist_ids
         }
-        for m in  movies
+        for m in movies
     ]
     ctx = {
         "page_obj": page_obj,
-        "movie_logger": request.session["movie_logger"].capitalize(),
+        "movie_sort_form": MovieSortForm(initial={"sorting_key": sorting_key}),
+        "movie_logger": session["movie_logger"].capitalize(),
         "results": results,
+        "sorting_key": sorting_key,
         "message_tags": {
             "success": MESSAGE_TAGS[messages.SUCCESS],
             "error": MESSAGE_TAGS[messages.ERROR],
         }
     }
     return render(request, "movies/index.html", ctx)
+
 
 @handle_exception
 def find(request):
@@ -71,6 +100,17 @@ def find(request):
     messages.error(request, message)
     return redirect("/")
 
+
+@handle_exception
+def sort_by(request):
+    form = MovieSortForm(request.GET)
+    url = reverse("movies:index")
+    if form.is_valid():
+        url = build_url_with_query(url, {"sorting_key": form.cleaned_data["sorting_key"]})
+        return redirect(url)
+    message = list(flatten(form.errors.values())).pop(0)
+    messages.error(request, message)
+    return redirect(url)
 
 @handle_exception
 def add_to_watchlist(request, movie_id):

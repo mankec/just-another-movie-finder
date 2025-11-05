@@ -16,6 +16,18 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
+    PER_PAGE = 12
+    ORDER_BY_MAP = {
+        "oldest": "year",
+        "newest": "-year",
+        "most_popular": "-vote_average",
+        "least_popular": "vote_average",
+        "most_voted": "-vote_count",
+        "least_voted": "vote_count",
+        "longest": "-runtime",
+        "shortest": "runtime",
+    }
+    DEFAULT_SORTING_KEY = "oldest"
 
     class Meta:
         db_table = "movie"

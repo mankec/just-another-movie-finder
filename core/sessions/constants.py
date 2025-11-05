@@ -2,7 +2,8 @@ DEFAULT_SESSION_DATA = {
     "movie_logger": "",
     "request_token": "",
     "token": "",
-    "refresh_token":  "",
+    "refresh_token": "",
+    "current_sorting_key": "",
     "token_expires_at": "", # type: int
     "filtered_movie_ids": [],
     "movie_remote_ids": {
