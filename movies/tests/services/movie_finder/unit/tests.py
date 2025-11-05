@@ -22,18 +22,14 @@ class MovieFinderUnitTestCase(TestCase):
         self.serbian_movie_drama_comedy.genres.add(self.genre_drama, self.genre_comedy)
         self.serbian_movie_drama_comedy.save()
 
-        self.irish_movie_drama_fantasy = create_dummy_movie(
-            self.serbian_movie_drama_comedy
-        )
+        self.irish_movie_drama_fantasy = create_dummy_movie()
         self.irish_movie_drama_fantasy.origin_country = ["Ireland"]
         self.irish_movie_drama_fantasy.year = DEFAULT_YEAR
         self.irish_movie_drama_fantasy.runtime = self.runtime + 10
         self.irish_movie_drama_fantasy.genres.add(self.genre_drama, self.genre_fantasy)
         self.irish_movie_drama_fantasy.save()
 
-        self.exclude_movie = create_dummy_movie(
-            self.serbian_movie_drama_comedy
-        )
+        self.exclude_movie = create_dummy_movie()
         self.exclude_movie.origin_country = ["Spain"]
         self.exclude_movie.genres.add(self.genre_action)
         self.exclude_movie.save()

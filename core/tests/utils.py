@@ -45,7 +45,8 @@ def stub_requests(klass_or_instance, *, responses: list):
     )
 
 
-def create_dummy_movie(original: Movie):
+def create_dummy_movie():
+    original = Movie.objects.get(id=1)
     num = Movie.objects.count() + 1
     new_movie = deepcopy(original)
     new_movie.id = num
