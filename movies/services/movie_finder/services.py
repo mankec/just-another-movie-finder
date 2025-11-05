@@ -2,6 +2,7 @@ from django.db.models import Count, Q
 
 from core.wrappers import handle_exception
 from movies.models import Movie
+from movies.forms.movie_sort.forms import MovieSortForm
 
 class MovieFinder():
     def __init__(self, **kwargs):
@@ -60,5 +61,6 @@ class MovieFinder():
                 filter_query
             )
             .exclude(exclude_filter_query)
+            .order_by(Movie.ORDER_BY_MAP[Movie.DEFAULT_SORTING_KEY])
         )
         return list(movies.values_list("id", flat=True))
