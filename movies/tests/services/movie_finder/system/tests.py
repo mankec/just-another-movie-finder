@@ -30,7 +30,7 @@ class MovieFinderSystemTestCase(StaticLiveServerTestCase, CustomAssertionsMixin)
             Genre.objects.get(name=include_genres[1]),
         )
         movie.save()
-        exclude_movie = create_dummy_movie(movie)
+        exclude_movie = create_dummy_movie()
         exclude_movie.origin_country = ["Ireland"]
         exclude_movie.original_language = "Irish"
         exclude_movie.runtime = runtime + 100

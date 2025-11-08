@@ -1,8 +1,7 @@
-from unittest import TestCase
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from django.test import TestCase
 from django.http import HttpResponse
 from django.contrib.messages import get_messages
 from django.urls import reverse
