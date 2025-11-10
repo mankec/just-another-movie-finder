@@ -1,0 +1,19 @@
+{
+  "key": "origin_country",
+  "items": [
+    {
+      "id": "6915c1e7bdfe22a7d8876441",
+      "action": "updated",
+      "time": "2025-11-13 11:32:55 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": [
+        "US"
+      ],
+      "original_value": [
+        "UG",
+        "US"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "key": "plot_keywords",
+  "items": [
+    {
+      "id": "6923a00d551e73c25c32a92a",
+      "action": "deleted",
+      "time": "2025-11-24 00:00:13 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "original_value": {
+        "name": "remakes",
+        "id": 315841
+      }
+    },
+    {
+      "id": "6923a0157398caa33c1872ba",
+      "action": "added",
+      "time": "2025-11-24 00:00:21 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "name": "remake",
+        "id": 9714
+      }
+    }
+  ]
+}

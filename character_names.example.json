@@ -1,0 +1,43 @@
+{
+  "key": "character_names",
+  "items": [
+    {
+      "id": "69151f818c84b2cc9c3a3d05",
+      "action": "updated",
+      "time": "2025-11-13 00:00:01 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "person_id": 237055,
+        "character": "Queen Wendolyn",
+        "cast_id": 5,
+        "credit_id": "63ec5f891b729400866d5349"
+      },
+      "original_value": {
+        "person_id": 237055,
+        "character": "",
+        "cast_id": 5,
+        "credit_id": "63ec5f891b729400866d5349"
+      }
+    },
+    {
+      "id": "69151f9ce4f3f505af40e095",
+      "action": "updated",
+      "time": "2025-11-13 00:00:28 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "person_id": 3921255,
+        "character": "Phineas Hornshank",
+        "cast_id": 6,
+        "credit_id": "63ec5fab699fb70084e18788"
+      },
+      "original_value": {
+        "person_id": 3921255,
+        "character": "",
+        "cast_id": 6,
+        "credit_id": "63ec5fab699fb70084e18788"
+      }
+    }
+  ]
+}

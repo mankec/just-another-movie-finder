@@ -1,0 +1,15 @@
+{
+  "key": "general",
+  "items": [
+    {
+      "id": "692452a26c2bacf11d0bad02",
+      "action": "destroyed",
+      "time": "2025-11-24 12:42:10 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "reason": "2"
+      }
+    }
+  ]
+}

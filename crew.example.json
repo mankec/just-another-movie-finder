@@ -1,0 +1,33 @@
+{
+  "key": "crew",
+  "items": [
+    {
+      "id": "6915200cc48e7e4aa7ac21d4",
+      "action": "added",
+      "time": "2025-11-13 00:02:20 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "person_id": 1820555,
+        "department": "Costume & Make-Up",
+        "job": "Makeup Designer",
+        "cast_id": 2,
+        "credit_id": "6915200cc48e7e4aa7ac21d2"
+      }
+    },
+    {
+      "id": "691fabf8308057c78c5d5e3e",
+      "action": "deleted",
+      "time": "2025-11-21 00:02:00 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "original_value": {
+        "job": "Writer",
+        "department": "Writing",
+        "person_id": 5829588,
+        "cast_id": 21,
+        "credit_id": "691fabdfb2c32a1b952e2e9a"
+      }
+    }
+  ]
+}

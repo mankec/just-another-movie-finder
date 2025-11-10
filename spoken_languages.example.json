@@ -1,0 +1,22 @@
+{
+  "key": "spoken_languages",
+  "items": [
+    {
+      "id": "6913af3e9913d3c4f9876a7d",
+      "action": "updated",
+      "time": "2025-11-11 21:48:46 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": [
+        "da",
+        "fr",
+        "en"
+      ],
+      "original_value": [
+        "da",
+        "en",
+        "fr"
+      ]
+    }
+  ]
+}

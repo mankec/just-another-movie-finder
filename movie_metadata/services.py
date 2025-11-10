@@ -1,3 +1,4 @@
+import ast
 from http import HTTPMethod, HTTPStatus
 
 from environs import Env
@@ -7,6 +8,7 @@ from project.settings import USER_AGENT
 from core.wrappers import handle_exception
 from core.url.utils import build_url, build_url_with_query
 from core.requests.utils import send_request
+from movies.languages.constants import LANGUAGES
 
 env = Env()
 
@@ -15,6 +17,7 @@ class MovieMetadata:
         def __init__(self):
             self.api_url = "https://api.themoviedb.org/3/"
             self.token = env.str("TMDB_TOKEN", "")
+            # TODO: This is bad, move this to a public method instead
             self.latest_movie_id = self._fetch_latest_movie_id()
 
         @handle_exception
@@ -53,3 +56,50 @@ class MovieMetadata:
             )
             response_body = response.json()
             return response_body
+
+        @handle_exception
+        def fetch_changed_movie_ids(self):
+            movie_ids = []
+            page = 1
+            total_pages = 1
+            url = build_url(self.api_url, "movie/changes")
+            headers = {
+                "User-Agent": USER_AGENT,
+                "Authorization": f"Bearer {self.token}",
+            }
+            while page <= total_pages:
+                payload = {
+                    "page": page,
+                }
+                response =  send_request(
+                    method=HTTPMethod.GET.value,
+                    url=url,
+                    payload=payload,
+                    headers=headers,
+                )
+                response_body = response.json()
+                total_pages = response_body["total_pages"]
+                for result in response_body["results"]:
+                    if result["adult"]:
+                        continue
+                    movie_ids.append(result["id"])
+                page += 1
+            return movie_ids
+
+        @handle_exception
+        def fetch_movie_changes(self, movie_id):
+            page = 1
+            url = build_url(self.api_url, "movie", movie_id, "changes")
+            headers = {
+                "User-Agent": USER_AGENT,
+                "Authorization": f"Bearer {self.token}",
+            }
+            payload = { "page": page }
+            response =  send_request(
+                method=HTTPMethod.GET.value,
+                url=url,
+                payload=payload,
+                headers=headers,
+            )
+            response_body =  response.json()
+            return response_body["changes"]

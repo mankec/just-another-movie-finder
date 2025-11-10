@@ -1,0 +1,27 @@
+{
+  "key": "genres",
+  "items": [
+    {
+      "id": "691520e8535cb85e69ac20e3",
+      "action": "added",
+      "time": "2025-11-13 00:06:00 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "name": "Horror",
+        "id": 27
+      }
+    },
+    {
+      "id": "691520ed2f9649b50a4c960a",
+      "action": "added",
+      "time": "2025-11-13 00:06:05 UTC",
+      "iso_639_1": "",
+      "iso_3166_1": "",
+      "value": {
+        "name": "Comedy",
+        "id": 35
+      }
+    }
+  ]
+}

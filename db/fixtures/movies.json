@@ -19,13 +19,7 @@
       "year": 2025,
       "revenue": 0,
       "runtime": 86,
-      "spoken_languages": [
-        {
-          "english_name": "Serbian",
-          "iso_639_1": "sr",
-          "name": "Srpski"
-        }
-      ],
+      "spoken_languages": [],
       "status": "Released",
       "tagline": "",
       "title": "Fixture movie",
@@ -33,7 +27,10 @@
       "vote_average": 0,
       "vote_count": 0,
       "backdrops": [],
-      "posters": [],
+      "posters": [
+        "{'aspect_ratio': 0.667, 'height': 3000, 'iso_639_1': 'en', 'file_path': '/poster_1.jpg', 'vote_average': 3.334, 'vote_count': 3, 'width': 2000}",
+        "{'aspect_ratio': 0.667, 'height': 3000, 'iso_639_1': 'en', 'file_path': '/poster_2.jpg', 'vote_average': 3.334, 'vote_count': 3, 'width': 2000}"
+      ],
       "logos": [],
       "keywords": [],
       "recommendations": [],
