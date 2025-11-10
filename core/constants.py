@@ -5,3 +5,9 @@ DEFAULT_YEAR = 2025
 TIMEOUT_BEFORE_NEXT_REQUEST_SECONDS = 0.5
 
 BULK_CREATE_BATCH_SIZE = 1000
+
+TMDB_ACTIONS = {
+    "added": "added",
+    "updated": "updated",
+    "deleted": "deleted",
+}
