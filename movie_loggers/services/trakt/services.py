@@ -149,8 +149,8 @@ class Trakt(AbstractMovieLogger):
             "imdb_ids": [],
             "tmdb_ids": [],
         }
+        url = build_url(self.API_URL, "sync/watchlist/movies")
         while page <= total_pages:
-            url = build_url(self.API_URL, "sync/watchlist/movies")
             payload = {
                 "page": page,
                 "limit": self.PAGINATION_LIMIT

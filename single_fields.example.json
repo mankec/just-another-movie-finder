@@ -1,0 +1,44 @@
+[
+  {
+    "key": "title",
+    "items": [
+      {
+        "id": "6915270f583f19f6ae9ad263",
+        "action": "updated",
+        "time": "2025-11-13 00:32:15 UTC",
+        "iso_639_1": "pt",
+        "iso_3166_1": "PT",
+        "value": "Scooby-Doo! A Lenda do Fantossauro",
+        "original_value": "Scooby Doo! e a Lenda do Fantasmossauro"
+      }
+    ]
+  },
+  {
+    "key": "overview",
+    "items": [
+      {
+        "id": "691526edd0450fa3063a3fe1",
+        "action": "updated",
+        "time": "2025-11-13 00:31:41 UTC",
+        "iso_639_1": "pt",
+        "iso_3166_1": "PT",
+        "value": "Quando o grupo do Scooby-Doo! encontra o horrível Fantossauro, um dinossauro fantasma que parece decidido a impedir um grupo de paleontologistas de desenterrar fósseis, eles investigam para descobrir o que há realmente por detrás da assombração pré-histórica.",
+        "original_value": "Scooby Doo e sua turma entram na pré-história, quando encontram um fantasmossauro horrível que é o protetor de um tesouro antigo escondido nas cavernas do deserto. Mas isso não assusta Salsicha e sua turma, que estão dispostos a resolver mais este pré-histórico mistério."
+      }
+    ]
+  },
+  {
+    "key": "runtime",
+    "items": [
+      {
+        "id": "69152701c4ea5b5c2e3a3f79",
+        "action": "updated",
+        "time": "2025-11-13 00:32:01 UTC",
+        "iso_639_1": "pt",
+        "iso_3166_1": "PT",
+        "value": 75,
+        "original_value": 0
+      }
+    ]
+  }
+]
