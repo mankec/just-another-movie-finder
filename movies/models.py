@@ -40,7 +40,7 @@ class Movie(models.Model):
     runtime = models.PositiveIntegerField(null=True, blank=True)
     year = models.PositiveSmallIntegerField(null=True, blank=True)
     spoken_languages = ArrayField(
-        models.CharField(max_length=MAX_LENGTH),
+        models.JSONField(),
         default=list,
         blank=True,
     )
@@ -51,32 +51,32 @@ class Movie(models.Model):
     vote_average = models.FloatField(blank=True)
     vote_count = models.IntegerField(blank=True)
     backdrops = ArrayField(
-        models.CharField(),
+        models.JSONField(),
         default=list,
         blank=True,
     )
     logos = ArrayField(
-        models.CharField(),
+        models.JSONField(),
         default=list,
         blank=True,
     )
     posters = ArrayField(
-        models.CharField(),
+        models.JSONField(),
         default=list,
         blank=True,
     )
     keywords = ArrayField(
-        models.CharField(max_length=MAX_LENGTH),
+        models.JSONField(),
         default=list,
         blank=True,
     )
     recommendations = ArrayField(
-        models.CharField(),
+        models.JSONField(),
         default=list,
         blank=True,
     )
     similar = ArrayField(
-        models.CharField(),
+        models.JSONField(),
         default=list,
         blank=True,
     )
