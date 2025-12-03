@@ -166,7 +166,7 @@
               {% with sm|to_dict as similar_movie %}
                 <li class="flex-shrink-0 flex flex-col w-[8rem] md:w-[12rem]">
                   {% if similar_movie.poster_path %}
-                    <a href="{% url "movies:detail" movie.id %}">
+                    <a href="{% url "movies:detail" similar_movie.id %}">
                       <img
                         src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}"
                         alt="'{{ similar_movie.title }}' movie poster"
@@ -176,16 +176,22 @@
                       />
                     </a>
                     <div class="text-gray-300">
-                      <p class="text-sm break-words">{{ movie.title }} Smadget Vadge Dadget Gadget Anger is what I am RAAAAAAAAAAAAAAAAAAA</p>
-                      <p class="text-xs">({{ movie.release_date|slice:":4" }})</p>
+                      <p class="leading-[1.1] text-sm break-words mt-1">{{ similar_movie.title }}</p>
+                      <p class="text-xs">({{ similar_movie.release_date|slice:":4" }})</p>
                     </div>
                   {% else %}
-                    <h1>ummm hellooo</h1>
-                    {% comment %} <a href="{% url "movies:detail" similar_movie.id %}">
-                      <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg">
+                    <a href="{% url "movies:detail" similar_movie.id %}">
+                      <div 
+                        class="bg-gray-800 w-full h-[18rem] flex justify-center items-center text-gray-400 text-lg shrink-0"
+                        title="{{ similar_movie.title }} ({{ similar_movie.release_date|slice:":4" }})"
+                      >
                         No poster available
                       </div>
-                    </a> {% endcomment %}
+                    </a>
+                    <div class="text-gray-300">
+                      <p class="leading-[1.1] text-sm break-words mt-1">{{ similar_movie.title }}</p>
+                      <p class="text-xs">({{ similar_movie.release_date|slice:":4" }})</p>
+                    </div>
                   {% endif %}
                 </li>
               {% endwith %}

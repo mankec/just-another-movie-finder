@@ -30,7 +30,7 @@
             class="rounded-xl shadow-lg mx-4 transition-all duration-300 flex flex-col justify-between bg-gray-900"
           >
             <div class="px-4">
-              <div class="relative rounded-lg overflow-hidden aspect-[2/3] shadow-md bg-gray-900 flex items-center justify-center">
+              <div class="relative rounded-lg overflow-hidden aspect-[2/3] shadow-md bg-gray-900 flex items-center justify-center px-2 pt-5 pb-1">
                 {% if result.watched %}
                   <span class="absolute inset-0 bg-[rgba(106,187,90,0.40)] backdrop-blur-xs flex items-center justify-center text-3xl font-bold uppercase tracking-wide">
                     Watched
@@ -40,10 +40,10 @@
                   <img
                     src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}"
                     alt="'{{ movie }}' movie poster"
-                    class="w-full h-full object-contain p-3"
+                    class="w-full h-full object-cover"
                   />
                 {% else %}
-                  <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg">
+                  <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg bg-gray-800">
                     No poster available
                   </div>
                 {% endif %}
@@ -124,7 +124,7 @@
                 </p>
 
                 <p>
-                  <span class="text-gray-400">Similar movies</span>
+                  <span class="text-gray-400">Similar movies:</span>
                   {% if movie.similar %}
                     <ul class="items-start md:items-center h-[18rem] flex overflow-scroll overflow-y-hidden">
                       {% for sm in movie.similar %}
@@ -142,13 +142,15 @@
                               </a>
                             {% else %}
                               <a href="{% url "movies:detail" similar_movie.id %}">
-                                <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg pr-5">
+                                <div class="w-full h-full flex justify-center items-center text-gray-400 text-lg pr-5 bg-gray-900">
                                   No poster available
                                 </div>
                               </a>
                             {% endif %}
                           </li>
                         {% endwith %}
+                      {% empty %}
+                        —
                       {% endfor %}
                     </ul>
                   {% endif %}
