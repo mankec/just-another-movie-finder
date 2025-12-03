@@ -44,9 +44,6 @@ SECRET_KEY = env.str(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if IS_PRODUCTION else True
 
-ALLOWED_HOSTS = ["*"]
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -71,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'core.middleware.initialize_session.middleware.InitializeSessionMiddleware',
     'core.middleware.refresh_token.middleware.RefreshTokenMiddleware',
+    'core.middleware.redirect_www.middleware.RedirectWwwMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -180,7 +178,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USER_AGENT = "JustAnotherMovieFinder/1.0.0 (justanothermoviefinder@gmail.com)"
 
-PRODUCTION_URL = "https://justanothermoviefinder.com"
+PRODUCTION_HOST = "justanothermoviefinder.com"
+PRODUCTION_HOST_WITH_SUBDOMAIN = f"www.{PRODUCTION_HOST}"
+PRODUCTION_URL = f"https://{PRODUCTION_HOST}"
 
 API_REDIRECT_URL = f"{PRODUCTION_URL}/oauth" if IS_PRODUCTION else "http://localhost:8000/oauth"
 
@@ -192,4 +192,10 @@ CHROME_OPTIONS = ChromeMode.HEADLESS.options
 
 CSRF_TRUSTED_ORIGINS = [
     PRODUCTION_URL,
+]
+
+ALLOWED_HOSTS = [
+    "localhost",
+    PRODUCTION_HOST,
+    PRODUCTION_HOST_WITH_SUBDOMAIN,
 ]
