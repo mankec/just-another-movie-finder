@@ -180,7 +180,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USER_AGENT = "JustAnotherMovieFinder/1.0.0 (justanothermoviefinder@gmail.com)"
 
-PRODUCTION_URL = "https://just-another-movie-finder-production.up.railway.app"
+PRODUCTION_URL = "https://justanothermoviefinder.com"
 
 API_REDIRECT_URL = f"{PRODUCTION_URL}/oauth" if IS_PRODUCTION else "http://localhost:8000/oauth"
 
