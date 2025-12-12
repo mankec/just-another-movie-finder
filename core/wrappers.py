@@ -55,9 +55,9 @@ def handle_exception(func_or_message: FunctionType | str, message: str = None, l
                 if log:
                     tb = traceback.extract_tb(error.__traceback__, limit=-1)
                     fs: FrameSummary = tb[0]
-                    # TODO: Replace all prints that could be shown in CI with logs
-                    print(f"{fs.filename}, line {fs.lineno}")
-                    print(f"{type(error).__name__}: {error}")
+                    if not IS_PRODUCTION:
+                        print(f"{fs.filename}, line {fs.lineno}")
+                        print(f"{type(error).__name__}: {error}")
                 if error is not Exception:
                     raise
                 raise Exception(message)
